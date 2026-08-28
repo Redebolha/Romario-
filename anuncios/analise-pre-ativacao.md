@@ -57,24 +57,50 @@ nunca vai poder ser executado.
 Taxa real de LPV → Lead: **16 em 499 = 3,2%**. É uma taxa respeitável. Ela só está
 invisível para o Meta.
 
-## 4. Eventos que o plano promete e que não existem
+## 4. Os eventos existem — mas são invisíveis para o Meta
 
-O documento do anúncio manda medir, nesta ordem: CTR → QuizStart ÷ PageView →
-QuizComplete ÷ QuizStart → Lead ÷ QuizComplete → Venda ÷ Lead.
+**Correção de uma afirmação minha anterior.** Eu disse que `QuizStart` e `QuizComplete`
+não existiam. Existem, e estão corretos no código (`teste-mascara-masculina/index.html`,
+linhas 274 e 314). Eu tinha lido só o relatório do pixel, que não os mostrava.
 
-Os eventos que o pixel realmente recebeu no período:
+O motivo de não aparecerem é outro, e é de solução rápida: os dois são disparados com
+`fbq('trackCustom', ...)`. Evento personalizado **não vira métrica de relatório nem
+evento otimizável enquanto não existir uma Conversão Personalizada** criada para ele no
+Gerenciador de Eventos. Hoje eles disparam no navegador e morrem ali.
 
-`PageView`, `Lead`, `InitiateCheckout`, `ViewContent`, `ProductPage`.
+Prova disso nos dados: o `Lead` é padrão (`fbq('track','Lead')`) e aparece 20 vezes.
+O `QuizComplete` é personalizado, dispara obrigatoriamente antes de todo `Lead`
+— o botão do WhatsApp só existe depois do resultado — e aparece **zero** vezes.
 
-**Não existe `QuizStart`. Não existe `QuizComplete`. Não existe `Purchase`.**
+**Correção:** criar Conversões Personalizadas para `QuizStart` e `QuizComplete`.
+Cinco minutos no Gerenciador de Eventos, sem tocar em código. Aí os degraus 2 e 3 da
+régua de medição passam a existir.
 
-Então os passos 2, 3 e 5 da régua de medição são hoje inexecutáveis. Se a campanha
-rodar assim, e o resultado vier ruim, não haverá como saber se o culpado foi a
-página, o teste, a conversa ou o preço.
+O que continua verdadeiro e é sério: **não existe evento de compra.** A venda fecha
+fora do domínio e o pixel do redebolha nunca vê. Sem ele não há ROI mensurável.
 
-E o mais grave: **15 `InitiateCheckout` e nenhum `Purchase`.** Como a venda fecha
-fora do domínio (Hotmart), o pixel do redebolha nunca vê a compra. Sem esse evento
-não existe ROI mensurável — nem hoje, nem depois.
+## 4b. A discrepância que precisa ser resolvida antes de gastar
+
+O pixel registrou 16 `Lead` entre 16 e 21 de agosto. O Meta atribuiu **zero** a
+qualquer campanha — nenhuma delas retorna `offsite_conversion.fb_pixel_lead`.
+
+Como as mesmas campanhas tiveram 499 visualizações de página atribuídas, o pixel
+claramente casa o clique na chegada. Ele perde o casamento no fim do funil. Três
+candidatos, em ordem de probabilidade:
+
+1. Os anúncios antigos apontavam para uma URL diferente desta página.
+2. O `Lead` dispara no clique de um link que navega para fora
+   (`index.html` linha 323). O `target="_blank"` reduz o risco, mas em celular a
+   troca para o app do WhatsApp ainda pode cortar a requisição em voo — e corta
+   justamente nos usuários que mais importam.
+3. Volume abaixo do limiar de relatório do Meta, com 6 dias e R$ 88 gastos.
+
+Isso se resolve olhando o `Lead` no Gerenciador de Eventos e conferindo o
+detalhamento por origem. É o primeiro passo, antes de qualquer real novo.
+
+**Melhoria recomendada no código:** dar ao `Lead` um `eventID` e mandar o mesmo evento
+por CAPI do servidor, com deduplicação. Isso torna o número confiável
+independentemente da navegação.
 
 ## 5. O anúncio promete um recado que a IA não entrega
 
@@ -96,6 +122,32 @@ desconhecido. A promessa cria uma dívida que o primeiro contato não paga.
 **Correção:** dar o recado antes da pergunta. Uma frase curta, específica da máscara,
 dita como afirmação — não como pergunta. A pergunta vem depois, e como convite, não
 como exigência.
+
+## 5b. Um defeito no anúncio que eu mesmo montei
+
+Configurei o destino como:
+
+```
+...?utm_source=meta&utm_campaign={{campaign.name}}&utm_content={{ad.name}}
+```
+
+O nome da campanha é `Teste da Máscara Masculina | Tráfego` — com espaços, acentos e
+uma barra vertical. O `etiquetaOrigem()` da página (linha 202) monta a etiqueta
+concatenando esses valores, então a mensagem que chega no seu WhatsApp terminaria assim:
+
+```
+[ref: meta/Teste da Máscara Masculina | Tráfego/A-cara]
+```
+
+Longo, feio de ler no celular, e o caractere `|` não é seguro em query string — pode
+ser truncado por algum cliente antes de chegar.
+
+**Correção:** trocar a macro por um valor curto e fixo, `utm_campaign=mascara`, mantendo
+`utm_content={{ad.name}}` (os nomes `A-cara`, `B-provedor`, `C-espelho` já são limpos).
+Resultado: `[ref: meta/mascara/A-cara]`.
+
+Criativo no Meta é imutável, então isso exige recriar os três criativos e os três
+anúncios. Como nada rodou ainda, o custo é zero.
 
 ## 6. As duas correções que liberam a ativação
 
@@ -185,8 +237,10 @@ questão de marketing. É a única parte disso que não admite atraso.
 
 ## Limitação desta análise
 
-Não consegui abrir `redebolha.com.br` — o proxy desta sessão bloqueia o domínio.
-Então não auditei a página do teste, o link do WhatsApp nem o código do pixel
-diretamente. Tudo na seção 3 e 4 foi inferido dos dados do pixel e das campanhas.
-A causa exata da falha de atribuição precisa ser confirmada olhando o código da
-página.
+O proxy desta sessão bloqueia `redebolha.com.br`, então não consegui carregar a página
+em execução. Mas o código-fonte foi auditado direto do repositório `Redebolha/redebolha`
+(`teste-mascara-masculina/index.html`), o que resolveu a maior parte das dúvidas.
+
+Continua em aberto apenas a causa exata da falha de atribuição (seção 4b), que depende
+de olhar o detalhamento do evento `Lead` no Gerenciador de Eventos — e de conferir para
+qual URL os anúncios de agosto realmente apontavam.
