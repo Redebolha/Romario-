@@ -4,27 +4,53 @@ Funil: Meta Ads → `redebolha.com.br/teste-mascara-masculina` → WhatsApp com 
 
 ## Estado no Meta Ads (conta 351203535 — Romário Vendas)
 
-Estrutura criada e **pausada**. Página: Rede Bolha Adm. Romário Cruz (`1880999935362866`).
+Campanha, conjunto e os três anúncios **criados e pausados**.
+Página: Rede Bolha Adm. Romário Cruz (`1880999935362866`).
 
-| Item | ID | Status |
-|---|---|---|
-| Campanha `Teste da Máscara Masculina \| Tráfego` | `52512807800029` | PAUSADA |
-| Conjunto `BR \| Homens 30-60 \| Amplo` | `52512807805029` | PAUSADA |
-| Anúncios A-cara / B-provedor / C-espelho | — | **pendentes da imagem** |
+| Item | ID |
+|---|---|
+| Campanha `Teste da Máscara Masculina \| Tráfego` | `52512807800029` |
+| Conjunto `BR \| Homens 30-60 \| Amplo` | `52512807805029` |
+| Anúncio `A-cara` | `52512808162229` (criativo `3280332862357628`) |
+| Anúncio `B-provedor` | `52512808166029` (criativo `1390622436545381`) |
+| Anúncio `C-espelho` | `52512808168829` (criativo `928404339764542`) |
 
 Campanha: Tráfego, CBO, R$ 15/dia, lance de menor custo.
 Conjunto: otimização por **visualizações da página de destino**, cobrança por impressão,
 destino site, Brasil, homens, 30–60 anos, sem interesses, posicionamentos automáticos.
 Advantage+ Audience desligado para que a faixa de idade valha como limite de verdade.
+Anúncios: mesma imagem nos três, de propósito — o que está em teste é o texto.
+Domínio de conversão `redebolha.com.br`, CTA "Saiba mais".
 
-**O que falta:** os três anúncios. O Meta recusa criar criativo sem imagem
-(`At least one of image_hash or image_url must be provided`), então o slot está em
-aberto de propósito — a arte sobe manualmente. Depois de subir, é só criar os três
-anúncios dentro do conjunto acima com os textos da seção "copiar e colar".
+Destino, com os parâmetros já embutidos na própria URL:
+
+```
+https://redebolha.com.br/teste-mascara-masculina?utm_source=meta&utm_campaign={{campaign.name}}&utm_content={{ad.name}}
+```
 
 Links diretos:
 - Campanha: https://www.facebook.com/adsmanager/manage/campaigns/edit?act=351203535&selected_campaign_ids=52512807800029
 - Conjunto: https://www.facebook.com/adsmanager/manage/adsets/edit?act=351203535&selected_adset_ids=52512807805029
+- Anúncios: https://www.facebook.com/adsmanager/manage/ads?act=351203535&selected_adset_ids=52512807805029
+
+**Falta só ativar.** Tudo continua pausado até você ligar.
+
+### Criativos
+
+Ficam em `anuncios/criativos/`. A arte original tem 1376 × 768, então os recortes
+verticais saem do limite dessa resolução — o 4:5 nasce em 614 × 768 e foi ampliado
+para 1080 × 1350. Roda bem, mas se um dia reexportar a arte em resolução maior,
+troque por lá.
+
+| Arquivo | Uso |
+|---|---|
+| `01_feed_4x5_1080x1350.jpg` | **em uso nos três anúncios** — feed |
+| `02_quadrado_1x1_1080x1080.jpg` | 1:1, posicionamentos quadrados |
+| `03_horizontal_1200x628.jpg` | 1.91:1, feed horizontal e Audience Network |
+| `00_original_1376x768.jpg` | original, sem recorte |
+
+Não tem 9:16: a altura de 768 px do original daria 432 px de largura, abaixo do
+mínimo que o Meta aceita bem. Para Stories e Reels vale reexportar a arte nativa.
 
 ---
 
