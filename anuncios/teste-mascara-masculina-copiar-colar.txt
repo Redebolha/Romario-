@@ -1,0 +1,58 @@
+CAMPANHA: Teste da Máscara Masculina
+Destino: https://redebolha.com.br/teste-mascara-masculina
+Parâmetros de URL: utm_source=meta&utm_campaign={{campaign.name}}&utm_content={{ad.name}}
+CTA (nos três): Saiba mais
+Imagem: subir manualmente (9:16, 4:5 e 1:1)
+
+======================================================================
+ANÚNCIO A — nome do anúncio: A-cara
+======================================================================
+
+[TEXTO PRINCIPAL]
+Tem homem que chega em casa e leva uma hora pra tirar a cara do trabalho.
+
+Não a roupa. A cara.
+
+Se você se reconheceu aí, faz esse teste. Seis perguntas, menos de dois minutos, sem cadastro. Ele não te rotula — só dá nome no que você já sente faz tempo.
+
+No fim, tem um recado esperando por você.
+
+[TÍTULO]
+Qual máscara você usa sem perceber?
+
+[DESCRIÇÃO]
+Grátis · 2 min · sem cadastro
+
+======================================================================
+ANÚNCIO B — nome do anúncio: B-provedor
+======================================================================
+
+[TEXTO PRINCIPAL]
+Você já parou pra pensar quantos anos faz que você não para?
+
+Não é férias que eu tô falando. É parar de verdade. Sem calcular boleto, sem responder mensagem, sem carregar ninguém nas costas por meia hora que seja.
+
+Fiz um teste de seis perguntas sobre isso. Dois minutos, sem cadastro, e ele te devolve o nome da coisa que você carrega calado.
+
+Só isso já muda alguma coisa.
+
+[TÍTULO]
+Faz quanto tempo que você não para?
+
+[DESCRIÇÃO]
+Teste gratuito · 2 minutos
+
+======================================================================
+ANÚNCIO C — nome do anúncio: C-espelho
+======================================================================
+
+[TEXTO PRINCIPAL]
+Toda manhã você coloca uma. Toda noite tenta tirar. E às vezes ela não sai.
+
+Seis perguntas, dois minutos, sem cadastro: descubra qual máscara você usa sem perceber.
+
+[TÍTULO]
+Homem, qual máscara é a tua?
+
+[DESCRIÇÃO]
+6 perguntas. Sem cadastro.
