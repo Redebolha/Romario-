@@ -1,9 +1,30 @@
 # Anúncio — Teste da Máscara Masculina
 
-**Status do criativo:** slot da imagem deixado **em aberto** — a arte sobe manualmente
-no Gerenciador de Anúncios (ver seção 4).
-
 Funil: Meta Ads → `redebolha.com.br/teste-mascara-masculina` → WhatsApp com IA → venda.
+
+## Estado no Meta Ads (conta 351203535 — Romário Vendas)
+
+Estrutura criada e **pausada**. Página: Rede Bolha Adm. Romário Cruz (`1880999935362866`).
+
+| Item | ID | Status |
+|---|---|---|
+| Campanha `Teste da Máscara Masculina \| Tráfego` | `52512807800029` | PAUSADA |
+| Conjunto `BR \| Homens 30-60 \| Amplo` | `52512807805029` | PAUSADA |
+| Anúncios A-cara / B-provedor / C-espelho | — | **pendentes da imagem** |
+
+Campanha: Tráfego, CBO, R$ 15/dia, lance de menor custo.
+Conjunto: otimização por **visualizações da página de destino**, cobrança por impressão,
+destino site, Brasil, homens, 30–60 anos, sem interesses, posicionamentos automáticos.
+Advantage+ Audience desligado para que a faixa de idade valha como limite de verdade.
+
+**O que falta:** os três anúncios. O Meta recusa criar criativo sem imagem
+(`At least one of image_hash or image_url must be provided`), então o slot está em
+aberto de propósito — a arte sobe manualmente. Depois de subir, é só criar os três
+anúncios dentro do conjunto acima com os textos da seção "copiar e colar".
+
+Links diretos:
+- Campanha: https://www.facebook.com/adsmanager/manage/campaigns/edit?act=351203535&selected_campaign_ids=52512807800029
+- Conjunto: https://www.facebook.com/adsmanager/manage/adsets/edit?act=351203535&selected_adset_ids=52512807805029
 
 ---
 
