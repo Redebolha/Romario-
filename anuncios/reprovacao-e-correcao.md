@@ -98,3 +98,50 @@ Correção decidida junto com o Romário — é a linha da marca, não é decis�
 Anúncio reprovado repetidamente pesa na reputação da conta. Já são três reprovações
 nesta campanha. Vale confirmar o motivo real em "Ver detalhes" antes de submeter a
 próxima versão, em vez de submeter no escuro mais uma vez.
+
+---
+
+# Ativação — 28/08/2026
+
+## Segunda rodada de reprovação
+
+O **C-espelho v3 também foi reprovado** (`DISAPPROVED`), mesmo reescrito em primeira
+pessoa. O A-cara v3 e o B-provedor v3 passaram.
+
+Isso é informação útil: os três usavam **a mesma imagem e a mesma página de destino**.
+Como dois passaram, a imagem e o site estão limpos aos olhos da revisão — o problema
+está no texto do C.
+
+Hipótese para a próxima tentativa: o C era o mais curto dos três e o mais "de teste de
+personalidade". Sem o contraponto em primeira pessoa que sustenta o A e o B, ele fica
+parecendo diagnóstico. Ou o Meta reprovou por semelhança com a versão anterior, que já
+tinha sido reprovada com o mesmo nome e a mesma imagem.
+
+## Exclusões feitas
+
+Excluídos de verdade (`DELETED`, sem forçar para pausado):
+
+- `52512809262829` — A-cara v2 (estava `WITH_ISSUES`)
+- `52512809278829` — B-provedor v2
+- `52512816029629` — C-espelho v3 (estava `DISAPPROVED`)
+
+## Ativação — INCOMPLETA
+
+| Nível | ID | Estado alcançado |
+|---|---|---|
+| Campanha | `52512807800029` | **ATIVA** |
+| Conjunto | `52512807805029` | **ATIVO** |
+| Anúncio A-cara v3 | `52512816028029` | **ainda PAUSADO** |
+| Anúncio B-provedor v3 | `52512816039629` | **ainda PAUSADO** |
+
+O servidor de anúncios do Meta caiu no meio da sequência de ativação e voltou exigindo
+autorização nova. Os dois anúncios ficaram sem ser ligados.
+
+**Consequência: a campanha não está entregando e não está gastando.** Anúncio pausado
+não roda, mesmo com campanha e conjunto ativos. O estado é seguro, mas não é o que foi
+pedido.
+
+**O que falta:** ligar os dois anúncios. São dois cliques no Gerenciador, ou eu termino
+assim que a conexão com o Meta for reautorizada.
+
+https://www.facebook.com/adsmanager/manage/ads?act=351203535&selected_adset_ids=52512807805029
