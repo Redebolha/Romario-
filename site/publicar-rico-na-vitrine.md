@@ -24,9 +24,17 @@ com o mesmo template das duas matérias anteriores de Economia.
 | `economia/economia.css` | Duas classes novas: `.confronto` (quadro comparativo) e `.perguntas` (lista numerada). Nenhuma regra existente foi tocada |
 | `sitemap.xml` | URL nova + `lastmod` atualizado na home e no hub de Economia |
 | `feed.xml` | Item novo no topo do RSS + `lastBuildDate` |
+| `service-worker.js` | Versão do cache virada de `redebolha-v8` para `redebolha-v9` — a home, o hub de Economia e o `economia.css` estão no pré-cache e mudaram |
 
 O arquivo `publicacao-rico-na-vitrine.diff` traz o patch completo das alterações,
 e a pasta `_site-redebolha/` guarda os arquivos já alterados, prontos para substituir.
+
+## Situação
+
+Publicado em 12/09/2026, direto na `main` do repositório do site
+(commits `43e7502` e `0f880f8`). O deploy do GitHub Pages concluiu com sucesso e a
+matéria está no ar em
+https://redebolha.com.br/economia/rico-na-vitrine-quebrado-no-extrato.html
 
 ## Conferência feita antes de publicar
 
