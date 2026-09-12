@@ -1,0 +1,169 @@
+diff --git a/economia/economia.css b/economia/economia.css
+index b63cd9c..be0f42c 100644
+--- a/economia/economia.css
++++ b/economia/economia.css
+@@ -156,6 +156,32 @@ article strong{color:#fff;font-weight:600}
+ .vazio{background:var(--papel);border:1px dashed var(--linha);border-radius:14px;
+   padding:26px;color:var(--sombra);font-size:14.5px;line-height:1.65;margin-top:16px}
+ 
++/* Confronto de dois cenarios, lado a lado; empilha no celular. */
++.confronto{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:32px 0 14px}
++.confronto .col{background:var(--papel);border:1px solid var(--linha);border-radius:14px;padding:20px}
++.confronto .col--ouro{border-color:var(--ouro);
++  background-image:linear-gradient(180deg,rgba(201,162,39,.09),transparent 70%)}
++.confronto .rot{font-family:var(--num);font-size:10.5px;letter-spacing:.15em;
++  text-transform:uppercase;color:var(--sombra);margin-bottom:14px}
++.confronto .col--ouro .rot{color:var(--ouro)}
++.confronto ul{list-style:none;margin:0 0 14px;padding:0}
++.confronto li{display:flex;justify-content:space-between;align-items:baseline;gap:10px;
++  font-size:15px;color:var(--sombra);padding:8px 0;border-bottom:1px solid var(--linha)}
++.confronto li b{color:#fff;font-weight:600;font-size:16px;white-space:nowrap}
++.confronto .tot span{display:block;font-size:13px;color:var(--sombra);margin-bottom:2px}
++.confronto .tot b{font-family:var(--display);font-size:28px;font-weight:600;color:var(--giz)}
++.confronto .col--ouro .tot b{color:var(--ouro-claro)}
++.confronto-nota{font-size:14px;line-height:1.6;color:var(--sombra);font-style:italic}
++@media (max-width:640px){.confronto{grid-template-columns:1fr}}
++
++/* Lista numerada de perguntas dentro da materia */
++.perguntas{list-style:none;counter-reset:pg;margin:30px 0 34px}
++.perguntas li{counter-increment:pg;position:relative;padding-left:54px;margin-bottom:20px}
++.perguntas li::before{content:counter(pg);position:absolute;left:0;top:1px;
++  width:34px;height:34px;line-height:32px;text-align:center;border:1px solid var(--ouro);
++  border-radius:50%;color:var(--ouro);font-family:var(--num);font-size:14px}
++.perguntas b{display:block;color:#fff;font-weight:600;margin-bottom:3px}
++
+ footer{border-top:1px solid var(--linha);margin-top:44px;padding:26px 0 40px;
+   text-align:center;font-size:13.5px;color:var(--sombra)}
+ footer a{color:var(--sombra);text-decoration:none}
+diff --git a/economia/index.html b/economia/index.html
+index e3ff219..015461c 100644
+--- a/economia/index.html
++++ b/economia/index.html
+@@ -80,12 +80,21 @@
+ 
+   <div class="materias">
+ 
+-    <a class="materia materia--destaque" href="/economia/dique-eldorado-do-sul-um-bilhao.html">
++    <a class="materia materia--destaque" href="/economia/rico-na-vitrine-quebrado-no-extrato.html">
++      <img class="materia-img" src="/economia/img/retrato-endividamento-brasil.svg" width="1600" height="900" loading="lazy" decoding="async" alt="Infográfico: oito de dez ícones de pessoas em dourado representam as 82% de famílias brasileiras com dívidas a vencer em agosto de 2026.">
++      <span class="chapeu">Comportamento &middot; 12 de setembro de 2026</span>
++      <h2>Rico na vitrine, quebrado no extrato</h2>
++      <p class="materia-sub">Existe uma diferen&ccedil;a brutal entre patrim&ocirc;nio e apar&ecirc;ncia</p>
++      <p>8 em cada 10 fam&iacute;lias brasileiras t&ecirc;m d&iacute;vida a vencer, recorde pelo s&eacute;timo m&ecirc;s seguido. E entre quem ganha mais de dez sal&aacute;rios m&iacute;nimos, 72,3% tamb&eacute;m devem &mdash; a&iacute; n&atilde;o &eacute; falta de dinheiro, &eacute; excesso de vitrine.</p>
++      <span class="mais">Ler a mat&eacute;ria &rarr;</span>
++    </a>
++
++    <a class="materia" href="/economia/dique-eldorado-do-sul-um-bilhao.html">
+       <img class="materia-img materia-img--corte" src="/economia/img/eldorado-do-sul-enchente-agencia-brasil.jpg" width="1170" height="700" loading="lazy" decoding="async" alt="Vista aérea de Eldorado do Sul em maio de 2024: casas de um bairro ainda cercadas pela água barrenta em primeiro plano e, ao fundo, a avenida e o comércio da cidade em terreno seco.">
+       <span class="chapeu">Eldorado do Sul &middot; 11 de setembro de 2026</span>
+       <h2>Um bilh&atilde;o para o dique: o que muda e o que ainda n&atilde;o muda</h2>
+-      <p class="materia-sub">O dinheiro foi garantido nesta sexta. A primeira m&aacute;quina entra no terreno em 2027</p>
+-      <p>R$ 700 milh&otilde;es da Uni&atilde;o e cerca de R$ 300 milh&otilde;es do Estado destravam o edital: 8,6 quil&ocirc;metros de diques de 7,6 metros e quatro casas de bombas. A obra leva de tr&ecirc;s a quatro anos depois de come&ccedil;ar &mdash; e o Jacu&iacute; n&atilde;o consulta cronograma.</p>
++      <p class="materia-sub">O dinheiro foi garantido. A primeira m&aacute;quina entra no terreno em 2027</p>
++      <p>R$ 700 milh&otilde;es da Uni&atilde;o e cerca de R$ 300 milh&otilde;es do Estado destravam o edital: 8,6 quil&ocirc;metros de diques de 7,6 metros e quatro casas de bombas.</p>
+       <span class="mais">Ler a mat&eacute;ria &rarr;</span>
+     </a>
+ 
+diff --git a/feed.xml b/feed.xml
+index 18781b3..6fbe405 100644
+--- a/feed.xml
++++ b/feed.xml
+@@ -9,12 +9,21 @@
+     <copyright>© 2026 Adm. Romário Cruz</copyright>
+     <managingEditor>admromariocruz@gmail.com (Adm. Romário Cruz)</managingEditor>
+     <webMaster>admromariocruz@gmail.com (Adm. Romário Cruz)</webMaster>
+-    <lastBuildDate>Fri, 11 Sep 2026 20:30:00 -0300</lastBuildDate>
++    <lastBuildDate>Sat, 12 Sep 2026 09:00:00 -0300</lastBuildDate>
+     <image>
+       <url>https://redebolha.com.br/icon-512.png</url>
+       <title>Rede Bolha — Adm. Romário Cruz</title>
+       <link>https://redebolha.com.br/</link>
+     </image>
++    <item>
++      <title>Rico na vitrine, quebrado no extrato: a diferença brutal entre patrimônio e aparência</title>
++      <link>https://redebolha.com.br/economia/rico-na-vitrine-quebrado-no-extrato.html</link>
++      <guid isPermaLink="true">https://redebolha.com.br/economia/rico-na-vitrine-quebrado-no-extrato.html</guid>
++      <description>82% das famílias brasileiras têm dívidas a vencer, sétimo recorde seguido da Peic/CNC — e o endividamento chega a 72,3% de quem ganha mais de dez salários mínimos. Patrimônio é o que trabalha para você; aparência é aquilo para o que você trabalha.</description>
++      <category>Economia</category>
++      <dc:creator>Adm. Romário Cruz</dc:creator>
++      <pubDate>Sat, 12 Sep 2026 09:00:00 -0300</pubDate>
++    </item>
+     <item>
+       <title>Um bilhão para o dique de Eldorado do Sul: o que muda e o que ainda não muda</title>
+       <link>https://redebolha.com.br/economia/dique-eldorado-do-sul-um-bilhao.html</link>
+diff --git a/index.html b/index.html
+index 7f67412..b5f809e 100644
+--- a/index.html
++++ b/index.html
+@@ -1157,28 +1157,28 @@
+ 
+     <div class="rb-eco-grade">
+ 
+-      <a class="rb-eco-principal" href="/economia/dique-eldorado-do-sul-um-bilhao.html">
+-        <span class="rb-eco-chapeu">Eldorado do Sul &middot; 11 de setembro</span>
+-        <h3 class="rb-eco-titulo">Um bilh&atilde;o para o dique: o que muda e o que ainda n&atilde;o muda</h3>
+-        <p class="rb-eco-subtitulo">O dinheiro foi garantido nesta sexta. A primeira m&aacute;quina entra no terreno em 2027</p>
+-        <img class="rb-eco-foto rb-eco-foto--corte" src="/economia/img/eldorado-do-sul-enchente-agencia-brasil.jpg" width="1170" height="700"
+-             loading="lazy" decoding="async" alt="Vista aérea de Eldorado do Sul em maio de 2024: casas de um bairro ainda cercadas pela água barrenta em primeiro plano e, ao fundo, a avenida e o comércio da cidade em terreno seco.">
+-        <p class="rb-eco-linhafina">R$ 700 milh&otilde;es da Uni&atilde;o e cerca de R$ 300 milh&otilde;es do Estado destravam o edital do sistema de prote&ccedil;&atilde;o contra cheias: 8,6 quil&ocirc;metros de diques de 7,6 metros e quatro casas de bombas. A obra leva de tr&ecirc;s a quatro anos depois de come&ccedil;ar. O Jacu&iacute;, esse, n&atilde;o consulta cronograma.</p>
+-        <p class="rb-eco-assina">Por Adm. Rom&aacute;rio Cruz &middot; 11 de setembro de 2026</p>
++      <a class="rb-eco-principal" href="/economia/rico-na-vitrine-quebrado-no-extrato.html">
++        <span class="rb-eco-chapeu">Comportamento &middot; 12 de setembro</span>
++        <h3 class="rb-eco-titulo">Rico na vitrine, quebrado no extrato</h3>
++        <p class="rb-eco-subtitulo">Existe uma diferen&ccedil;a brutal entre patrim&ocirc;nio e apar&ecirc;ncia</p>
++        <img class="rb-eco-foto" src="/economia/img/retrato-endividamento-brasil.svg" width="1600" height="900"
++             loading="lazy" decoding="async" alt="Infográfico: oito de dez ícones de pessoas em dourado representam as 82% de famílias brasileiras com dívidas a vencer em agosto de 2026.">
++        <p class="rb-eco-linhafina">8 em cada 10 fam&iacute;lias brasileiras t&ecirc;m d&iacute;vida a vencer &mdash; recorde pelo s&eacute;timo m&ecirc;s seguido na s&eacute;rie da CNC. E a conta n&atilde;o para na baixa renda: entre quem ganha mais de dez sal&aacute;rios m&iacute;nimos, 72,3% tamb&eacute;m devem. N&atilde;o &eacute; falta de dinheiro, &eacute; excesso de vitrine.</p>
++        <p class="rb-eco-assina">Por Adm. Rom&aacute;rio Cruz &middot; 12 de setembro de 2026</p>
+         <span class="rb-eco-ler">Ler a mat&eacute;ria &rarr;</span>
+       </a>
+ 
+       <div class="rb-eco-lateral">
++        <a class="rb-eco-chamada" href="/economia/dique-eldorado-do-sul-um-bilhao.html">
++          <span class="et">Eldorado do Sul</span>
++          <b>Um bilh&atilde;o para o dique: o que muda e o que ainda n&atilde;o muda</b>
++          <span class="d">O dinheiro foi garantido. A primeira m&aacute;quina entra no terreno em 2027.</span>
++        </a>
+         <a class="rb-eco-chamada" href="/economia/11-de-setembro-25-anos-economia.html">
+           <span class="et">Especial 25 anos</span>
+           <b>25 anos do 11 de Setembro e seu impacto na economia</b>
+           <span class="d">Quais foram as mudan&ccedil;as que ficaram &mdash; no mundo e no seu bolso.</span>
+         </a>
+-        <a class="rb-eco-chamada" href="/artigos/ponto-de-virada-renda-passiva.html">
+-          <span class="et">Dinheiro</span>
+-          <b>O m&ecirc;s em que o dinheiro passa a trabalhar mais que voc&ecirc;</b>
+-          <span class="d">Existe uma data exata em que os juros rendem mais do que voc&ecirc; consegue guardar.</span>
+-        </a>
+         <a class="rb-eco-chamada" href="/financas/simulador-renda-passiva.html">
+           <span class="et">Ferramenta gr&aacute;tis</span>
+           <b>Simulador de renda passiva</b>
+diff --git a/sitemap.xml b/sitemap.xml
+index 87eb98b..061f435 100644
+--- a/sitemap.xml
++++ b/sitemap.xml
+@@ -2,7 +2,7 @@
+ <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+     <url>
+         <loc>https://redebolha.com.br/</loc>
+-        <lastmod>2026-09-11</lastmod>
++        <lastmod>2026-09-12</lastmod>
+         <changefreq>daily</changefreq>
+         <priority>1.0</priority>
+     </url>
+@@ -300,9 +300,15 @@
+         <changefreq>yearly</changefreq>
+         <priority>0.3</priority>
+     </url>
++    <url>
++        <loc>https://redebolha.com.br/economia/rico-na-vitrine-quebrado-no-extrato.html</loc>
++        <lastmod>2026-09-12</lastmod>
++        <changefreq>monthly</changefreq>
++        <priority>0.9</priority>
++    </url>
+     <url>
+         <loc>https://redebolha.com.br/economia/</loc>
+-        <lastmod>2026-09-11</lastmod>
++        <lastmod>2026-09-12</lastmod>
+         <changefreq>weekly</changefreq>
+         <priority>0.8</priority>
+     </url>
