@@ -46,9 +46,21 @@ https://redebolha.com.br/economia/rico-na-vitrine-quebrado-no-extrato.html
 - `sitemap.xml`, `feed.xml` e os SVGs validados como XML.
 - Todos os links internos da matéria conferidos, um a um, contra os arquivos do site.
 
-## O que ficou faltando
+## Segunda leva: foto de abertura e vídeo (12/09, mais tarde)
 
-A abertura é um infográfico, não uma fotografia — a ferramenta de geração de imagem
-desta sessão está bloqueada por plano. Se você quiser uma foto de abertura, é só
-trocar o conteúdo da `<figure class="figura-capa">` e mover o infográfico para dentro
-do texto, onde ele também funciona.
+A abertura passou a ser a imagem da vitrine × extrato e a matéria ganhou o vídeo de
+8 segundos. O infográfico do endividamento desceu para dentro do texto.
+
+| Arquivo | O que é |
+|---|---|
+| `economia/img/vitrine-extrato-capa.jpg` | Abertura da matéria e chamada na home e no hub |
+| `economia/img/vitrine-extrato-capa-og.jpg` | Imagem de compartilhamento, 1200×630 |
+| `economia/img/vitrine-extrato.mp4` | Vídeo de 8 s, H.264 + AAC, 1,4 MB |
+| `economia/img/vitrine-extrato-poster.jpg` | Quadro de capa do player |
+
+Pendência conhecida: a imagem de abertura é um quadro limpo tirado do próprio vídeo,
+porque a arte original tem o erro "QUEBRADO NO **O** EXTRATO" e a versão corrigida
+chegou colada no chat, não como arquivo. Quando o arquivo corrigido chegar, é só
+substituir `vitrine-extrato-capa.jpg` (e gerar de novo o `-og.jpg`, em 1200×630).
+
+O vídeo foi cortado a partir de 2 s justamente para começar depois do letreiro com o erro.

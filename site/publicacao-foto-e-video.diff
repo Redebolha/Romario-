@@ -1,0 +1,193 @@
+diff --git a/economia/economia.css b/economia/economia.css
+index be0f42c..7d924d3 100644
+--- a/economia/economia.css
++++ b/economia/economia.css
+@@ -156,6 +156,14 @@ article strong{color:#fff;font-weight:600}
+ .vazio{background:var(--papel);border:1px dashed var(--linha);border-radius:14px;
+   padding:26px;color:var(--sombra);font-size:14.5px;line-height:1.65;margin-top:16px}
+ 
++/* Video dentro da materia: mesma linguagem das figuras. */
++.video-materia{margin:6px 0 34px}
++.video-materia video{display:block;width:100%;height:auto;border-radius:12px;
++  border:1px solid var(--linha);background:#000}
++.video-materia figcaption{font-size:13.5px;line-height:1.6;color:var(--sombra);margin-top:12px}
++.video-materia figcaption span{display:block;font-family:var(--num);font-size:11.5px;
++  letter-spacing:.04em;margin-top:6px;color:#6E7684}
++
+ /* Confronto de dois cenarios, lado a lado; empilha no celular. */
+ .confronto{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:32px 0 14px}
+ .confronto .col{background:var(--papel);border:1px solid var(--linha);border-radius:14px;padding:20px}
+diff --git a/economia/img/vitrine-extrato-capa-og.jpg b/economia/img/vitrine-extrato-capa-og.jpg
+new file mode 100644
+index 0000000..a08379d
+Binary files /dev/null and b/economia/img/vitrine-extrato-capa-og.jpg differ
+diff --git a/economia/img/vitrine-extrato-capa.jpg b/economia/img/vitrine-extrato-capa.jpg
+new file mode 100644
+index 0000000..bb840f9
+Binary files /dev/null and b/economia/img/vitrine-extrato-capa.jpg differ
+diff --git a/economia/img/vitrine-extrato-poster.jpg b/economia/img/vitrine-extrato-poster.jpg
+new file mode 100644
+index 0000000..c9ef269
+Binary files /dev/null and b/economia/img/vitrine-extrato-poster.jpg differ
+diff --git a/economia/img/vitrine-extrato.mp4 b/economia/img/vitrine-extrato.mp4
+new file mode 100644
+index 0000000..0c8eacc
+Binary files /dev/null and b/economia/img/vitrine-extrato.mp4 differ
+diff --git a/economia/index.html b/economia/index.html
+index 015461c..b872995 100644
+--- a/economia/index.html
++++ b/economia/index.html
+@@ -81,7 +81,7 @@
+   <div class="materias">
+ 
+     <a class="materia materia--destaque" href="/economia/rico-na-vitrine-quebrado-no-extrato.html">
+-      <img class="materia-img" src="/economia/img/retrato-endividamento-brasil.svg" width="1600" height="900" loading="lazy" decoding="async" alt="Infográfico: oito de dez ícones de pessoas em dourado representam as 82% de famílias brasileiras com dívidas a vencer em agosto de 2026.">
++      <img class="materia-img materia-img--corte" src="/economia/img/vitrine-extrato-capa.jpg" width="1280" height="720" loading="lazy" decoding="async" alt="Imagem dividida ao meio: de um lado, um homem sorrindo com um cartão de crédito diante de um carro de luxo; do outro, o mesmo tipo de homem com as mãos na cabeça diante de contas espalhadas na mesa da cozinha.">
+       <span class="chapeu">Comportamento &middot; 12 de setembro de 2026</span>
+       <h2>Rico na vitrine, quebrado no extrato</h2>
+       <p class="materia-sub">Existe uma diferen&ccedil;a brutal entre patrim&ocirc;nio e apar&ecirc;ncia</p>
+diff --git a/economia/rico-na-vitrine-quebrado-no-extrato.html b/economia/rico-na-vitrine-quebrado-no-extrato.html
+index 6ba99dc..9751a4e 100644
+--- a/economia/rico-na-vitrine-quebrado-no-extrato.html
++++ b/economia/rico-na-vitrine-quebrado-no-extrato.html
+@@ -15,10 +15,10 @@
+ 
+ <meta property="og:title" content="Rico na vitrine, quebrado no extrato">
+ <meta property="og:description" content="Existe uma diferença brutal entre patrimônio e aparência — e 8 em cada 10 famílias brasileiras estão pagando juros para não enxergar isso.">
+-<meta property="og:image" content="https://redebolha.com.br/economia/img/retrato-endividamento-brasil-og.jpg">
++<meta property="og:image" content="https://redebolha.com.br/economia/img/vitrine-extrato-capa-og.jpg">
+ <meta property="og:image:width" content="1200">
+ <meta property="og:image:height" content="630">
+-<meta property="og:image:alt" content="Infográfico: oito de dez ícones de pessoas em dourado representam as 82% de famílias brasileiras com dívidas a vencer em agosto de 2026.">
++<meta property="og:image:alt" content="Imagem dividida ao meio: à esquerda, um homem sorrindo na calçada com um cartão de crédito na mão e o celular na outra, diante de um carro de luxo e da vitrine iluminada de uma loja; à direita, o mesmo tipo de homem sentado à mesa da cozinha, com as mãos na cabeça, diante de contas espalhadas e de um extrato bancário negativo no notebook.">
+ <meta property="og:type" content="article">
+ <meta property="og:url" content="https://redebolha.com.br/economia/rico-na-vitrine-quebrado-no-extrato.html">
+ <meta property="og:site_name" content="Rede Bolha">
+@@ -26,7 +26,7 @@
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Rico na vitrine, quebrado no extrato">
+ <meta name="twitter:description" content="Patrimônio é o que trabalha para você. Aparência é aquilo para o que você trabalha.">
+-<meta name="twitter:image" content="https://redebolha.com.br/economia/img/retrato-endividamento-brasil-og.jpg">
++<meta name="twitter:image" content="https://redebolha.com.br/economia/img/vitrine-extrato-capa-og.jpg">
+ 
+ <script type="application/ld+json">
+ {
+@@ -36,7 +36,7 @@
+       "@type":"NewsArticle",
+       "headline":"Rico na vitrine, quebrado no extrato",
+       "description":"82% das famílias brasileiras têm dívidas a vencer, sétimo recorde seguido da Peic/CNC. Entre quem ganha mais de dez salários mínimos, 72,3% também estão endividados. Sobre a diferença entre patrimônio e aparência.",
+-      "image":"https://redebolha.com.br/economia/img/retrato-endividamento-brasil.png",
++      "image":"https://redebolha.com.br/economia/img/vitrine-extrato-capa.jpg",
+       "datePublished":"2026-09-12",
+       "dateModified":"2026-09-12",
+       "inLanguage":"pt-BR",
+@@ -45,6 +45,17 @@
+       "publisher":{"@type":"Organization","name":"Rede Bolha","url":"https://redebolha.com.br/"},
+       "mainEntityOfPage":{"@type":"WebPage","@id":"https://redebolha.com.br/economia/rico-na-vitrine-quebrado-no-extrato.html"}
+     },
++    {
++      "@type":"VideoObject",
++      "name":"Rico na vitrine, quebrado no extrato",
++      "description":"Os dois lados da mesma conta: quem aparece bem na calçada e quem dorme tranquilo com o extrato.",
++      "thumbnailUrl":"https://redebolha.com.br/economia/img/vitrine-extrato-capa.jpg",
++      "contentUrl":"https://redebolha.com.br/economia/img/vitrine-extrato.mp4",
++      "uploadDate":"2026-09-12",
++      "duration":"PT8S",
++      "inLanguage":"pt-BR",
++      "publisher":{"@type":"Organization","name":"Rede Bolha","url":"https://redebolha.com.br/"}
++    },
+     {
+       "@type":"BreadcrumbList",
+       "itemListElement":[
+@@ -106,13 +117,11 @@ src="https://www.facebook.com/tr?id=2570806596755923&ev=PageView&noscript=1" alt
+ 
+ <figure class="figura-capa">
+   <div class="wrap">
+-    <picture>
+-      <source media="(max-width:700px)" srcset="/economia/img/retrato-endividamento-brasil-vertical.svg">
+-      <img src="/economia/img/retrato-endividamento-brasil.svg" width="1600" height="900" alt="Infográfico: oito de dez ícones de pessoas aparecem em dourado, representando as 82% de famílias brasileiras com dívidas a vencer em agosto de 2026. Abaixo, três números: 29,9% já estão com contas em atraso, 85,1% entre quem ganha até três salários mínimos e 72,3% entre quem ganha mais de dez salários mínimos.">
+-    </picture>
+-    <figcaption>Oito em cada dez. É esse o retrato do churrasco de domingo que a Peic devolveu em
+-      setembro — e o número não muda tanto assim quando a renda sobe.
+-      <span>Gráfico: Rede Bolha, com dados da Peic / CNC de agosto de 2026.</span></figcaption>
++    <img src="/economia/img/vitrine-extrato-capa.jpg" width="1280" height="720" alt="Imagem dividida ao meio: à esquerda, um homem sorrindo na calçada com um cartão de crédito na mão e o celular na outra, diante de um carro de luxo e da vitrine iluminada de uma loja; à direita, o mesmo tipo de homem sentado à mesa da cozinha, com as mãos na cabeça, diante de contas espalhadas e de um extrato bancário negativo no notebook.">
++    <figcaption>De um lado da linha, o cartão na mão e a loja acesa. Do outro, a mesma pessoa
++      diante do extrato. É esse o intervalo que 8 em cada 10 famílias brasileiras estão
++      financiando neste momento.
++      <span>Imagem: Rede Bolha, produzida com inteligência artificial.</span></figcaption>
+   </div>
+ </figure>
+ 
+@@ -120,6 +129,17 @@ src="https://www.facebook.com/tr?id=2570806596755923&ev=PageView&noscript=1" alt
+ <div class="wrap"><div class="texto">
+ <article>
+ 
++  <figure class="video-materia">
++    <video controls preload="metadata" playsinline width="1280" height="720"
++           poster="/economia/img/vitrine-extrato-poster.jpg">
++      <source src="/economia/img/vitrine-extrato.mp4" type="video/mp4">
++      O seu navegador não consegue exibir este vídeo. Ele mostra, lado a lado, a rotina de quem
++      aparenta prosperidade e a de quem está apertado com as contas.
++    </video>
++    <figcaption>Oito segundos, sem narração: a vitrine de um lado, o extrato do outro.
++      <span>Vídeo: Rede Bolha, produzido com inteligência artificial.</span></figcaption>
++  </figure>
++
+   <p>Você já reparou que hoje é mais fácil encontrar alguém com um carro novo do que alguém com três meses de despesas guardados?</p>
+ 
+   <p>Pois é. Eu reparei. E fiquei matutando nisso a semana inteira.</p>
+@@ -136,6 +156,17 @@ src="https://www.facebook.com/tr?id=2570806596755923&ev=PageView&noscript=1" alt
+ 
+   <p>Imagine dez famílias num churrasco. Oito delas estão devendo. Três chegaram com contas atrasadas. E uma, calada, sabe que no mês que vem não vai conseguir pagar nem o mínimo.</p>
+ 
++  <figure class="figura-texto">
++    <picture>
++      <source media="(max-width:700px)" srcset="/economia/img/retrato-endividamento-brasil-vertical.svg">
++      <img src="/economia/img/retrato-endividamento-brasil.svg" width="1600" height="900"
++           loading="lazy" decoding="async" alt="Infográfico: oito de dez ícones de pessoas aparecem em dourado, representando as 82% de famílias brasileiras com dívidas a vencer em agosto de 2026. Abaixo, três números: 29,9% já estão com contas em atraso, 85,1% entre quem ganha até três salários mínimos e 72,3% entre quem ganha mais de dez salários mínimos.">
++    </picture>
++    <figcaption>O churrasco de domingo, em forma de gráfico. E o número quase não muda quando a
++      renda sobe.
++      <span>Gráfico: Rede Bolha, com dados da Peic / CNC de agosto de 2026.</span></figcaption>
++  </figure>
++
+   <p>E ninguém fala nada. Todo mundo elogia a picanha, comenta o Grêmio, pergunta do filho que entrou na faculdade. O assunto "estou apertado" não entra na roda. Vergonha é um sentimento caro — e a gente paga ele em juros.</p>
+ 
+   <p>Tem mais. O cartão de crédito aparece em mais de 85% das dívidas. As famílias comprometem, em média, quase 30% da renda com prestações. E quase 1 em cada 5 já entrega mais da metade de tudo que ganha antes mesmo do dinheiro esquentar na conta.</p>
+@@ -315,7 +346,7 @@ src="https://www.facebook.com/tr?id=2570806596755923&ev=PageView&noscript=1" alt
+   </div>
+ 
+   <p class="fontes">
+-    <b>Fontes.</b> Pesquisa de Endividamento e Inadimplência do Consumidor (Peic) — Confederação Nacional do Comércio de Bens, Serviços e Turismo (CNC), edição de agosto de 2026, divulgada em 10/09/2026: 82% das famílias com dívidas a vencer (sétimo recorde consecutivo da série), 29,9% com contas em atraso, 85,1% de endividamento entre as famílias com renda de até três salários mínimos e 72,3% entre as de renda acima de dez salários mínimos. Raio X do Investidor Brasileiro, 9ª edição — Anbima em parceria com o Datafolha, divulgado em abril de 2026, com 5.832 entrevistados: 64% da população não aplica em produtos financeiros e 31% não têm dinheiro reservado para imprevistos. <em>O Milionário Mora ao Lado</em> (<em>The Millionaire Next Door</em>) — Thomas J. Stanley e William D. Danko. Gráfico de abertura produzido pela Rede Bolha. A comparação entre os dois patrimônios usa valores hipotéticos, a título de exemplo.
++    <b>Fontes.</b> Pesquisa de Endividamento e Inadimplência do Consumidor (Peic) — Confederação Nacional do Comércio de Bens, Serviços e Turismo (CNC), edição de agosto de 2026, divulgada em 10/09/2026: 82% das famílias com dívidas a vencer (sétimo recorde consecutivo da série), 29,9% com contas em atraso, 85,1% de endividamento entre as famílias com renda de até três salários mínimos e 72,3% entre as de renda acima de dez salários mínimos. Raio X do Investidor Brasileiro, 9ª edição — Anbima em parceria com o Datafolha, divulgado em abril de 2026, com 5.832 entrevistados: 64% da população não aplica em produtos financeiros e 31% não têm dinheiro reservado para imprevistos. <em>O Milionário Mora ao Lado</em> (<em>The Millionaire Next Door</em>) — Thomas J. Stanley e William D. Danko. Imagem e vídeo de abertura e gráfico produzidos pela Rede Bolha; a imagem e o vídeo foram gerados com inteligência artificial e ilustram a matéria, não registram fato ocorrido. A comparação entre os dois patrimônios usa valores hipotéticos, a título de exemplo.
+   </p>
+ 
+   <p class="aviso">
+diff --git a/index.html b/index.html
+index b5f809e..d658658 100644
+--- a/index.html
++++ b/index.html
+@@ -1161,8 +1161,8 @@
+         <span class="rb-eco-chapeu">Comportamento &middot; 12 de setembro</span>
+         <h3 class="rb-eco-titulo">Rico na vitrine, quebrado no extrato</h3>
+         <p class="rb-eco-subtitulo">Existe uma diferen&ccedil;a brutal entre patrim&ocirc;nio e apar&ecirc;ncia</p>
+-        <img class="rb-eco-foto" src="/economia/img/retrato-endividamento-brasil.svg" width="1600" height="900"
+-             loading="lazy" decoding="async" alt="Infográfico: oito de dez ícones de pessoas em dourado representam as 82% de famílias brasileiras com dívidas a vencer em agosto de 2026.">
++        <img class="rb-eco-foto rb-eco-foto--corte" src="/economia/img/vitrine-extrato-capa.jpg" width="1280" height="720"
++             loading="lazy" decoding="async" alt="Imagem dividida ao meio: de um lado, um homem sorrindo com um cartão de crédito diante de um carro de luxo; do outro, o mesmo tipo de homem com as mãos na cabeça diante de contas espalhadas na mesa da cozinha.">
+         <p class="rb-eco-linhafina">8 em cada 10 fam&iacute;lias brasileiras t&ecirc;m d&iacute;vida a vencer &mdash; recorde pelo s&eacute;timo m&ecirc;s seguido na s&eacute;rie da CNC. E a conta n&atilde;o para na baixa renda: entre quem ganha mais de dez sal&aacute;rios m&iacute;nimos, 72,3% tamb&eacute;m devem. N&atilde;o &eacute; falta de dinheiro, &eacute; excesso de vitrine.</p>
+         <p class="rb-eco-assina">Por Adm. Rom&aacute;rio Cruz &middot; 12 de setembro de 2026</p>
+         <span class="rb-eco-ler">Ler a mat&eacute;ria &rarr;</span>
+diff --git a/service-worker.js b/service-worker.js
+index 147d350..a95feac 100644
+--- a/service-worker.js
++++ b/service-worker.js
+@@ -2,7 +2,7 @@
+    Troque a versão abaixo sempre que publicar mudanças grandes no site.
+    Isso força a atualização do cache no celular das pessoas. */
+ 
+-const VERSAO = 'redebolha-v9';
++const VERSAO = 'redebolha-v10';
+ const OFFLINE_URL = '/offline.html';
+ 
+ const PRE_CACHE = [
