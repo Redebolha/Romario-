@@ -1,0 +1,820 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rebalanceamento de Carteira</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --ink: #16241F;
+      --ink-soft: #24382F;
+      --paper: #F1EFE8;
+      --card: #FAF9F5;
+      --line: #D8D3C6;
+      --muted: #6C7A72;
+      --growth: #0F6B57;
+      --renda: #9A6B10;
+      --caution: #D97706;
+      --alert: #DC2626;
+      --success: #16a34a;
+      --serif: Georgia, "Times New Roman", serif;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --ink: #DDE9E4;
+        --ink-soft: #B5CAC3;
+        --paper: #101A15;
+        --card: #162019;
+        --line: #28392F;
+        --muted: #7A9082;
+        --growth: #22B387;
+        --renda: #C9900D;
+        --caution: #FBBF24;
+        --alert: #F87171;
+        --success: #4ADE80;
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --ink: #DDE9E4;
+      --ink-soft: #B5CAC3;
+      --paper: #101A15;
+      --card: #162019;
+      --line: #28392F;
+      --muted: #7A9082;
+      --growth: #22B387;
+      --renda: #C9900D;
+      --caution: #FBBF24;
+      --alert: #F87171;
+      --success: #4ADE80;
+    }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.5;
+      padding: 20px;
+    }
+
+    .wrap { max-width: 1000px; margin: 0 auto; }
+
+    h1 {
+      font-family: var(--serif);
+      font-weight: normal;
+      font-size: 32px;
+      margin: 0 0 8px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: var(--muted);
+      margin: 0 0 24px;
+    }
+
+    section {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-weight: normal;
+      font-size: 20px;
+      margin: 0 0 16px;
+      border-bottom: 2px solid var(--line);
+      padding-bottom: 12px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .card-valor {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-valor.acao { border-left: 4px solid var(--growth); }
+    .card-valor.fii { border-left: 4px solid var(--renda); }
+    .card-valor.dolar { border-left: 4px solid #3B82F6; }
+    .card-valor.emergencia { border-left: 4px solid var(--caution); }
+
+    .card-valor-info h3 {
+      margin: 0 0 4px;
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: normal;
+    }
+
+    .card-valor-info .valor {
+      font-family: var(--serif);
+      font-size: 20px;
+      margin: 0;
+    }
+
+    .card-valor-percent {
+      text-align: right;
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--ink);
+    }
+
+    .card-valor-percent.baixo {
+      color: var(--alert);
+    }
+
+    .card-valor-percent.ok {
+      color: var(--success);
+    }
+
+    .card-valor-percent.alto {
+      color: var(--caution);
+    }
+
+    input[type="number"],
+    input[type="text"],
+    select {
+      font-family: var(--sans);
+      font-size: 16px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: var(--paper);
+      color: var(--ink);
+      width: 100%;
+    }
+
+    input[type="number"]:focus,
+    input[type="text"]:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--growth);
+      box-shadow: 0 0 0 3px rgba(15, 107, 87, 0.1);
+    }
+
+    .input-group {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      margin-bottom: 12px;
+    }
+
+    .input-group label {
+      flex: 1;
+    }
+
+    .input-group label span {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+
+    button {
+      font-family: var(--sans);
+      font-size: 14px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 3px;
+      background: var(--ink);
+      color: var(--paper);
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    button:active {
+      opacity: 0.8;
+    }
+
+    button.secondary {
+      background: var(--line);
+      color: var(--ink);
+    }
+
+    button.danger {
+      background: var(--alert);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .button-group button {
+      flex: 1;
+    }
+
+    .rebalanceamento {
+      background: linear-gradient(135deg, var(--paper) 0%, var(--paper) 100%);
+      border: 2px solid var(--growth);
+      border-radius: 4px;
+      padding: 16px;
+      margin: 16px 0;
+    }
+
+    .rebalanceamento.alerta {
+      border-color: var(--caution);
+      background: linear-gradient(135deg, var(--paper) 0%, var(--paper) 100%);
+    }
+
+    .rebalanceamento h3 {
+      margin: 0 0 12px;
+      font-size: 14px;
+      color: var(--growth);
+    }
+
+    .rebalanceamento.alerta h3 {
+      color: var(--caution);
+    }
+
+    .rebalanceamento table {
+      width: 100%;
+      font-size: 13px;
+    }
+
+    .rebalanceamento table td {
+      padding: 6px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .rebalanceamento table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .rebalanceamento table td:nth-child(2),
+    .rebalanceamento table td:nth-child(3) {
+      text-align: right;
+      font-family: var(--serif);
+    }
+
+    .tabela-carteira {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin: 12px 0;
+    }
+
+    .tabela-carteira th {
+      text-align: left;
+      font-weight: 500;
+      font-size: 12px;
+      color: var(--muted);
+      padding: 8px 0;
+      border-bottom: 2px solid var(--line);
+    }
+
+    .tabela-carteira td {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .tabela-carteira tr:last-child td {
+      border-bottom: none;
+    }
+
+    .tabela-carteira .num {
+      text-align: right;
+      font-family: var(--serif);
+    }
+
+    .dot {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      margin-right: 7px;
+      vertical-align: middle;
+    }
+
+    .dot.acao { background: var(--growth); }
+    .dot.fii { background: var(--renda); }
+    .dot.dolar { background: #3B82F6; }
+    .dot.emergencia { background: var(--caution); }
+
+    .barra-progresso {
+      background: var(--line);
+      border-radius: 2px;
+      height: 6px;
+      margin: 4px 0;
+      overflow: hidden;
+    }
+
+    .barra-progresso-fill {
+      height: 100%;
+      background: var(--growth);
+      transition: width 0.3s;
+    }
+
+    .barra-progresso-fill.ok {
+      background: var(--success);
+    }
+
+    .barra-progresso-fill.alerta {
+      background: var(--caution);
+    }
+
+    .barra-progresso-fill.critico {
+      background: var(--alert);
+    }
+
+    .dica {
+      background: var(--paper);
+      border-left: 4px solid var(--renda);
+      padding: 12px;
+      margin: 12px 0;
+      border-radius: 2px;
+      font-size: 13px;
+      color: var(--ink-soft);
+    }
+
+    .dica strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--ink);
+    }
+
+    .meta-balanceamento {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 12px;
+      padding: 12px;
+      background: var(--paper);
+      border-radius: 3px;
+      border: 1px dashed var(--line);
+    }
+
+    .sucesso {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    .falha {
+      color: var(--alert);
+      font-weight: 600;
+    }
+
+    footer {
+      padding: 20px;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--line);
+      margin-top: 40px;
+    }
+
+    .praticas {
+      background: var(--paper);
+      padding: 12px;
+      border-radius: 3px;
+      border-left: 4px solid var(--growth);
+      font-size: 13px;
+      margin: 12px 0;
+    }
+
+    .praticas strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+
+    .praticas ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .praticas li {
+      margin-bottom: 4px;
+    }
+
+    @media (max-width: 640px) {
+      .grid-2,
+      .grid-4 {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+
+      body {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <h1>Rebalanceamento de Carteira</h1>
+  <p class="subtitle">Mantenha seu portfólio balanceado em 25% Ações, 25% FII, 25% Dólar, 25% Emergência</p>
+
+  <!-- Entrada de Dados -->
+  <section>
+    <h2>Sua Carteira Atual</h2>
+    <div class="grid-2">
+      <div>
+        <div class="input-group">
+          <label>
+            <span>Ações (R$)</span>
+            <input type="number" id="acoes" placeholder="0" step="0.01" min="0">
+          </label>
+        </div>
+      </div>
+      <div>
+        <div class="input-group">
+          <label>
+            <span>FII (R$)</span>
+            <input type="number" id="fii" placeholder="0" step="0.01" min="0">
+          </label>
+        </div>
+      </div>
+      <div>
+        <div class="input-group">
+          <label>
+            <span>Dólar (R$)</span>
+            <input type="number" id="dolar" placeholder="0" step="0.01" min="0">
+          </label>
+        </div>
+      </div>
+      <div>
+        <div class="input-group">
+          <label>
+            <span>Reserva de Emergência (R$)</span>
+            <input type="number" id="emergencia" placeholder="0" step="0.01" min="0">
+          </label>
+        </div>
+      </div>
+    </div>
+    <button onclick="calcularRebalanceamento()">Calcular Rebalanceamento</button>
+  </section>
+
+  <!-- Visão Geral da Carteira -->
+  <section>
+    <h2>Visão Geral</h2>
+    <div class="grid-4">
+      <div class="card-valor acao">
+        <div class="card-valor-info">
+          <h3>Ações</h3>
+          <p class="valor" id="val-acoes">R$ 0,00</p>
+        </div>
+        <div class="card-valor-percent" id="perc-acoes">0%</div>
+      </div>
+      <div class="card-valor fii">
+        <div class="card-valor-info">
+          <h3>FII</h3>
+          <p class="valor" id="val-fii">R$ 0,00</p>
+        </div>
+        <div class="card-valor-percent" id="perc-fii">0%</div>
+      </div>
+      <div class="card-valor dolar">
+        <div class="card-valor-info">
+          <h3>Dólar</h3>
+          <p class="valor" id="val-dolar">R$ 0,00</p>
+        </div>
+        <div class="card-valor-percent" id="perc-dolar">0%</div>
+      </div>
+      <div class="card-valor emergencia">
+        <div class="card-valor-info">
+          <h3>Emergência</h3>
+          <p class="valor" id="val-emergencia">R$ 0,00</p>
+        </div>
+        <div class="card-valor-percent" id="perc-emergencia">0%</div>
+      </div>
+    </div>
+
+    <div style="margin-top: 16px;">
+      <h3 style="font-size: 14px; color: var(--muted); margin: 0 0 8px;">Patrimônio Total</h3>
+      <p style="font-family: var(--serif); font-size: 28px; margin: 0;" id="total-carteira">R$ 0,00</p>
+      <p style="font-size: 12px; color: var(--muted); margin: 4px 0 0;">Soma de todos os ativos</p>
+    </div>
+  </section>
+
+  <!-- Status de Balanceamento -->
+  <section id="status-secao" style="display: none;">
+    <h2>Status de Balanceamento</h2>
+    <div id="status-content"></div>
+  </section>
+
+  <!-- Recomendações de Rebalanceamento -->
+  <section id="rebalancear-secao" style="display: none;">
+    <h2>Recomendações de Rebalanceamento</h2>
+    <div id="rebalancear-content"></div>
+  </section>
+
+  <!-- Melhores Práticas -->
+  <section>
+    <h2>Melhores Práticas para Rebalanceamento</h2>
+    <div class="praticas">
+      <strong>🎯 Estratégia 25/25/25/25</strong>
+      <ol>
+        <li><strong>Distribuição Equilibrada:</strong> Cada classe deve ter 25% da carteira total</li>
+        <li><strong>Revisão Trimestral:</strong> Verifique o balanceamento a cada 3 meses</li>
+        <li><strong>Desvio Aceitável:</strong> Tolere até 5% de desvio antes de rebalancear</li>
+        <li><strong>Rebalanceamento Suave:</strong> Não faça mudanças abruptas, ajuste gradualmente</li>
+        <li><strong>Aporte Inteligente:</strong> Direcione novos aportes para as classes abaixo</li>
+      </ol>
+    </div>
+
+    <div class="praticas">
+      <strong>💰 Distribuição por Objetivo</strong>
+      <ol>
+        <li><strong>Ações (25%):</strong> Crescimento de longo prazo, maior volatilidade</li>
+        <li><strong>FII (25%):</strong> Renda recorrente, renda fixa imobiliária</li>
+        <li><strong>Dólar (25%):</strong> Proteção cambial, diversificação internacional</li>
+        <li><strong>Emergência (25%):</strong> Liquidez imediata, proteção contra crises</li>
+      </ol>
+    </div>
+
+    <div class="praticas">
+      <strong>📊 Quando Rebalancear</strong>
+      <ol>
+        <li>Quando uma classe cai abaixo de 20% do total</li>
+        <li>Quando uma classe ultrapassa 30% do total</li>
+        <li>Após grandes mudanças de mercado</li>
+        <li>Com cada novo aporte significativo</li>
+        <li>No final de cada trimestre para revisão</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer>
+    <p>Esta ferramenta ajuda você a manter sua carteira balanceada seguindo os princípios de alocação estratégica.</p>
+    <p>Para usar no celular: menu do navegador → "Adicionar à tela de início".</p>
+  </footer>
+</div>
+
+<script>
+  const TAXA_DESVIO_ALERTA = 5; // 5% de desvio gera alerta
+  const TAXA_META = 25; // 25% para cada classe
+
+  function brl(valor) {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(valor);
+  }
+
+  function pegarValores() {
+    return {
+      acoes: parseFloat(document.getElementById('acoes').value) || 0,
+      fii: parseFloat(document.getElementById('fii').value) || 0,
+      dolar: parseFloat(document.getElementById('dolar').value) || 0,
+      emergencia: parseFloat(document.getElementById('emergencia').value) || 0
+    };
+  }
+
+  function calcularTotal(valores) {
+    return valores.acoes + valores.fii + valores.dolar + valores.emergencia;
+  }
+
+  function calcularPercentuais(valores, total) {
+    if (total === 0) {
+      return {
+        acoes: 0,
+        fii: 0,
+        dolar: 0,
+        emergencia: 0
+      };
+    }
+    return {
+      acoes: (valores.acoes / total) * 100,
+      fii: (valores.fii / total) * 100,
+      dolar: (valores.dolar / total) * 100,
+      emergencia: (valores.emergencia / total) * 100
+    };
+  }
+
+  function obterClassePercentual(percentual) {
+    const desvio = Math.abs(percentual - TAXA_META);
+    if (desvio <= TAXA_DESVIO_ALERTA) return 'ok';
+    if (percentual < TAXA_META) return 'baixo';
+    return 'alto';
+  }
+
+  function atualizarVisaoGeral() {
+    const valores = pegarValores();
+    const total = calcularTotal(valores);
+    const percentuais = calcularPercentuais(valores, total);
+
+    // Atualizar valores
+    document.getElementById('val-acoes').textContent = brl(valores.acoes);
+    document.getElementById('val-fii').textContent = brl(valores.fii);
+    document.getElementById('val-dolar').textContent = brl(valores.dolar);
+    document.getElementById('val-emergencia').textContent = brl(valores.emergencia);
+    document.getElementById('total-carteira').textContent = brl(total);
+
+    // Atualizar percentuais
+    document.getElementById('perc-acoes').textContent = percentuais.acoes.toFixed(1) + '%';
+    document.getElementById('perc-fii').textContent = percentuais.fii.toFixed(1) + '%';
+    document.getElementById('perc-dolar').textContent = percentuais.dolar.toFixed(1) + '%';
+    document.getElementById('perc-emergencia').textContent = percentuais.emergencia.toFixed(1) + '%';
+
+    // Atualizar classes de cor
+    ['acoes', 'fii', 'dolar', 'emergencia'].forEach(classe => {
+      const elemento = document.getElementById('perc-' + classe);
+      const classe_css = obterClassePercentual(percentuais[classe]);
+      elemento.className = 'card-valor-percent ' + classe_css;
+    });
+
+    return { valores, total, percentuais };
+  }
+
+  function calcularRebalanceamento() {
+    const { valores, total, percentuais } = atualizarVisaoGeral();
+
+    if (total === 0) {
+      document.getElementById('status-secao').style.display = 'none';
+      document.getElementById('rebalancear-secao').style.display = 'none';
+      return;
+    }
+
+    // Verificar se está balanceado
+    const estaBalanceado =
+      Math.abs(percentuais.acoes - TAXA_META) <= TAXA_DESVIO_ALERTA &&
+      Math.abs(percentuais.fii - TAXA_META) <= TAXA_DESVIO_ALERTA &&
+      Math.abs(percentuais.dolar - TAXA_META) <= TAXA_DESVIO_ALERTA &&
+      Math.abs(percentuais.emergencia - TAXA_META) <= TAXA_DESVIO_ALERTA;
+
+    // Mostrar status
+    let statusHtml = '';
+    if (estaBalanceado) {
+      statusHtml = '<p style="color: var(--success); font-weight: bold;">✓ Sua carteira está bem balanceada!</p>';
+      statusHtml += '<p style="font-size: 13px; color: var(--muted);">Todos os ativos estão dentro da faixa aceitável de 20-30% cada.</p>';
+    } else {
+      statusHtml = '<p style="color: var(--caution); font-weight: bold;">⚠ Sua carteira precisa de rebalanceamento</p>';
+      statusHtml += '<p style="font-size: 13px; color: var(--muted);">Algumas classes estão fora do intervalo ideal de 20-30%.</p>';
+    }
+
+    statusHtml += '<table class="tabela-carteira" style="margin-top: 12px;">';
+    statusHtml += '<thead><tr><th>Classe</th><th style="text-align: right;">Atual</th><th style="text-align: right;">Meta</th><th style="text-align: right;">Desvio</th></tr></thead>';
+    statusHtml += '<tbody>';
+
+    const classes = [
+      { nome: 'Ações', key: 'acoes', dot: 'acao' },
+      { nome: 'FII', key: 'fii', dot: 'fii' },
+      { nome: 'Dólar', key: 'dolar', dot: 'dolar' },
+      { nome: 'Emergência', key: 'emergencia', dot: 'emergencia' }
+    ];
+
+    classes.forEach(c => {
+      const perc = percentuais[c.key];
+      const desvio = perc - TAXA_META;
+      const desvioClass = desvio > 0 ? 'style="color: var(--alert);"' : (desvio < -5 ? 'style="color: var(--alert);"' : '');
+
+      statusHtml += `<tr>
+        <td><span class="dot ${c.dot}"></span>${c.nome}</td>
+        <td class="num">${perc.toFixed(1)}%</td>
+        <td class="num">${TAXA_META}%</td>
+        <td class="num" ${desvioClass}>${desvio > 0 ? '+' : ''}${desvio.toFixed(1)}%</td>
+      </tr>`;
+    });
+
+    statusHtml += '</tbody></table>';
+
+    document.getElementById('status-content').innerHTML = statusHtml;
+    document.getElementById('status-secao').style.display = 'block';
+
+    // Calcular recomendações de rebalanceamento
+    if (!estaBalanceado) {
+      const targetValor = total / 4; // 25% cada
+      const ajustes = {};
+      let temCompra = false;
+      let temVenda = false;
+
+      classes.forEach(c => {
+        ajustes[c.key] = {
+          nome: c.nome,
+          atual: valores[c.key],
+          target: targetValor,
+          diferenca: targetValor - valores[c.key]
+        };
+
+        if (ajustes[c.key].diferenca > 0.01) temCompra = true;
+        if (ajustes[c.key].diferenca < -0.01) temVenda = true;
+      });
+
+      let rebalancearHtml = '';
+
+      if (temCompra) {
+        rebalancearHtml += '<div class="rebalanceamento">';
+        rebalancearHtml += '<h3>💳 Aportes Recomendados (Compre)</h3>';
+        rebalancearHtml += '<table><tr><th>Classe</th><th style="text-align: right;">Valor a Aportar</th></tr>';
+
+        classes.forEach(c => {
+          const aj = ajustes[c.key];
+          if (aj.diferenca > 0.01) {
+            rebalancearHtml += `<tr>
+              <td><span class="dot ${c.dot}"></span>${aj.nome}</td>
+              <td class="num">${brl(aj.diferenca)}</td>
+            </tr>`;
+          }
+        });
+
+        rebalancearHtml += '</table></div>';
+      }
+
+      if (temVenda) {
+        rebalancearHtml += '<div class="rebalanceamento alerta">';
+        rebalancearHtml += '<h3>📊 Posições Acima do Esperado (Considere Reduzir)</h3>';
+        rebalancearHtml += '<table><tr><th>Classe</th><th style="text-align: right;">Valor a Reduzir</th></tr>';
+
+        classes.forEach(c => {
+          const aj = ajustes[c.key];
+          if (aj.diferenca < -0.01) {
+            rebalancearHtml += `<tr>
+              <td><span class="dot ${c.dot}"></span>${aj.nome}</td>
+              <td class="num">${brl(Math.abs(aj.diferenca))}</td>
+            </tr>`;
+          }
+        });
+
+        rebalancearHtml += '</table>';
+        rebalancearHtml += '<div class="dica" style="margin-top: 12px;">';
+        rebalancearHtml += '<strong>💡 Sugestão:</strong> Em vez de vender, considere direcionar novos aportes para as classes abaixo do esperado.';
+        rebalancearHtml += '</div>';
+        rebalancearHtml += '</div>';
+      }
+
+      rebalancearHtml += '<div class="meta-balanceamento">';
+      rebalancearHtml += '<strong>📈 Meta Ideal para Cada Classe</strong><br>';
+      rebalancearHtml += `Valor total: ${brl(total)} | Cada classe deve ter: ${brl(total / 4)} (25%)`;
+      rebalancearHtml += '</div>';
+
+      document.getElementById('rebalancear-content').innerHTML = rebalancearHtml;
+      document.getElementById('rebalancear-secao').style.display = 'block';
+    } else {
+      document.getElementById('rebalancear-secao').style.display = 'none';
+    }
+
+    // Salvar no localStorage
+    const dados = {
+      acoes: valores.acoes,
+      fii: valores.fii,
+      dolar: valores.dolar,
+      emergencia: valores.emergencia,
+      timestamp: new Date().toISOString()
+    };
+    localStorage.setItem('carteira-dados', JSON.stringify(dados));
+  }
+
+  // Adicionar listener aos inputs
+  ['acoes', 'fii', 'dolar', 'emergencia'].forEach(id => {
+    document.getElementById(id).addEventListener('change', () => {
+      atualizarVisaoGeral();
+    });
+    document.getElementById(id).addEventListener('input', () => {
+      atualizarVisaoGeral();
+    });
+  });
+
+  // Carregar dados salvos
+  const dadosSalvos = localStorage.getItem('carteira-dados');
+  if (dadosSalvos) {
+    try {
+      const dados = JSON.parse(dadosSalvos);
+      document.getElementById('acoes').value = dados.acoes;
+      document.getElementById('fii').value = dados.fii;
+      document.getElementById('dolar').value = dados.dolar;
+      document.getElementById('emergencia').value = dados.emergencia;
+      atualizarVisaoGeral();
+    } catch (e) {
+      console.log('Erro ao carregar dados salvos');
+    }
+  }
+</script>
+
+</body>
+</html>
