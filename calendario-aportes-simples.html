@@ -1,0 +1,557 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#16241F">
+  <title>Calendário de Aportes</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --ink:      #16241F;
+      --paper:    #F1EFE8;
+      --card:     #FAF9F5;
+      --line:     #D8D3C6;
+      --muted:    #6C7A72;
+      --growth:   #0F6B57;
+      --renda:    #9A6B10;
+      --alert:    #DC2626;
+      --serif:    Georgia, "Times New Roman", serif;
+      --sans:     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --ink:      #DDE9E4;
+        --paper:    #101A15;
+        --card:     #162019;
+        --line:     #28392F;
+        --muted:    #7A9082;
+        --growth:   #22B387;
+        --renda:    #C9900D;
+        --alert:    #F87171;
+      }
+    }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 16px;
+      line-height: 1.5;
+      padding: 0;
+    }
+
+    .wrap { max-width: 480px; margin: 0 auto; padding-bottom: env(safe-area-inset-bottom); }
+
+    /* CALENDÁRIO */
+    .calendar {
+      background: var(--ink);
+      color: #A9BDB2;
+      padding: 20px;
+      padding-top: max(20px, env(safe-area-inset-top));
+    }
+
+    .calendar h1 {
+      font-family: var(--serif);
+      font-weight: normal;
+      font-size: 18px;
+      letter-spacing: .01em;
+      margin: 0 0 4px;
+    }
+
+    .today {
+      font-size: 11px;
+      color: #6F8579;
+      margin: 0 0 16px;
+    }
+
+    .grid { display: flex; flex-direction: column; gap: 5px; }
+
+    .yearline { display: flex; align-items: center; gap: 8px; }
+
+    .yearnum {
+      font-family: var(--serif);
+      font-size: 11px;
+      color: #7B9086;
+      width: 28px;
+      flex: none;
+      text-align: right;
+    }
+
+    .months { display: flex; gap: 4px; flex: 1; }
+
+    .mlabel {
+      flex: 1;
+      text-align: center;
+      font-size: 8px;
+      letter-spacing: .04em;
+      color: #5E7268;
+    }
+
+    .m {
+      flex: 1;
+      aspect-ratio: 1;
+      border: 1px solid #35493F;
+      border-radius: 1px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .m:hover { border-color: #5E7268; }
+    .m.void    { border-color: #1E2E26; background: transparent; cursor: default; }
+    .m.done    { background: #A9BDB2; border-color: #A9BDB2; }
+    .m.current { background: #E4A93C; border-color: #E4A93C; }
+    .m.goal    { border-color: #E4A93C; }
+
+    .legend {
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid #2E4239;
+      display: flex;
+      justify-content: space-between;
+    }
+    .legend .big {
+      font-family: var(--serif);
+      font-size: 24px;
+      line-height: 1;
+      color: #F1EFE8;
+    }
+    .legend .sub { font-size: 11px; color: #8DA298; margin-top: 4px; }
+
+    /* APORTE DO MÊS */
+    section {
+      padding: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h2 {
+      font-family: var(--serif);
+      font-weight: normal;
+      font-size: 16px;
+      margin: 0 0 12px;
+    }
+
+    .mes-info {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 0 0 12px;
+    }
+
+    .buy-box {
+      background: var(--paper);
+      border: 2px solid var(--line);
+      border-radius: 3px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .buy-box.renda { border-color: var(--renda); }
+    .buy-box.growth { border-color: var(--growth); }
+
+    .buy-label {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    .buy-valor {
+      font-family: var(--serif);
+      font-size: 18px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .buy-ativo {
+      font-size: 13px;
+      margin-bottom: 8px;
+    }
+
+    .buy-ativo label {
+      display: block;
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 3px;
+      font-weight: 500;
+    }
+
+    input[type="text"] {
+      font-family: var(--serif);
+      font-size: 16px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 2px;
+      background: var(--card);
+      color: var(--ink);
+      width: 100%;
+      text-transform: uppercase;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--growth);
+      background: var(--paper);
+    }
+
+    button {
+      font-family: var(--sans);
+      font-size: 14px;
+      width: 100%;
+      padding: 12px;
+      margin-top: 12px;
+      border: none;
+      border-radius: 2px;
+      background: var(--ink);
+      color: var(--paper);
+      cursor: pointer;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+    button:active { opacity: 0.8; }
+
+    .undo-btn {
+      background: var(--line);
+      color: var(--ink);
+      font-size: 13px;
+      padding: 8px;
+      margin-top: 6px;
+    }
+
+    .progresso {
+      margin-top: 16px;
+      padding: 12px;
+      background: var(--card);
+      border-radius: 3px;
+      font-size: 12px;
+    }
+
+    .progresso-barra {
+      background: var(--line);
+      border-radius: 2px;
+      height: 4px;
+      margin: 6px 0;
+      overflow: hidden;
+    }
+
+    .progresso-fill {
+      height: 100%;
+      background: var(--growth);
+      transition: width 0.3s;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .stat-card {
+      background: var(--paper);
+      padding: 10px;
+      border-radius: 2px;
+      border: 1px solid var(--line);
+      font-size: 12px;
+    }
+
+    .stat-valor {
+      font-family: var(--serif);
+      font-size: 16px;
+      font-weight: 600;
+      margin: 4px 0 2px;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    footer {
+      padding: 16px 20px;
+      font-size: 11px;
+      color: var(--muted);
+      text-align: center;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 480px) {
+      body { font-size: 15px; }
+      .calendar { padding: 16px; }
+      .calendar h1 { font-size: 16px; }
+      section { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrap">
+  <!-- CALENDÁRIO -->
+  <div class="calendar">
+    <h1>Renda Passiva aos 65</h1>
+    <p class="today" id="today"></p>
+    <div class="grid" id="grid"></div>
+    <div class="legend">
+      <div>
+        <div class="big" id="counter">0</div>
+        <div class="sub">meses feitos</div>
+      </div>
+      <div style="text-align: right;">
+        <div class="big" id="remaining">132</div>
+        <div class="sub">restam</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- APORTE DESTE MÊS -->
+  <section>
+    <h2 id="mes-title">Aporte</h2>
+    <p class="mes-info" id="mes-info"></p>
+
+    <div id="aportes-container"></div>
+
+    <button id="registrar-btn">Registrar Aporte</button>
+    <button class="undo-btn" id="undo-btn" hidden>↺ Desfazer</button>
+
+    <div class="progresso">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+        <span>Progresso</span>
+        <span id="perc-progresso" style="font-weight: 600;">0%</span>
+      </div>
+      <div class="progresso-barra">
+        <div class="progresso-fill" id="barra-fill" style="width: 0%"></div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Aportado Total</div>
+        <div class="stat-valor" id="total-aportado">R$ 0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Patrimônio Est.</div>
+        <div class="stat-valor" id="patrimonio-est">R$ 0</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>💾 Tudo é salvo automaticamente no celular</p>
+    <p>📱 Adicione à tela de início para usar como app</p>
+  </footer>
+</div>
+
+<script>
+  "use strict";
+
+  const TOTAL   = 132;
+  const PHASE1  = 63;
+  const START_Y = 2026;
+  const START_M = 9;
+  const END_Y   = 2037;
+
+  const MESES = ["janeiro","fevereiro","março","abril","maio","junho",
+                 "julho","agosto","setembro","outubro","novembro","dezembro"];
+  const INICIAIS = ["J","F","M","A","M","J","J","A","S","O","N","D"];
+
+  const INICIAL = 6699.14;
+
+  let config = {
+    aporteCrescimento: 600,
+    aporteRenda: 400,
+    growth: ["SPXI11", "WEGE3", "TTEN3", "SPXI11", "B3SA3", "LREN3"],
+    fii: ["GGRC11", "XPML11", "HGRE11"],
+    taxa: 0.01,
+    meta: 3500
+  };
+
+  let state = { done: 0, ativos: {} };
+
+  function brl(v) {
+    return "R$ " + v.toLocaleString("pt-BR", { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+
+  function carregarDados() {
+    const raw = localStorage.getItem("app.romario.simples");
+    if (raw) state = JSON.parse(raw);
+
+    const cfg = localStorage.getItem("app.config.simples");
+    if (cfg) config = { ...config, ...JSON.parse(cfg) };
+  }
+
+  function salvarDados() {
+    localStorage.setItem("app.romario.simples", JSON.stringify(state));
+    localStorage.setItem("app.config.simples", JSON.stringify(config));
+  }
+
+  function dateOf(i) {
+    const m = START_M + i;
+    return { mes: MESES[m % 12], ano: START_Y + Math.floor(m / 12) };
+  }
+
+  function orderFor(i) {
+    if (i >= PHASE1) {
+      return [{ role: "Renda", ticker: "", valor: config.aporteRenda, kind: "renda" }];
+    }
+    return [
+      { role: "Crescimento", ticker: "", valor: config.aporteCrescimento, kind: "growth" },
+      { role: "Renda",       ticker: "", valor: config.aporteRenda, kind: "renda"  }
+    ];
+  }
+
+  function getAtivoParaMes(mes, kind) {
+    if (state.ativos[mes] && state.ativos[mes][kind]) {
+      return state.ativos[mes][kind];
+    }
+    if (kind === "growth") {
+      return config.growth[mes % 6];
+    }
+    return config.fii[mes % config.fii.length];
+  }
+
+  function patrimonio(n) {
+    const aporteMensal = config.aporteCrescimento + config.aporteRenda;
+    const f = Math.pow(1 + config.taxa, n);
+    return INICIAL * f + aporteMensal * ((f - 1) / config.taxa);
+  }
+
+  function buildGrid() {
+    const g = document.getElementById("grid");
+    g.innerHTML = "";
+
+    const head = document.createElement("div");
+    head.className = "yearline";
+    head.innerHTML = "<div class='yearnum'></div>";
+    const hm = document.createElement("div");
+    hm.className = "months";
+    for (let k = 0; k < 12; k++) {
+      const lb = document.createElement("div");
+      lb.className = "mlabel";
+      lb.textContent = INICIAIS[k];
+      hm.appendChild(lb);
+    }
+    head.appendChild(hm);
+    g.appendChild(head);
+
+    for (let y = START_Y; y <= END_Y; y++) {
+      const row = document.createElement("div");
+      row.className = "yearline";
+
+      const lbl = document.createElement("div");
+      lbl.className = "yearnum";
+      lbl.textContent = y;
+      row.appendChild(lbl);
+
+      const months = document.createElement("div");
+      months.className = "months";
+      for (let m = 0; m < 12; m++) {
+        const i = (y - START_Y) * 12 + (m - START_M);
+        const cell = document.createElement("div");
+        cell.className = "m";
+        if (i < 0 || i >= TOTAL) {
+          cell.className += " void";
+        } else {
+          if (i < state.done) cell.className += " done";
+          else if (i === state.done) cell.className += " current";
+          if (i === TOTAL - 1) cell.className += " goal";
+        }
+        months.appendChild(cell);
+      }
+      row.appendChild(months);
+      g.appendChild(row);
+    }
+  }
+
+  function render() {
+    const n = state.done;
+    const finished = n >= TOTAL;
+
+    buildGrid();
+
+    const hoje = new Date();
+    document.getElementById("today").textContent =
+      "Hoje: " + MESES[hoje.getMonth()] + " de " + hoje.getFullYear();
+
+    document.getElementById("counter").textContent   = n;
+    document.getElementById("remaining").textContent = TOTAL - n;
+
+    const perc = Math.round((n / TOTAL) * 100);
+    document.getElementById("perc-progresso").textContent = perc + "%";
+    document.getElementById("barra-fill").style.width = perc + "%";
+
+    if (finished) {
+      document.getElementById("mes-title").textContent = "Plano Concluído! 🎉";
+      document.getElementById("mes-info").textContent = "Você atingiu a aposentadoria aos 65 anos!";
+      document.getElementById("aportes-container").innerHTML = "";
+      document.getElementById("registrar-btn").hidden = true;
+    } else {
+      const d = dateOf(n);
+      document.getElementById("mes-title").textContent = "Aporte de " + d.mes + " de " + d.ano;
+      document.getElementById("mes-info").textContent =
+        "Mês " + (n + 1) + " de 132 · " + (n < PHASE1 ? "Crescimento" : "Renda");
+
+      const container = document.getElementById("aportes-container");
+      container.innerHTML = "";
+
+      orderFor(n).forEach((order, idx) => {
+        const ativoAtual = getAtivoParaMes(n, order.kind);
+        const box = document.createElement("div");
+        box.className = "buy-box " + order.kind;
+        box.innerHTML = `
+          <div class="buy-label">${order.role}</div>
+          <div class="buy-valor">${brl(order.valor)}</div>
+          <div class="buy-ativo">
+            <label>Ativo para este mês:</label>
+            <input type="text" id="ativo-${order.kind}" value="${ativoAtual}" placeholder="ex: WEGE3F">
+          </div>
+        `;
+        container.appendChild(box);
+      });
+
+      document.getElementById("registrar-btn").hidden = false;
+      document.getElementById("registrar-btn").textContent = "✓ Registrar aporte de " + d.mes;
+    }
+
+    document.getElementById("undo-btn").hidden = n === 0;
+
+    const pat = patrimonio(n);
+    document.getElementById("total-aportado").textContent = brl(n * (config.aporteCrescimento + config.aporteRenda));
+    document.getElementById("patrimonio-est").textContent = brl(pat);
+  }
+
+  document.getElementById("registrar-btn").addEventListener("click", function() {
+    if (state.done < TOTAL) {
+      // Salvar ativos escolhidos
+      const mes = state.done;
+      if (!state.ativos[mes]) state.ativos[mes] = {};
+
+      const ativoGrowth = document.getElementById("ativo-growth");
+      const ativoRenda = document.getElementById("ativo-renda");
+
+      if (ativoGrowth) state.ativos[mes].growth = ativoGrowth.value.toUpperCase();
+      if (ativoRenda) state.ativos[mes].renda = ativoRenda.value.toUpperCase();
+
+      state.done++;
+      salvarDados();
+      render();
+    }
+  });
+
+  document.getElementById("undo-btn").addEventListener("click", function() {
+    if (state.done > 0) {
+      state.done--;
+      salvarDados();
+      render();
+    }
+  });
+
+  carregarDados();
+  render();
+</script>
+
+</body>
+</html>
