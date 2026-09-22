@@ -128,8 +128,19 @@ def cmd_projecao(a):
 def cmd_aportar(a):
     """Aplica a regra da posicao mais atrasada sobre uma carteira real."""
     dados = json.load(open(a.carteira))
-    posicoes, alvos, aporte = dados["posicoes"], dados["alvos_classe"], dados.get("aporte", 1000)
+    alvos, aporte = dados["alvos_classe"], dados.get("aporte", 1000)
+    ruido = set(dados.get("ruido", []))
+    # Posicoes-ruido (compras simbolicas, lancamentos quebrados) sairiam
+    # sempre como "mais atrasadas" e sequestrariam todo o aporte.
+    posicoes = {k: v for k, v in dados["posicoes"].items() if k not in ruido}
     total = sum(posicoes.values())
+    nao_conf = dados.get("nao_conferido") or 0
+    if nao_conf:
+        pct = 100 * nao_conf / (total + nao_conf)
+        print(f"\n  [!] {brl(nao_conf)} ({pct:.0f}% do patrimonio) ainda nao identificados.")
+        print("      Os percentuais abaixo mudam quando isso for resolvido.")
+    if ruido:
+        print(f"\n  [!] Fora da conta (ruido): {', '.join(sorted(ruido))}")
     por_classe = {}
     for at, v in posicoes.items():
         cl = dados["classe_de"][at]
