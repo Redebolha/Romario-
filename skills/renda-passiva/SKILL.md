@@ -144,6 +144,18 @@ está mais atrativa"). Soa sofisticado e é market timing com outro nome. Se o
 usuário insistir, respeite a decisão dele — mas registre uma vez o que está
 sendo trocado.
 
+**Quando o script discordar de uma decisão anterior, reconcilie em voz alta.**
+`aportar` distribui proporcional ao gap, então manda R$ 0 para qualquer classe
+acima do alvo. Uma decisão registrada em `carteira-romario.md` pode ter
+deliberadamente mantido aporte numa classe sobreponderada — por exemplo, seguir
+comprando FII durante um ciclo de corte de juros, aceitando convergir mais
+devagar em troca de continuar posicionado.
+
+As duas leituras são defensáveis. O que não serve é o skill contradizer em
+silêncio o que já foi combinado: apresente o número mecânico, diga que ele
+diverge da dosagem vigente e por quê, e deixe a escolha com o usuário. Plano
+que muda de regra sem ninguém perceber é plano que ninguém segue.
+
 ### 6. Impostos: verifique, não lembre
 
 A tributação de FII, dividendos e renda fixa no Brasil mudou várias vezes e
