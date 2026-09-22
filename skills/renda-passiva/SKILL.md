@@ -63,6 +63,18 @@ você precisa perguntar o que é antes de seguir. Ver
 `references/diagnostico.md` para o procedimento completo, inclusive como achar
 linhas com erro de lançamento.
 
+**Quando faltar dado, teste se a resposta depende dele.** Descobrir que boa
+parte da carteira é desconhecida não obriga a parar — obriga a verificar. Rode
+a recomendação em dois ou três cenários plausíveis para a parte que falta
+(tudo em caixa, tudo espalhado, ou nada além do visível) e veja se a conclusão
+muda.
+
+Quase sempre não muda, e aí você entrega a resposta *e* a ressalva, em vez de
+travar o usuário esperando uma informação que não era decisiva. Quando muda,
+você acabou de descobrir que a pergunta que falta é a pergunta mais importante
+— o que também é uma resposta útil. O que não serve é projetar por cima do
+buraco em silêncio.
+
 ### 2. Rode a viabilidade antes de qualquer recomendação de ativo
 
 ```bash
