@@ -116,3 +116,75 @@ a regra vigente com busca antes de calcular renda líquida** e informe a data.
 Multiplique cada classe pelo seu peso para chegar ao yield combinado. Numa
 carteira 25/25/25/25 ele costuma ficar em torno de 7% nominal — o que reforça
 por que a taxa de retirada real de 5% é o número honesto para planejar.
+
+## O que aparece na carteira e não é investimento
+
+Agregadores listam consórcio, previdência e seguro resgatável junto com ações e
+FIIs. Somar tudo num "patrimônio" único é o erro que faz alguém achar que tem
+motor de renda três vezes maior do que tem.
+
+**Separe sempre o que gera renda do que apenas guarda valor.** Um consórcio não
+contemplado rende 0% e não paga nada enquanto não for contemplado — não entra
+no cálculo de renda passiva, por maior que seja.
+
+### Consórcio: como avaliar sem se enganar nos dois sentidos
+
+A conta precisa ser feita duas vezes, porque as duas respostas são diferentes e
+as duas importam.
+
+**1. Foi um bom negócio? (retrospectiva — serve para decidir se entra em outro)**
+
+Custo total = crédito × (1 + taxa de administração + fundo de reserva). Com 14%
+de administração e 3% de fundo, paga-se 1,17× o crédito para receber 1,00×.
+Como parcela e crédito costumam ser corrigidos pelo mesmo índice, isso se
+traduz em **retorno real negativo** — na faixa de −5% a.a. para um plano de
+cinco a seis anos levado até o fim sem contemplação antecipada.
+
+Conclusão para planos *novos*: consórcio não é investimento. Como forma de
+comprar um bem, pode ganhar do financiamento (não tem juros, só taxa). Como
+forma de acumular patrimônio, perde de qualquer aplicação, inclusive de um
+pós-fixado sem graça.
+
+**2. Vale continuar? (prospectiva — é a pergunta que realmente está na mesa)**
+
+Aqui a resposta costuma inverter, e por um motivo que não é intuitivo: **o que
+já foi pago não volta antes do fim do grupo.** Quem desiste, na prática, entra
+na fila dos desistentes e recebe o fundo comum corrigido só quando o grupo
+encerra — com desconto da taxa de administração já incorrida e multa.
+
+Então a decisão de hoje não é "17% de taxa contra investir por fora". É:
+
+```
+pagar (parcelas restantes) → receber (crédito integral)
+```
+
+Calcule a TIR real só sobre o que **falta** pagar, tratando o já pago como
+afundado. Num plano em que boa parte das parcelas já foi quitada, essa TIR
+costuma ser **fortemente positiva** — porque o crédito recebido inclui o
+dinheiro que já entrou. Nesse caso, terminar é a melhor aplicação disponível, e
+desistir destrói valor.
+
+Diga as duas coisas juntas, sem deixar a segunda soar como elogio ao produto: a
+TIR alta é recuperação de custo afundado, não mérito do consórcio. Quem concluir
+"consórcio é ótimo, vou fazer outro" entendeu ao contrário.
+
+**O que mais perguntar**
+
+- **Para que é o crédito?** Se vai virar imóvel ou carro de uso, ele nunca vira
+  capital investido — a projeção de renda não pode contá-lo. Se vai ser
+  investido ou vira imóvel de aluguel, entra. Essa resposta muda o plano
+  inteiro e vale perguntar antes de projetar.
+- **Débito em folha?** Liga a parcela ao emprego. Perder o vínculo transforma
+  um compromisso automático num boleto — considere isso ao dimensionar a
+  reserva.
+- **Contemplação antecipada** (sorteio ou lance) antecipa o crédito e melhora a
+  TIR. Não dá para contar com sorteio, mas dá para lembrar que o cenário-base é
+  o pessimista.
+- **A parcela conta como poupança.** Quem paga consórcio e diz que "aporta
+  R$ 1.000" está na verdade comprometendo R$ 1.000 + a parcela. Some os dois
+  antes de discutir se o aporte pode subir — às vezes o esforço já está lá e a
+  pessoa não se dá conta.
+- **O fim do plano é um evento de planejamento.** Na data da contemplação
+  entram duas coisas ao mesmo tempo: o crédito e a parcela que deixa de sair.
+  Projete em duas fases, antes e depois — tratar como um aporte constante
+  subestima bastante o resultado.

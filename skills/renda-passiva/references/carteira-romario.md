@@ -11,12 +11,14 @@ posição nova; o histórico de decisões é o que evita rediscutir o já decidi
 
 ## Posição
 
-**Patrimônio total implícito: ~R$ 19.310** (pelo teste do percentual)
-**Soma do que apareceu nos prints: R$ 6.775,95**
-**Não identificado: ~R$ 12.534 — 65% da carteira**
+**"Patrimônio" no app: ~R$ 19.303**
+**Carteira investida de fato: R$ 6.775,95**
+**Consórcio (rende 0%): R$ 12.526,71 — 65%**
 
-Esse buraco é a primeira coisa a resolver em qualquer conversa. Nenhuma
-projeção é confiável enquanto dois terços da carteira forem desconhecidos.
+O buraco de 65% foi identificado em 22/09/2026: é um **consórcio**, listado em
+"Outros". Isso resolve a dúvida e muda a leitura — o motor de renda dele é
+R$ 6.776, não R$ 19.303. Projeções de renda passiva usam a carteira investida;
+o consórcio entra como evento de 2030, não como patrimônio que rende.
 
 ### Ações — R$ 529,09 (2,74%)
 
@@ -48,6 +50,38 @@ oito fundos para R$ 4,1 mil dá média de R$ 516. XPML11 com 1 cota e GARE11 com
 TRXF11 a −18,65% é a pior posição da carteira e merece releitura de tese, não
 aporte automático.
 
+### Consórcio — R$ 12.526,71 (65% do "patrimônio")
+
+| Item | Valor |
+|---|---:|
+| Crédito na contemplação | R$ 28.725,33 |
+| Parcela | R$ 493,42/mês (débito em folha) |
+| Taxa de administração | 14,00% |
+| Fundo de reserva | 3,00% |
+| Reajuste | IPCA |
+| Vencimento | 2030 |
+| Total a pagar | R$ 33.608,64 |
+| Parcelas | 68 no total · ~25 pagas · ~43 restantes |
+
+**As duas TIRs reais:**
+
+- **Retrospectiva (plano inteiro):** −5,6% a.a. Consórcio não é investimento;
+  não faça outro com esse objetivo.
+- **Prospectiva (daqui pra frente):** **+17,9% a.a.** Pagar 43 × R$ 493,42 para
+  receber R$ 28.725,33 em 2030. **Terminar é a melhor aplicação disponível
+  para ele hoje** — desistir destrói valor, porque o já pago só volta no fim do
+  grupo e com desconto.
+
+A TIR alta é recuperação de custo afundado, não mérito do produto. As duas
+frases precisam andar juntas.
+
+**Compromisso mensal real: R$ 1.493,42** (R$ 1.000 de aporte + R$ 493,42 de
+parcela). Ao discutir se o aporte pode subir, lembre que o esforço já é maior
+do que ele declara.
+
+**Pendente:** para que é o crédito. Se virar imóvel ou carro de uso, nunca vira
+capital investido e a projeção muda (cenário B abaixo).
+
 ### Exterior — R$ 598,07 (3,10%, alvo 25%)
 
 SPXI11: 11 cotas, PM R$ 54,28, atual R$ 54,37. **É a classe mais distante do
@@ -72,34 +106,35 @@ alvo** — 22 pontos percentuais abaixo.
 
 ## A conta do objetivo
 
-Rodado em 22/09/2026, premissas padrão (retorno 12% nominal, inflação 4,5%,
-retirada real de 5%):
+Recalculado em 22/09/2026 **sobre a carteira investida de R$ 6.776** (não sobre
+os R$ 19.303 do app), em duas fases: até abril/2030 com aporte de R$ 1.000, e
+depois com R$ 1.493,42 — a parcela do consórcio vira aporte quando o plano
+encerra.
 
-| Renda alvo | Patrimônio necessário | Aporte p/ 5 anos | Prazo com R$ 1.000/mês |
-|---|---:|---:|---|
-| R$ 2.000/mês | R$ 480.000 | ~R$ 6.400/mês | ~21 anos |
-| R$ 3.000/mês | R$ 720.000 | ~R$ 9.800/mês | ~25 anos |
-| R$ 5.000/mês | R$ 1.200.000 | ~R$ 16.400/mês | ~28 anos |
+| Horizonte | Cenário A (crédito investido) | Cenário B (crédito consumido) |
+|---|---:|---:|
+| 5 anos | R$ 121.624 → R$ 507/mês | R$ 89.925 → R$ 375/mês |
+| 10 anos | R$ 279.027 → R$ 1.163/mês | R$ 234.150 → R$ 976/mês |
+| 15 anos | R$ 501.863 → R$ 2.091/mês | R$ 438.332 → R$ 1.826/mês |
+| 20 anos | R$ 817.335 → R$ 3.406/mês | R$ 727.393 → R$ 3.031/mês |
 
-No ritmo atual, em 5 anos a carteira chega a ~R$ 98,8 mil, que sustentam
-**R$ 412/mês**.
+Quando cada renda chega, no cenário A: R$ 1.000/mês em ~9 anos · R$ 2.000/mês
+em ~14,5 anos · R$ 3.000/mês em ~19 anos · R$ 5.000/mês em ~24,5 anos.
 
-**Viver de renda em 5 anos com R$ 1.000/mês não fecha** — e a distância não é
-de ajuste, é de ordem de grandeza (16x o aporte). Isso precisa ser dito com
-clareza e sem rodeio, sempre acompanhado das três alavancas, porque a decisão
-de qual puxar é dele.
+**Viver de renda em 5 anos não fecha em nenhum cenário** — mas o quadro é
+melhor do que a primeira leitura sugeria, porque o consórcio libera crédito e
+parcela ao mesmo tempo em 2030. A alavanca segue sendo o aporte, e ele tem
+operação própria (Rede Bolha, livros na Hotmart) para agir sobre ela.
 
-O caminho realista passa por aumentar o aporte via renda (ele tem operação
-própria — Rede Bolha, livros na Hotmart), não por buscar yield maior. A
-alavanca "aporte" é a única em que ele tem influência direta.
-
----
+> Correção registrada: a primeira projeção usou R$ 19.310 como base e tratou o
+> consórcio como patrimônio que rende. Estava errada — dava R$ 98.811 em 5
+> anos. Os números acima substituem aquela leitura.
 
 ## Dados que faltam
 
-1. **Custo de vida mensal** — sem isso o alvo de renda é chute e a reserva não
+1. **Custo de vida mensal** — sem isso o alvo de renda é chute e a reserva não tem dimensão. É a pergunta mais importante em aberto.
    tem dimensão. É a pergunta mais importante em aberto.
-2. **Os ~R$ 12.534 não identificados** — 65% da carteira.
+2. **Para que é o crédito do consórcio** — decide entre o cenário A e o B.
 3. Há quanto tempo aporta e se os R$ 1.000 são consistentes.
 
 ---
