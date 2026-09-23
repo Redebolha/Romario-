@@ -28,7 +28,9 @@ DESCRIPTION:Abra o app Calendário de Aportes > aba Revisão.\n\n1. Atual
  11, JEPQ, internacionais)\n7. GARE11: a tese de manter continua de pé?\n
  8. Vendas antigas concluídas e valor reinvestido na lista\n9. Imposto: D
  ARF de vendas com lucro e notas guardadas\n10. Dá para subir o aporte ac
- ima de R$ 1.000?\n11. Comparar com a renda fixa (Selic/IPCA)
+ ima de R$ 1.000?\n11. Reserva e renda fixa: saldo da caixinha Nubank, CDI
+  atual e meta\n12. Perfil ainda faz sentido? (Renda · Equilibrado · Cre
+ scimento)
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Revisão trimestral da carteira
@@ -47,8 +49,8 @@ DTSTART;TZID=America/Sao_Paulo:20261001T090000
 DTEND;TZID=America/Sao_Paulo:20261001T093000
 RRULE:FREQ=MONTHLY;BYMONTHDAY=1;COUNT=60
 SUMMARY:Aporte do mês (mínimo R$ 1.000)
-DESCRIPTION:Abra o app Calendário de Aportes\, veja as cotas sugeridas d
- o mês e marque como feito.
+DESCRIPTION:Abra o app Calendário de Aportes\, veja a parte da reserva e
+  as cotas sugeridas do mês e marque como feito.
 BEGIN:VALARM
 ACTION:DISPLAY
 DESCRIPTION:Aporte do mês (mínimo R$ 1.000)

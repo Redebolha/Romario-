@@ -19,6 +19,7 @@
     --fii: #A8701A;
     --acoes: #1F6B52;
     --etf: #3B5B8E;
+    --rf: #6B5CA5;
     --ok: #1C7C45;
     --warn: #B45F06;
     --bad: #B42318;
@@ -43,6 +44,7 @@
       --fii: #E0A344;
       --acoes: #4FC08F;
       --etf: #86A8E0;
+      --rf: #B3A6E8;
       --ok: #5DD08A;
       --warn: #F0A74B;
       --bad: #F4867B;
@@ -65,6 +67,7 @@
     --fii: #E0A344;
     --acoes: #4FC08F;
     --etf: #86A8E0;
+    --rf: #B3A6E8;
     --ok: #5DD08A;
     --warn: #F0A74B;
     --bad: #F4867B;
@@ -159,8 +162,8 @@
   .mix span { display: block; height: 100%; }
   .legenda { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--ink-2); margin-top: 8px; }
   .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
-  .c-fii { background: var(--fii); } .c-acoes { background: var(--acoes); } .c-etf { background: var(--etf); }
-  .t-fii { color: var(--fii); } .t-acoes { color: var(--acoes); } .t-etf { color: var(--etf); }
+  .c-fii { background: var(--fii); } .c-acoes { background: var(--acoes); } .c-etf { background: var(--etf); } .c-rf { background: var(--rf); }
+  .t-fii { color: var(--fii); } .t-acoes { color: var(--acoes); } .t-etf { color: var(--etf); } .t-rf { color: var(--rf); }
 
   section.painel { display: grid; gap: 14px; }
   .bloco {
@@ -259,6 +262,18 @@
   .opcoes label { display: grid; grid-template-columns: 22px 1fr; gap: 6px; align-items: start; font-size: 14px; }
   .opcoes input { width: 17px; height: 17px; margin-top: 2px; accent-color: var(--accent); }
   .opcoes small { display: block; color: var(--muted); font-size: 12.5px; }
+  .rf-linha { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 6px 0; }
+  .rf-linha label { display: grid; gap: 3px; justify-items: end; }
+  .perfis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .perfil {
+    border: 1px solid var(--line); background: var(--ground); border-radius: 10px;
+    padding: 10px; text-align: left; display: grid; gap: 3px; min-width: 0;
+  }
+  .perfil b { font-size: 15px; }
+  .perfil span { font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .perfil[aria-pressed="true"] { border-color: var(--accent); background: var(--sunk); box-shadow: inset 0 0 0 1px var(--accent); }
+  .perfil[aria-pressed="true"] b::after { content: " ✓"; color: var(--accent); }
+  @media (max-width: 420px) { .perfis { grid-template-columns: 1fr; } }
   .msg-ok { color: var(--ok); font-weight: 600; font-size: 13.5px; }
   .msg-bad { color: var(--bad); font-weight: 600; font-size: 13.5px; }
   .soma.ok { color: var(--ok); } .soma.bad { color: var(--bad); }
@@ -311,7 +326,7 @@
   <header class="top">
     <span class="eyebrow">Plano de 5 anos · out/2026 → set/2031</span>
     <h1>Calendário de Aportes</h1>
-    <span class="sync"><span id="sync">Carregando…</span> · versão 3</span>
+    <span class="sync"><span id="sync">Carregando…</span> · versão 4</span>
   </header>
 
   <div class="resumo" id="resumo"></div>
@@ -351,9 +366,27 @@
     { id: "etf", nome: "ETF" }
   ];
 
+  var PERFIS = [
+    { id: "renda", nome: "Renda", pct: { fii: 45, acoes: 35, etf: 20 }, txt: "Mais proventos todo mês, foco no Brasil." },
+    { id: "equilibrado", nome: "Equilibrado", pct: { fii: 40, acoes: 30, etf: 30 }, txt: "Renda com quase um terço no exterior." },
+    { id: "crescimento", nome: "Crescimento", pct: { fii: 30, acoes: 35, etf: 35 }, txt: "Mais exterior e ações, menos renda agora." }
+  ];
+  function perfilAtual(pct) {
+    for (var i = 0; i < PERFIS.length; i++) {
+      var q = PERFIS[i].pct;
+      if (n(pct.fii) === q.fii && n(pct.acoes) === q.acoes && n(pct.etf) === q.etf) return PERFIS[i];
+    }
+    return null;
+  }
+
+  function rfPadrao() {
+    return { saldo: 2500, onde: "Caixinha Nubank", pctCdi: 100, cdi: 14.9, pct: 10, meta: 0 };
+  }
+
   function cfgPadrao() {
     return {
       aporte: 1000,
+      rf: rfPadrao(),
       pct: { fii: 45, acoes: 35, etf: 20 },
       yieldLiq: 9.79,
       vendas: { valor: 0, mes: "2026-10" },
@@ -389,7 +422,8 @@
     ["Vendas antigas concluídas e valor reinvestido na lista", "Registre o valor em Carteira → Reinvestimento das vendas."],
     ["Imposto: DARF de vendas com lucro e notas guardadas", "Vendas de FII e ETF com ganho pagam IR; ações têm isenção só até R$ 20 mil vendidos no mês. Confirme com seu contador."],
     ["Dá para subir o aporte acima de R$ 1.000?", "Se a renda subiu, ajuste o valor mensal na aba Carteira."],
-    ["Comparar com a renda fixa (Selic/IPCA)", "Se a renda fixa estiver pagando muito mais, reavalie o peso de cada classe."]
+    ["Reserva e renda fixa: saldo, CDI atual e meta", "Confira o saldo da caixinha, atualize o CDI e veja se a meta da reserva mudou (6 meses de gastos é a referência comum)."],
+    ["Perfil ainda faz sentido? (Renda · Equilibrado · Crescimento)", "Compare com a renda fixa (Selic/IPCA). Mude o perfil na aba Carteira se o objetivo mudou."]
   ];
 
   /* ---------- Utilidades ---------- */
@@ -444,11 +478,16 @@
       var raw = localStorage.getItem("calendario-aportes-v1");
       if (raw) {
         var d = JSON.parse(raw);
-        if (d && d.cfg) estado = { cfg: d.cfg, aportes: d.aportes || {}, revisoes: d.revisoes || {} };
+        if (d && d.cfg) estado = { cfg: completarCfg(d.cfg), aportes: d.aportes || {}, revisoes: d.revisoes || {} };
       }
       var aba = localStorage.getItem("calendario-aportes-aba");
       if (aba) abaAtual = aba;
     } catch (e) {}
+  }
+  function completarCfg(c) {
+    var out = Object.assign(cfgPadrao(), JSON.parse(JSON.stringify(c || {})));
+    out.rf = Object.assign(rfPadrao(), out.rf || {});
+    return out;
   }
   function gravarLocal() {
     try { localStorage.setItem("calendario-aportes-v1", JSON.stringify(estado)); } catch (e) {}
@@ -499,18 +538,29 @@
     var caixa = {}, cotas = {};
     cfg.ativos.forEach(function (a) { caixa[a.t] = 0; cotas[a.t] = n(a.cotas0); });
     var rm = Math.pow(1 + n(cfg.yieldLiq) / 100, 1 / 12) - 1;
-    var patrimonio = 0, aportado = 0;
-    cfg.ativos.forEach(function (a) { patrimonio += n(a.cotas0) * n(a.preco); });
-    var patrimonioInicial = patrimonio;
+    var rf = cfg.rf;
+    var rfm = Math.pow(1 + n(rf.cdi) / 100 * n(rf.pctCdi) / 100, 1 / 12) - 1;
+    var rfSaldo = n(rf.saldo);
+    var rv = 0, aportado = 0, rfAportado = 0;
+    cfg.ativos.forEach(function (a) { rv += n(a.cotas0) * n(a.preco); });
+    var patrimonioInicial = rv + rfSaldo;
+    var patrimonio = patrimonioInicial;
     var linhas = [];
     for (var i = 0; i < MESES; i++) {
       var k = chaveMes(i);
       var reg = estado.aportes[k] || {};
       var valor = Math.max(n(cfg.aporte), 0) + n(reg.extra) + (cfg.vendas && cfg.vendas.mes === k ? n(cfg.vendas.valor) : 0);
+      var metaAtingida = n(rf.meta) > 0 && rfSaldo >= n(rf.meta);
+      var rfPlano = metaAtingida ? 0 : Math.min(valor, valor * n(rf.pct) / 100);
+      var rfFeito = reg.feito && reg.rf != null;
+      var rfValor = rfFeito ? n(reg.rf) : rfPlano;
+      var rvValor = Math.max(0, valor - rfPlano);
+      rfSaldo = rfSaldo * (1 + rfm) + rfValor;
+      rfAportado += rfValor;
       var itens = [];
       cfg.ativos.forEach(function (a) {
         var pctClasse = somaPct > 0 ? n(cfg.pct[a.c]) / somaPct : 0;
-        var alvo = valor * pctClasse * pn[a.t];
+        var alvo = rvValor * pctClasse * pn[a.t];
         var acc = caixa[a.t] + alvo;
         var preco = n(a.preco);
         var sugestao = preco > 0 ? Math.max(0, Math.floor(acc / preco + 1e-9)) : 0;
@@ -522,10 +572,11 @@
         itens.push({ a: a, alvo: alvo, acc: acc, sugestao: sugestao, comprado: comprado, sobra: caixa[a.t] });
       });
       aportado += valor;
-      patrimonio = patrimonio * (1 + rm) + valor;
-      linhas.push({ k: k, i: i, valor: valor, itens: itens, feito: !!reg.feito, reg: reg, aportado: aportado, patrimonio: patrimonio });
+      rv = rv * (1 + rm) + (valor - rfValor);
+      patrimonio = rv + rfSaldo;
+      linhas.push({ k: k, i: i, valor: valor, rvValor: rvValor, rfPlano: rfPlano, rfValor: rfValor, metaAtingida: metaAtingida, rfSaldo: rfSaldo, itens: itens, feito: !!reg.feito, reg: reg, aportado: aportado, patrimonio: patrimonio, rvPatrimonio: rv });
     }
-    return { linhas: linhas, cotas: cotas, caixa: caixa, somaPct: somaPct, rm: rm, patrimonioInicial: patrimonioInicial };
+    return { linhas: linhas, cotas: cotas, caixa: caixa, somaPct: somaPct, rm: rm, rfm: rfm, rfSaldo: rfSaldo, rfAportado: rfAportado, patrimonioInicial: patrimonioInicial };
   }
 
   function statusMes(l, hoje) {
@@ -541,7 +592,7 @@
     var feitos = plano.linhas.filter(function (l) { return l.feito; });
     var investido = feitos.reduce(function (s, l) { return s + l.valor; }, 0);
     var ult = plano.linhas[plano.linhas.length - 1];
-    var renda = ult.patrimonio * plano.rm;
+    var renda = ult.rvPatrimonio * plano.rm + ult.rfSaldo * plano.rfm;
     var html = "";
     if (prox) {
       var du = diaUtil(prox.k);
@@ -592,8 +643,8 @@
     var cfg = estado.cfg;
     var somaPct = plano.somaPct;
     var html = '<div class="bloco"><h2>Distribuição de cada aporte</h2>' +
-      '<p class="sub">Mínimo de ' + brl0(APORTE_MIN) + ' todo dia 1º. O que não fecha uma cota inteira fica guardado para o mês seguinte, no mesmo ativo.</p>' +
-      mixBar(cfg.pct) +
+      '<p class="sub">Mínimo de ' + brl0(APORTE_MIN) + ' todo dia 1º. A reserva recebe a parte dela primeiro e o resto é dividido pelo perfil escolhido. O que não fecha uma cota inteira fica guardado para o mês seguinte, no mesmo ativo.</p>' +
+      blocoPerfis() + mixBar(cfg.pct) +
       '<div class="linha-acoes"><button class="btn mini" data-ir-troca="1">⇄ Trocar ativo (FII, ação ou ETF)</button></div>' +
       "</div>";
 
@@ -610,13 +661,30 @@
 
   function mixBar(pct) {
     var s = n(pct.fii) + n(pct.acoes) + n(pct.etf) || 1;
+    var aporte = n(estado.cfg.aporte);
+    var rfPct = Math.min(100, Math.max(0, n(estado.cfg.rf.pct)));
+    var rvPct = 100 - rfPct;
     var html = '<div class="mix" aria-hidden="true">';
-    CLASSES.forEach(function (c) { html += '<span class="c-' + c.id + '" style="width:' + (n(pct[c.id]) / s * 100) + '%"></span>'; });
+    if (rfPct > 0) html += '<span class="c-rf" style="width:' + rfPct + '%"></span>';
+    CLASSES.forEach(function (c) { html += '<span class="c-' + c.id + '" style="width:' + (n(pct[c.id]) / s * rvPct) + '%"></span>'; });
     html += '</div><div class="legenda">';
+    if (rfPct > 0) html += '<span><i class="dot c-rf"></i>Reserva ' + fmtNum.format(rfPct) + "% · " + brl(aporte * rfPct / 100) + "</span>";
     CLASSES.forEach(function (c) {
-      html += '<span><i class="dot c-' + c.id + '"></i>' + c.nome + " " + fmtNum.format(n(pct[c.id])) + "% · " + brl(n(estado.cfg.aporte) * n(pct[c.id]) / s) + "</span>";
+      var efetivo = n(pct[c.id]) / s * rvPct;
+      html += '<span><i class="dot c-' + c.id + '"></i>' + c.nome + " " + fmtNum.format(Math.round(efetivo * 10) / 10) + "% · " + brl(aporte * efetivo / 100) + "</span>";
     });
     return html + "</div>";
+  }
+
+  function blocoPerfis() {
+    var atual = perfilAtual(estado.cfg.pct);
+    var html = '<div class="perfis" role="group" aria-label="Perfil da carteira">';
+    PERFIS.forEach(function (pf) {
+      html += '<button class="perfil" data-perfil="' + pf.id + '" aria-pressed="' + (atual && atual.id === pf.id) + '"><b>' + pf.nome + "</b><span>FII " + pf.pct.fii + " · Ações " + pf.pct.acoes + " · ETF " + pf.pct.etf + "</span><span>" + pf.txt + "</span></button>";
+    });
+    html += "</div>";
+    if (!atual) html += '<p class="nota">Perfil personalizado: FII ' + fmtNum.format(n(estado.cfg.pct.fii)) + " · Ações " + fmtNum.format(n(estado.cfg.pct.acoes)) + " · ETF " + fmtNum.format(n(estado.cfg.pct.etf)) + ".</p>";
+    return html;
   }
 
   function renderMes(l, hoje, prox) {
@@ -642,11 +710,17 @@
   }
 
   function renderDetalhe(l) {
+    var rf = estado.cfg.rf;
     var html = '<div class="detalhe">';
+    var rfVal = l.feito && l.reg.rf != null ? n(l.reg.rf) : Math.round(l.rfPlano * 100) / 100;
+    html += '<div><div class="grupo-h"><span class="t-rf"><i class="dot c-rf"></i>Renda fixa / reserva</span><span class="num">' + brl(l.rfPlano) + "</span></div>" +
+      '<div class="rf-linha"><div><span class="tk">' + esc(rf.onde || "Reserva") + '</span><div class="seg num">' + fmtNum.format(n(rf.pctCdi)) + "% do CDI · saldo depois " + brl(l.rfSaldo) + (l.metaAtingida ? " · meta atingida" : "") + "</div></div>" +
+      '<label class="seg">Depositei R$<input class="cell wide num" id="rf-' + l.k + '" data-rfdep="1" inputmode="decimal" type="number" min="0" step="10" value="' + esc(rfVal) + '"></label></div></div>';
     CLASSES.forEach(function (c) {
       var itens = l.itens.filter(function (it) { return it.a.c === c.id; });
       if (!itens.length) return;
       var tot = itens.reduce(function (s, it) { return s + it.alvo; }, 0);
+      if (tot <= 0.005 && itens.every(function (it) { return it.acc <= 0.005; })) return;
       html += '<div><div class="grupo-h"><span class="t-' + c.id + '"><i class="dot c-' + c.id + '"></i>' + c.nome + '</span><span class="num">' + brl(tot) + '</span></div><div class="scroll"><table><thead><tr>' +
         '<th>Ativo</th><th class="r">Verba</th><th class="r">Sugestão</th><th class="r">Comprei</th></tr></thead><tbody>';
       itens.forEach(function (it) {
@@ -673,7 +747,20 @@
     var cfg = estado.cfg;
     var pn = pesosNormalizados();
     var somaPct = plano.somaPct;
-    var html = renderTroca() + '<div class="bloco"><h2>Regras do plano</h2>' +
+    var rf = cfg.rf;
+    var html = renderTroca() +
+      '<div class="bloco"><h2>Perfil da carteira</h2><p class="sub">Escolha como a parte de renda variável é dividida. Mudar os percentuais à mão vira "personalizado".</p>' + blocoPerfis() + "</div>" +
+      '<div class="bloco"><h2>Renda fixa / reserva</h2><p class="sub">A reserva de emergência. O saldo que já existe entra no patrimônio, e parte de cada aporte vai para ela até chegar na meta (deixe a meta em 0 para depositar sempre).</p><div class="campos">' +
+      campo("Saldo atual (R$)", "rf-saldo", rf.saldo, "50") +
+      '<label class="campo">Onde está<input id="rf-onde" value="' + esc(rf.onde) + '" autocomplete="off"></label>' +
+      campo("% do CDI", "rf-pctcdi", rf.pctCdi, "1") +
+      campo("CDI hoje (% a.a.)", "rf-cdi", rf.cdi, "0.05") +
+      campo("% de cada aporte", "rf-pct", rf.pct, "1") +
+      campo("Meta da reserva (R$)", "rf-meta", rf.meta || "", "500") +
+      "</div>" +
+      '<div class="legenda"><span><i class="dot c-rf"></i>Em set/2031 (estim.): ' + brl0(plano.rfSaldo) + "</span><span>Depósitos no plano: " + brl0(plano.rfAportado) + "</span></div>" +
+      '<p class="nota">Rendimento bruto, antes do IR (22,5% a 15% conforme o prazo, descontado no resgate). Confira o CDI atual no app do banco.</p></div>' +
+      '<div class="bloco"><h2>Regras do plano</h2>' +
       '<div class="campos">' +
       campo("Aporte mensal (R$)", "cfg-aporte", cfg.aporte, "50") +
       campo("FII (%)", "cfg-fii", cfg.pct.fii, "1") +
@@ -681,7 +768,7 @@
       campo("ETF (%)", "cfg-etf", cfg.pct.etf, "1") +
       campo("Yield líquido (% a.a.)", "cfg-yield", cfg.yieldLiq, "0.01") +
       "</div>" +
-      '<div class="soma ' + (Math.abs(somaPct - 100) < 0.01 ? "ok" : "bad") + '">Soma das classes: ' + fmtNum.format(somaPct) + "%" + (Math.abs(somaPct - 100) < 0.01 ? " ✓" : " — ajuste para 100%") + "</div>" +
+      '<div class="soma ' + (Math.abs(somaPct - 100) < 0.01 ? "ok" : "bad") + '">Soma de FII + Ações + ETF: ' + fmtNum.format(somaPct) + "%" + (Math.abs(somaPct - 100) < 0.01 ? " ✓" : " — ajuste para 100%") + "</div>" +
       (n(cfg.aporte) < APORTE_MIN ? '<div class="aviso">O aporte está abaixo do mínimo combinado de ' + brl0(APORTE_MIN) + ".</div>" : "") +
       mixBar(cfg.pct) + "</div>";
 
@@ -899,7 +986,8 @@
       });
       estado.cfg.ativos.forEach(function (a) { precos[a.t] = n(a.preco); });
       var ex = document.getElementById("extra-" + k);
-      var reg = { feito: true, compras: compras, precos: precos, extra: ex ? n(ex.value) : 0, em: new Date().toISOString().slice(0, 10) };
+      var rfDep = document.querySelector("[data-rfdep]");
+      var reg = { feito: true, compras: compras, precos: precos, rf: rfDep ? Math.max(0, n(rfDep.value)) : 0, extra: ex ? n(ex.value) : 0, em: new Date().toISOString().slice(0, 10) };
       estado.aportes[k] = reg;
       salvarDoc("aportes", k, reg);
       render();
@@ -914,6 +1002,11 @@
       return;
     }
     if (t.dataset.trocar) return trocarAtivo();
+    if (t.dataset.perfil) {
+      var pf = PERFIS.filter(function (x) { return x.id === t.dataset.perfil; })[0];
+      if (pf) { estado.cfg.pct = { fii: pf.pct.fii, acoes: pf.pct.acoes, etf: pf.pct.etf }; salvarCfg(); render(); }
+      return;
+    }
     if (t.dataset.add) {
       var c = t.dataset.add, num = estado.cfg.ativos.filter(function (a) { return a.c === c; }).length + 1;
       estado.cfg.ativos.push({ t: "NOVO" + num, c: c, seg: "", peso: 0, preco: 0, cotas0: 0 });
@@ -968,6 +1061,12 @@
       case "cfg-vendas": cfg.vendas.valor = n(t.value); break;
       case "cfg-vendas-mes": cfg.vendas.mes = t.value; break;
       case "cfg-precosem": cfg.precosEm = t.value; break;
+      case "rf-saldo": cfg.rf.saldo = n(t.value); break;
+      case "rf-onde": cfg.rf.onde = t.value.trim(); break;
+      case "rf-pctcdi": cfg.rf.pctCdi = n(t.value); break;
+      case "rf-cdi": cfg.rf.cdi = n(t.value); break;
+      case "rf-pct": cfg.rf.pct = Math.min(100, Math.max(0, n(t.value))); break;
+      case "rf-meta": cfg.rf.meta = n(t.value); break;
       default: mudou = false;
     }
     if (!mudou && t.dataset && t.dataset.at != null) {
@@ -1014,8 +1113,7 @@
       var results = await Promise.all([db.doc("config/main").get(), db.collection("aportes").get(), db.collection("revisoes").get()]);
       var cfgSnap = results[0];
       if (cfgSnap.exists) {
-        estado.cfg = Object.assign(cfgPadrao(), cfgSnap.data());
-        estado.cfg = JSON.parse(JSON.stringify(estado.cfg));
+        estado.cfg = completarCfg(cfgSnap.data());
       } else {
         await db.doc("config/main").set(JSON.parse(JSON.stringify(estado.cfg)));
       }
