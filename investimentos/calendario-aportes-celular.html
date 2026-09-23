@@ -1,0 +1,1148 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1E5A46">
+</head>
+<body>
+<title>Calendário de Aportes</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Aportes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
+<style>
+  :root {
+    --ground: #EEF1EC;
+    --surface: #FBFCFA;
+    --sunk: #E3E8E1;
+    --ink: #17221D;
+    --ink-2: #44524B;
+    --muted: #6B7A72;
+    --line: #D3DAD1;
+    --accent: #1E5A46;
+    --accent-ink: #FFFFFF;
+    --fii: #A8701A;
+    --acoes: #1F6B52;
+    --etf: #3B5B8E;
+    --rf: #6B5CA5;
+    --ok: #1C7C45;
+    --warn: #B45F06;
+    --bad: #B42318;
+    --ok-bg: #DFF1E5;
+    --warn-bg: #FBEBD3;
+    --bad-bg: #F9DEDB;
+    --display: "Newsreader", Georgia, "Times New Roman", serif;
+    --sans: "Figtree", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --ground: #0F1512;
+      --surface: #161E1A;
+      --sunk: #1D2722;
+      --ink: #E4ECE7;
+      --ink-2: #B8C6BE;
+      --muted: #8A9A91;
+      --line: #2A3630;
+      --accent: #5CC49B;
+      --accent-ink: #0B1510;
+      --fii: #E0A344;
+      --acoes: #4FC08F;
+      --etf: #86A8E0;
+      --rf: #B3A6E8;
+      --ok: #5DD08A;
+      --warn: #F0A74B;
+      --bad: #F4867B;
+      --ok-bg: #173424;
+      --warn-bg: #3A2A12;
+      --bad-bg: #3D1C19;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --ground: #0F1512;
+    --surface: #161E1A;
+    --sunk: #1D2722;
+    --ink: #E4ECE7;
+    --ink-2: #B8C6BE;
+    --muted: #8A9A91;
+    --line: #2A3630;
+    --accent: #5CC49B;
+    --accent-ink: #0B1510;
+    --fii: #E0A344;
+    --acoes: #4FC08F;
+    --etf: #86A8E0;
+    --rf: #B3A6E8;
+    --ok: #5DD08A;
+    --warn: #F0A74B;
+    --bad: #F4867B;
+    --ok-bg: #173424;
+    --warn-bg: #3A2A12;
+    --bad-bg: #3D1C19;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  .painel > *, .bloco > *, .detalhe > *, .ano > *, .mes, .campos > * { min-width: 0; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.45;
+    padding-inline: 16px;
+    padding-block: 0 96px;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; }
+  .num { font-variant-numeric: tabular-nums; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; }
+  button, input, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  /* Cabeçalho */
+  header.top {
+    padding-block: 22px 14px;
+    display: grid;
+    gap: 4px;
+  }
+  .eyebrow {
+    font-size: 11.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+  }
+  h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(28px, 7vw, 36px);
+    line-height: 1.05;
+  }
+  .sync { font-size: 12px; color: var(--muted); }
+
+  /* Resumo */
+  .resumo {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-block: 6px 14px;
+  }
+  .tile {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+  }
+  .tile .k { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; font-weight: 600; }
+  .tile .v { font-family: var(--display); font-size: 20px; font-weight: 600; line-height: 1.15; overflow-wrap: anywhere; }
+  .tile .s { font-size: 12px; color: var(--ink-2); }
+  @media (max-width: 460px) {
+    .resumo { grid-template-columns: 1fr 1fr; }
+    .resumo .tile:first-child { grid-column: 1 / -1; }
+  }
+
+  /* Alerta de revisão */
+  .alarme {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    background: var(--warn-bg);
+    color: var(--ink);
+    border: 1px solid var(--warn);
+    border-radius: 10px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+  }
+  .alarme strong { display: block; }
+  .alarme .txt { flex: 1; font-size: 14px; }
+  .alarme button { flex: none; }
+
+  /* Distribuição */
+  .mix { display: flex; height: 10px; border-radius: 99px; overflow: hidden; background: var(--sunk); }
+  .mix span { display: block; height: 100%; }
+  .legenda { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 13px; color: var(--ink-2); margin-top: 8px; }
+  .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+  .c-fii { background: var(--fii); } .c-acoes { background: var(--acoes); } .c-etf { background: var(--etf); } .c-rf { background: var(--rf); }
+  .t-fii { color: var(--fii); } .t-acoes { color: var(--acoes); } .t-etf { color: var(--etf); } .t-rf { color: var(--rf); }
+
+  section.painel { display: grid; gap: 14px; }
+  .bloco {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    display: grid;
+    gap: 12px;
+  }
+  .bloco h2 { font-family: var(--display); font-weight: 600; font-size: 21px; }
+  .bloco .sub { font-size: 13.5px; color: var(--ink-2); margin: -6px 0 0; }
+
+  /* Calendário */
+  .ano { display: grid; gap: 6px; }
+  .ano-h {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+    padding: 14px 2px 4px;
+    border-bottom: 1px solid var(--line);
+  }
+  .ano-h h3 { font-family: var(--display); font-size: 19px; font-weight: 600; }
+  .ano-h span { font-size: 12.5px; color: var(--muted); }
+  .mes {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+  }
+  .mes.aberto { border-color: var(--accent); }
+  .mes-btn {
+    width: 100%;
+    background: none; border: 0; text-align: left;
+    display: grid;
+    grid-template-columns: 52px 1fr auto;
+    gap: 10px; align-items: center;
+    padding: 10px 12px;
+  }
+  .dia {
+    display: grid; justify-items: center; line-height: 1;
+    border-right: 1px solid var(--line); padding-right: 10px;
+  }
+  .dia b { font-family: var(--display); font-size: 22px; font-weight: 600; }
+  .dia small { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin-top: 3px; }
+  .mes-info { min-width: 0; display: grid; gap: 1px; }
+  .mes-info .l1 { font-weight: 600; }
+  .mes-info .l2 { font-size: 12.5px; color: var(--muted); }
+  .chip {
+    font-size: 11.5px; font-weight: 600; letter-spacing: .02em;
+    padding: 3px 9px; border-radius: 99px; white-space: nowrap;
+    background: var(--sunk); color: var(--ink-2);
+  }
+  .chip.feito { background: var(--ok-bg); color: var(--ok); }
+  .chip.proximo { background: var(--accent); color: var(--accent-ink); }
+  .chip.pendente { background: var(--bad-bg); color: var(--bad); }
+  .revtag {
+    display: inline-block; font-size: 11px; font-weight: 600;
+    color: var(--warn); margin-left: 6px;
+  }
+  .detalhe { border-top: 1px solid var(--line); padding: 12px; display: grid; gap: 12px; }
+  .grupo-h { display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; font-weight: 700; }
+  .scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; font-size: 11px; font-weight: 600; letter-spacing: .05em; text-transform: uppercase; color: var(--muted); padding: 4px 6px 6px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  td { padding: 7px 6px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  tr:last-child td { border-bottom: 0; }
+  td.r, th.r { text-align: right; }
+  .tk { font-weight: 700; letter-spacing: .01em; }
+  .seg { font-size: 12px; color: var(--muted); }
+  input.cell {
+    width: 64px; text-align: right;
+    padding: 6px 8px; border: 1px solid var(--line); border-radius: 7px;
+    background: var(--ground);
+  }
+  input.cell.wide { width: 96px; }
+  input.cell.tick { width: 96px; text-align: left; font-weight: 700; text-transform: uppercase; }
+  input.cell.seg-in { width: 120px; text-align: left; }
+  .linha-acoes { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .btn {
+    border: 1px solid var(--line); background: var(--surface);
+    padding: 9px 14px; border-radius: 9px; font-weight: 600; font-size: 14px;
+  }
+  .btn.pri { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+  .btn.mini { padding: 5px 10px; font-size: 13px; }
+  .btn.link { border: 0; background: none; color: var(--bad); padding: 5px 4px; font-weight: 600; }
+  .nota { font-size: 12.5px; color: var(--muted); }
+  .aviso { font-size: 13px; color: var(--warn); font-weight: 600; }
+
+  /* Formulários */
+  .campos { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+  label.campo { display: grid; gap: 4px; font-size: 12.5px; color: var(--ink-2); font-weight: 600; }
+  label.campo input, label.campo select {
+    padding: 9px 10px; border: 1px solid var(--line); border-radius: 8px;
+    background: var(--ground); font-weight: 500; font-size: 15px; width: 100%;
+  }
+  .soma { font-size: 13px; font-weight: 600; }
+  .opcoes { display: grid; gap: 6px; }
+  .opcoes label { display: grid; grid-template-columns: 22px 1fr; gap: 6px; align-items: start; font-size: 14px; }
+  .opcoes input { width: 17px; height: 17px; margin-top: 2px; accent-color: var(--accent); }
+  .opcoes small { display: block; color: var(--muted); font-size: 12.5px; }
+  .rf-linha { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 6px 0; }
+  .rf-linha label { display: grid; gap: 3px; justify-items: end; }
+  .perfis { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .perfil {
+    border: 1px solid var(--line); background: var(--ground); border-radius: 10px;
+    padding: 10px; text-align: left; display: grid; gap: 3px; min-width: 0;
+  }
+  .perfil b { font-size: 15px; }
+  .perfil span { font-size: 12px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+  .perfil[aria-pressed="true"] { border-color: var(--accent); background: var(--sunk); box-shadow: inset 0 0 0 1px var(--accent); }
+  .perfil[aria-pressed="true"] b::after { content: " ✓"; color: var(--accent); }
+  @media (max-width: 420px) { .perfis { grid-template-columns: 1fr; } }
+  .msg-ok { color: var(--ok); font-weight: 600; font-size: 13.5px; }
+  .msg-bad { color: var(--bad); font-weight: 600; font-size: 13.5px; }
+  .soma.ok { color: var(--ok); } .soma.bad { color: var(--bad); }
+
+  /* Gráfico */
+  .grafico svg { width: 100%; height: auto; display: block; }
+  .grafico text { fill: var(--muted); font-size: 11px; font-family: var(--sans); }
+  .grafico .val { fill: var(--ink); font-weight: 600; }
+
+  /* Revisão */
+  .check { display: grid; gap: 2px; }
+  .check label {
+    display: grid; grid-template-columns: 24px 1fr; gap: 8px; align-items: start;
+    padding: 9px 4px; border-bottom: 1px solid var(--line); font-size: 14.5px;
+  }
+  .check label:last-child { border-bottom: 0; }
+  .check input { width: 18px; height: 18px; margin-top: 2px; accent-color: var(--accent); }
+  .check small { display: block; color: var(--muted); font-size: 12.5px; }
+  .hist { font-size: 13px; color: var(--ink-2); display: grid; gap: 4px; }
+
+  /* Lembretes */
+  .lembrete { display: grid; gap: 6px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--ground); }
+  .lembrete b { font-size: 15px; }
+  .lembrete a.btn { text-decoration: none; display: inline-block; justify-self: start; }
+  ol.passos { margin: 0; padding-left: 20px; display: grid; gap: 4px; font-size: 14px; }
+
+  /* Barra de abas */
+  nav.abas {
+    position: fixed; left: 0; right: 0; bottom: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--line);
+    padding: 6px 8px calc(6px + env(safe-area-inset-bottom, 0px));
+    display: flex; justify-content: center; z-index: 10;
+  }
+  nav.abas .in { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; width: 100%; max-width: 720px; }
+  nav.abas button {
+    background: none; border: 0; border-radius: 8px;
+    padding: 8px 4px; font-size: 13px; font-weight: 600; color: var(--muted);
+    display: grid; justify-items: center; gap: 2px;
+  }
+  nav.abas button svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+  nav.abas button[aria-selected="true"] { color: var(--accent); background: var(--sunk); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .mes { transition: border-color .15s; }
+  }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <span class="eyebrow">Plano de 5 anos · out/2026 → set/2031</span>
+    <h1>Calendário de Aportes</h1>
+    <span class="sync"><span id="sync">Carregando…</span> · versão 4</span>
+  </header>
+
+  <div class="resumo" id="resumo"></div>
+  <div id="alarme"></div>
+
+  <section class="painel" id="aba-calendario"></section>
+  <section class="painel" id="aba-carteira" hidden></section>
+  <section class="painel" id="aba-revisao" hidden></section>
+  <section class="painel" id="aba-lembretes" hidden></section>
+</div>
+
+<nav class="abas" aria-label="Seções">
+  <div class="in" role="tablist">
+    <button role="tab" data-aba="calendario" aria-selected="true">
+      <svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17M8 3v4M16 3v4"/></svg>Calendário</button>
+    <button role="tab" data-aba="carteira" aria-selected="false">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5V12l6 6"/></svg>Carteira</button>
+    <button role="tab" data-aba="revisao" aria-selected="false">
+      <svg viewBox="0 0 24 24"><path d="M5 12.5l4 4 10-10"/></svg>Revisão</button>
+    <button role="tab" data-aba="lembretes" aria-selected="false">
+      <svg viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0112 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 004 0"/></svg>Lembretes</button>
+  </div>
+</nav>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------- Configuração inicial ---------- */
+  var INICIO = { ano: 2026, mes: 10 };
+  var MESES = 60;
+  var APORTE_MIN = 1000;
+
+  var CLASSES = [
+    { id: "fii", nome: "FII" },
+    { id: "acoes", nome: "Ações" },
+    { id: "etf", nome: "ETF" }
+  ];
+
+  var PERFIS = [
+    { id: "renda", nome: "Renda", pct: { fii: 45, acoes: 35, etf: 20 }, txt: "Mais proventos todo mês, foco no Brasil." },
+    { id: "equilibrado", nome: "Equilibrado", pct: { fii: 40, acoes: 30, etf: 30 }, txt: "Renda com quase um terço no exterior." },
+    { id: "crescimento", nome: "Crescimento", pct: { fii: 30, acoes: 35, etf: 35 }, txt: "Mais exterior e ações, menos renda agora." }
+  ];
+  function perfilAtual(pct) {
+    for (var i = 0; i < PERFIS.length; i++) {
+      var q = PERFIS[i].pct;
+      if (n(pct.fii) === q.fii && n(pct.acoes) === q.acoes && n(pct.etf) === q.etf) return PERFIS[i];
+    }
+    return null;
+  }
+
+  function rfPadrao() {
+    return { saldo: 2500, onde: "Caixinha Nubank", pctCdi: 100, cdi: 14.9, pct: 10, meta: 0 };
+  }
+
+  function cfgPadrao() {
+    return {
+      aporte: 1000,
+      rf: rfPadrao(),
+      pct: { fii: 45, acoes: 35, etf: 20 },
+      yieldLiq: 9.79,
+      vendas: { valor: 0, mes: "2026-10" },
+      precosEm: "",
+      ativos: [
+        { t: "MXRF11", c: "fii", seg: "papel / CRI", peso: 20, preco: 9.6, cotas0: 0 },
+        { t: "BTLG11", c: "fii", seg: "logística", peso: 20, preco: 100, cotas0: 0 },
+        { t: "XPML11", c: "fii", seg: "shopping", peso: 15, preco: 105, cotas0: 0 },
+        { t: "TRXF11", c: "fii", seg: "renda urbana", peso: 15, preco: 95, cotas0: 0 },
+        { t: "KNRI11", c: "fii", seg: "lajes", peso: 15, preco: 150, cotas0: 0 },
+        { t: "GARE11", c: "fii", seg: "híbrido / varejo", peso: 15, preco: 8.5, cotas0: 0 },
+        { t: "TAEE11", c: "acoes", seg: "transmissão", peso: 25, preco: 35, cotas0: 0 },
+        { t: "BBSE3", c: "acoes", seg: "seguros", peso: 25, preco: 35, cotas0: 0 },
+        { t: "ITUB4", c: "acoes", seg: "banco", peso: 20, preco: 37, cotas0: 0 },
+        { t: "VIVT3", c: "acoes", seg: "telecom", peso: 15, preco: 30, cotas0: 0 },
+        { t: "ABEV3", c: "acoes", seg: "consumo", peso: 15, preco: 13, cotas0: 0 },
+        { t: "SPXI11", c: "etf", seg: "S&P 500", peso: 35, preco: 0, cotas0: 0 },
+        { t: "JEPQ", c: "etf", seg: "Nasdaq renda", peso: 25, preco: 0, cotas0: 0 },
+        { t: "ETF-INT-1", c: "etf", seg: "internacional (definir)", peso: 20, preco: 0, cotas0: 0 },
+        { t: "ETF-INT-2", c: "etf", seg: "internacional (definir)", peso: 20, preco: 0, cotas0: 0 }
+      ]
+    };
+  }
+
+  var CHECKLIST = [
+    ["Atualizar preços e conferir cotas compradas no trimestre", "Aba Carteira → preço de cada ativo. Confira se o que está marcado bate com a nota da corretora."],
+    ["Conferir o % de cada classe (FII · Ações · ETF)", "Desvio acima de 5 pontos: direcione os próximos aportes para a classe que ficou para trás, sem vender."],
+    ["Proventos do trimestre: algum corte de dividendos?", "Compare o rendimento de cada ativo com o trimestre anterior."],
+    ["FIIs: relatório gerencial, vacância, inadimplência e P/VP", "Atenção especial a MXRF11 e GARE11 (crédito/CRI e contratos atípicos)."],
+    ["Ações: resultado trimestral, lucro, endividamento e payout", "TAEE11, BBSE3, ITUB4, VIVT3, ABEV3."],
+    ["ETFs: variação do dólar, taxa de administração e desvio do índice", "SPXI11, JEPQ e os dois internacionais."],
+    ["GARE11: a tese de manter continua de pé?", "Você decidiu não vender. Revise se nada mudou nos fundamentos."],
+    ["Vendas antigas concluídas e valor reinvestido na lista", "Registre o valor em Carteira → Reinvestimento das vendas."],
+    ["Imposto: DARF de vendas com lucro e notas guardadas", "Vendas de FII e ETF com ganho pagam IR; ações têm isenção só até R$ 20 mil vendidos no mês. Confirme com seu contador."],
+    ["Dá para subir o aporte acima de R$ 1.000?", "Se a renda subiu, ajuste o valor mensal na aba Carteira."],
+    ["Reserva e renda fixa: saldo, CDI atual e meta", "Confira o saldo da caixinha, atualize o CDI e veja se a meta da reserva mudou (6 meses de gastos é a referência comum)."],
+    ["Perfil ainda faz sentido? (Renda · Equilibrado · Crescimento)", "Compare com a renda fixa (Selic/IPCA). Mude o perfil na aba Carteira se o objetivo mudou."]
+  ];
+
+  /* ---------- Utilidades ---------- */
+  var MES_NOME = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+  var MES_LONGO = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"];
+  var DIA_SEM = ["dom", "seg", "ter", "qua", "qui", "sex", "sáb"];
+
+  var fmtBRL = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+  var fmtBRL0 = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
+  var fmtNum = new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 2 });
+  function brl(v) { return fmtBRL.format(v || 0); }
+  function brl0(v) { return fmtBRL0.format(v || 0); }
+  function n(v) { var x = parseFloat(String(v).replace(",", ".")); return isFinite(x) ? x : 0; }
+  function esc(s) { return String(s == null ? "" : s).replace(/[&<>"']/g, function (ch) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]; }); }
+  function pad(x) { return (x < 10 ? "0" : "") + x; }
+  function chaveMes(i) { var m = INICIO.mes - 1 + i; return (INICIO.ano + Math.floor(m / 12)) + "-" + pad(m % 12 + 1); }
+  function partes(k) { var p = k.split("-"); return { ano: +p[0], mes: +p[1] }; }
+  function rotuloMes(k) { var p = partes(k); return MES_NOME[p.mes - 1] + "/" + p.ano; }
+  function hojeChave() { var d = new Date(); return d.getFullYear() + "-" + pad(d.getMonth() + 1); }
+  function diaUtil(k) {
+    var p = partes(k), d = new Date(p.ano, p.mes - 1, 1);
+    var w = d.getDay(), extra = w === 6 ? 2 : w === 0 ? 1 : 0;
+    var u = new Date(p.ano, p.mes - 1, 1 + extra);
+    return { primeiro: d, util: u, ajustado: extra > 0 };
+  }
+  function dataBR(d) { return pad(d.getDate()) + "/" + pad(d.getMonth() + 1) + "/" + d.getFullYear(); }
+  function isRevisaoMes(k) { var m = partes(k).mes; return m === 1 || m === 4 || m === 7 || m === 10; }
+  function revisaoAntes(k) {
+    // A revisão acontece no dia 28 do mês anterior ao aporte trimestral
+    var p = partes(k), m = p.mes - 1, a = p.ano;
+    if (m === 0) { m = 12; a -= 1; }
+    return new Date(a, m - 1, 28);
+  }
+  function chaveRevisao(k) { return k; }
+  function listaRevisoes() {
+    var out = [];
+    for (var i = 1; i < MESES; i++) { var k = chaveMes(i); if (isRevisaoMes(k)) out.push(k); }
+    var fim = chaveMes(MESES); // out/2031 fecha o ciclo
+    out.push(fim);
+    return out;
+  }
+
+  /* ---------- Estado ---------- */
+  var estado = { cfg: cfgPadrao(), aportes: {}, revisoes: {} };
+  var aberto = null;
+  var abaAtual = "calendario";
+  var msgTroca = null;
+  var db = null;
+
+  function lerLocal() {
+    try {
+      var raw = localStorage.getItem("calendario-aportes-v1");
+      if (raw) {
+        var d = JSON.parse(raw);
+        if (d && d.cfg) estado = { cfg: completarCfg(d.cfg), aportes: d.aportes || {}, revisoes: d.revisoes || {} };
+      }
+      var aba = localStorage.getItem("calendario-aportes-aba");
+      if (aba) abaAtual = aba;
+    } catch (e) {}
+  }
+  function completarCfg(c) {
+    var out = Object.assign(cfgPadrao(), JSON.parse(JSON.stringify(c || {})));
+    out.rf = Object.assign(rfPadrao(), out.rf || {});
+    return out;
+  }
+  function gravarLocal() {
+    try { localStorage.setItem("calendario-aportes-v1", JSON.stringify(estado)); } catch (e) {}
+  }
+  function syncMsg(t) { document.getElementById("sync").textContent = t; }
+
+  var timerCfg = null, cfgGravando = false, cfgDeNovo = false;
+  function salvarCfg() {
+    gravarLocal();
+    if (!db) return;
+    clearTimeout(timerCfg);
+    timerCfg = setTimeout(escreverCfg, 700);
+  }
+  function escreverCfg() {
+    if (cfgGravando) { cfgDeNovo = true; return; }
+    cfgGravando = true;
+    syncMsg("Salvando…");
+    db.doc("config/main").set(JSON.parse(JSON.stringify(estado.cfg))).then(function () {
+      syncMsg("Salvo na nuvem · abre igual em qualquer aparelho");
+    }, function (e) {
+      syncMsg("Salvo neste aparelho (nuvem indisponível: " + (e && e.code || "erro") + ")");
+    }).then(function () {
+      cfgGravando = false;
+      if (cfgDeNovo) { cfgDeNovo = false; escreverCfg(); }
+    });
+  }
+  function salvarDoc(col, id, corpo) {
+    gravarLocal();
+    if (!db) return;
+    syncMsg("Salvando…");
+    var ref = db.doc(col + "/" + id);
+    var p = corpo ? ref.set(JSON.parse(JSON.stringify(corpo))) : ref.delete();
+    p.then(function () { syncMsg("Salvo na nuvem · abre igual em qualquer aparelho"); },
+           function (e) { syncMsg("Salvo neste aparelho (nuvem indisponível: " + (e && e.code || "erro") + ")"); });
+  }
+
+  /* ---------- Cálculo do plano ---------- */
+  function pesosNormalizados() {
+    var soma = {}, out = {};
+    estado.cfg.ativos.forEach(function (a) { soma[a.c] = (soma[a.c] || 0) + n(a.peso); });
+    estado.cfg.ativos.forEach(function (a) { out[a.t] = soma[a.c] > 0 ? n(a.peso) / soma[a.c] : 0; });
+    return { pesos: out, soma: soma };
+  }
+
+  function calcularPlano() {
+    var cfg = estado.cfg, pn = pesosNormalizados().pesos;
+    var somaPct = n(cfg.pct.fii) + n(cfg.pct.acoes) + n(cfg.pct.etf);
+    var caixa = {}, cotas = {};
+    cfg.ativos.forEach(function (a) { caixa[a.t] = 0; cotas[a.t] = n(a.cotas0); });
+    var rm = Math.pow(1 + n(cfg.yieldLiq) / 100, 1 / 12) - 1;
+    var rf = cfg.rf;
+    var rfm = Math.pow(1 + n(rf.cdi) / 100 * n(rf.pctCdi) / 100, 1 / 12) - 1;
+    var rfSaldo = n(rf.saldo);
+    var rv = 0, aportado = 0, rfAportado = 0;
+    cfg.ativos.forEach(function (a) { rv += n(a.cotas0) * n(a.preco); });
+    var patrimonioInicial = rv + rfSaldo;
+    var patrimonio = patrimonioInicial;
+    var linhas = [];
+    for (var i = 0; i < MESES; i++) {
+      var k = chaveMes(i);
+      var reg = estado.aportes[k] || {};
+      var valor = Math.max(n(cfg.aporte), 0) + n(reg.extra) + (cfg.vendas && cfg.vendas.mes === k ? n(cfg.vendas.valor) : 0);
+      var metaAtingida = n(rf.meta) > 0 && rfSaldo >= n(rf.meta);
+      var rfPlano = metaAtingida ? 0 : Math.min(valor, valor * n(rf.pct) / 100);
+      var rfFeito = reg.feito && reg.rf != null;
+      var rfValor = rfFeito ? n(reg.rf) : rfPlano;
+      var rvValor = Math.max(0, valor - rfPlano);
+      rfSaldo = rfSaldo * (1 + rfm) + rfValor;
+      rfAportado += rfValor;
+      var itens = [];
+      cfg.ativos.forEach(function (a) {
+        var pctClasse = somaPct > 0 ? n(cfg.pct[a.c]) / somaPct : 0;
+        var alvo = rvValor * pctClasse * pn[a.t];
+        var acc = caixa[a.t] + alvo;
+        var preco = n(a.preco);
+        var sugestao = preco > 0 ? Math.max(0, Math.floor(acc / preco + 1e-9)) : 0;
+        var feito = !!reg.feito && reg.compras && reg.compras[a.t] != null;
+        var comprado = feito ? n(reg.compras[a.t]) : sugestao;
+        var precoPago = feito && reg.precos && n(reg.precos[a.t]) > 0 ? n(reg.precos[a.t]) : preco;
+        caixa[a.t] = preco > 0 || feito ? acc - comprado * precoPago : acc;
+        cotas[a.t] += comprado;
+        itens.push({ a: a, alvo: alvo, acc: acc, sugestao: sugestao, comprado: comprado, sobra: caixa[a.t] });
+      });
+      aportado += valor;
+      rv = rv * (1 + rm) + (valor - rfValor);
+      patrimonio = rv + rfSaldo;
+      linhas.push({ k: k, i: i, valor: valor, rvValor: rvValor, rfPlano: rfPlano, rfValor: rfValor, metaAtingida: metaAtingida, rfSaldo: rfSaldo, itens: itens, feito: !!reg.feito, reg: reg, aportado: aportado, patrimonio: patrimonio, rvPatrimonio: rv });
+    }
+    return { linhas: linhas, cotas: cotas, caixa: caixa, somaPct: somaPct, rm: rm, rfm: rfm, rfSaldo: rfSaldo, rfAportado: rfAportado, patrimonioInicial: patrimonioInicial };
+  }
+
+  function statusMes(l, hoje) {
+    if (l.feito) return { cls: "feito", txt: "Feito" };
+    if (l.k < hoje) return { cls: "pendente", txt: "Pendente" };
+    return null;
+  }
+
+  /* ---------- Render: resumo ---------- */
+  function renderResumo(plano) {
+    var hoje = hojeChave();
+    var prox = plano.linhas.find(function (l) { return !l.feito && l.k >= hoje; }) || plano.linhas.find(function (l) { return !l.feito; });
+    var feitos = plano.linhas.filter(function (l) { return l.feito; });
+    var investido = feitos.reduce(function (s, l) { return s + l.valor; }, 0);
+    var ult = plano.linhas[plano.linhas.length - 1];
+    var renda = ult.rvPatrimonio * plano.rm + ult.rfSaldo * plano.rfm;
+    var html = "";
+    if (prox) {
+      var du = diaUtil(prox.k);
+      html += tile("Próximo aporte", dataBR(du.util), brl(prox.valor) + (du.ajustado ? " · dia 1 cai no fim de semana" : ""));
+    } else {
+      html += tile("Próximo aporte", "Concluído", "Os 60 aportes estão marcados");
+    }
+    html += tile("Aportes feitos", feitos.length + " de " + MESES, brl0(investido) + " investidos");
+    html += tile("Em 5 anos (estim.)", brl0(ult.patrimonio), "≈ " + brl0(renda) + "/mês de renda");
+    document.getElementById("resumo").innerHTML = html;
+  }
+  function tile(k, v, s) {
+    return '<div class="tile"><span class="k">' + esc(k) + '</span><span class="v num">' + esc(v) + '</span><span class="s num">' + esc(s) + "</span></div>";
+  }
+
+  /* ---------- Render: alarme trimestral ---------- */
+  function revisaoPendente() {
+    var hoje = new Date();
+    var lista = listaRevisoes();
+    var pend = null;
+    lista.forEach(function (k) {
+      var d = revisaoAntes(k);
+      if (d <= hoje && !(estado.revisoes[k] && estado.revisoes[k].feitaEm)) pend = pend || k;
+    });
+    return pend;
+  }
+  function proximaRevisao() {
+    var hoje = new Date(); hoje.setHours(0, 0, 0, 0);
+    var lista = listaRevisoes();
+    for (var i = 0; i < lista.length; i++) {
+      var k = lista[i];
+      if (!(estado.revisoes[k] && estado.revisoes[k].feitaEm)) return k;
+    }
+    return null;
+  }
+  function renderAlarme() {
+    var pend = revisaoPendente();
+    var el = document.getElementById("alarme");
+    if (!pend) { el.innerHTML = ""; return; }
+    el.innerHTML = '<div class="alarme" role="alert"><div class="txt"><strong>Revisão trimestral pendente</strong>Era para ' +
+      dataBR(revisaoAntes(pend)) + ", antes do aporte de " + rotuloMes(pend) + '.</div><button class="btn pri mini" data-ir="revisao">Revisar agora</button></div>';
+  }
+
+  /* ---------- Render: calendário ---------- */
+  function renderCalendario(plano) {
+    var hoje = hojeChave();
+    var prox = plano.linhas.find(function (l) { return !l.feito && l.k >= hoje; });
+    var cfg = estado.cfg;
+    var somaPct = plano.somaPct;
+    var html = '<div class="bloco"><h2>Distribuição de cada aporte</h2>' +
+      '<p class="sub">Mínimo de ' + brl0(APORTE_MIN) + ' todo dia 1º. A reserva recebe a parte dela primeiro e o resto é dividido pelo perfil escolhido. O que não fecha uma cota inteira fica guardado para o mês seguinte, no mesmo ativo.</p>' +
+      blocoPerfis() + mixBar(cfg.pct) +
+      '<div class="linha-acoes"><button class="btn mini" data-ir-troca="1">⇄ Trocar ativo (FII, ação ou ETF)</button></div>' +
+      "</div>";
+
+    for (var ano = 0; ano < 5; ano++) {
+      var ini = plano.linhas[ano * 12], fim = plano.linhas[ano * 12 + 11];
+      var totalAno = 0;
+      for (var j = ano * 12; j < ano * 12 + 12; j++) totalAno += plano.linhas[j].valor;
+      html += '<div class="ano"><div class="ano-h"><h3>Ano ' + (ano + 1) + '</h3><span class="num">' + rotuloMes(ini.k) + " – " + rotuloMes(fim.k) + " · " + brl0(totalAno) + "</span></div>";
+      for (var m = ano * 12; m < ano * 12 + 12; m++) html += renderMes(plano.linhas[m], hoje, prox);
+      html += "</div>";
+    }
+    document.getElementById("aba-calendario").innerHTML = html;
+  }
+
+  function mixBar(pct) {
+    var s = n(pct.fii) + n(pct.acoes) + n(pct.etf) || 1;
+    var aporte = n(estado.cfg.aporte);
+    var rfPct = Math.min(100, Math.max(0, n(estado.cfg.rf.pct)));
+    var rvPct = 100 - rfPct;
+    var html = '<div class="mix" aria-hidden="true">';
+    if (rfPct > 0) html += '<span class="c-rf" style="width:' + rfPct + '%"></span>';
+    CLASSES.forEach(function (c) { html += '<span class="c-' + c.id + '" style="width:' + (n(pct[c.id]) / s * rvPct) + '%"></span>'; });
+    html += '</div><div class="legenda">';
+    if (rfPct > 0) html += '<span><i class="dot c-rf"></i>Reserva ' + fmtNum.format(rfPct) + "% · " + brl(aporte * rfPct / 100) + "</span>";
+    CLASSES.forEach(function (c) {
+      var efetivo = n(pct[c.id]) / s * rvPct;
+      html += '<span><i class="dot c-' + c.id + '"></i>' + c.nome + " " + fmtNum.format(Math.round(efetivo * 10) / 10) + "% · " + brl(aporte * efetivo / 100) + "</span>";
+    });
+    return html + "</div>";
+  }
+
+  function blocoPerfis() {
+    var atual = perfilAtual(estado.cfg.pct);
+    var html = '<div class="perfis" role="group" aria-label="Perfil da carteira">';
+    PERFIS.forEach(function (pf) {
+      html += '<button class="perfil" data-perfil="' + pf.id + '" aria-pressed="' + (atual && atual.id === pf.id) + '"><b>' + pf.nome + "</b><span>FII " + pf.pct.fii + " · Ações " + pf.pct.acoes + " · ETF " + pf.pct.etf + "</span><span>" + pf.txt + "</span></button>";
+    });
+    html += "</div>";
+    if (!atual) html += '<p class="nota">Perfil personalizado: FII ' + fmtNum.format(n(estado.cfg.pct.fii)) + " · Ações " + fmtNum.format(n(estado.cfg.pct.acoes)) + " · ETF " + fmtNum.format(n(estado.cfg.pct.etf)) + ".</p>";
+    return html;
+  }
+
+  function renderMes(l, hoje, prox) {
+    var du = diaUtil(l.k);
+    var p = partes(l.k);
+    var st = statusMes(l, hoje);
+    if (!st && prox && prox.k === l.k) st = { cls: "proximo", txt: "Próximo" };
+    var isAberto = aberto === l.k;
+    var extras = [];
+    if (estado.cfg.vendas && estado.cfg.vendas.mes === l.k && n(estado.cfg.vendas.valor) > 0) extras.push("+ vendas " + brl0(estado.cfg.vendas.valor));
+    if (n(l.reg.extra) > 0) extras.push("+ extra " + brl0(l.reg.extra));
+    var l2 = (du.ajustado ? "comprar " + DIA_SEM[du.util.getDay()] + " " + dataBR(du.util) : DIA_SEM[du.primeiro.getDay()] + " " + dataBR(du.primeiro)) +
+      (extras.length ? " · " + extras.join(" ") : "");
+    var rev = isRevisaoMes(l.k) && l.i > 0 ? '<span class="revtag">revisão ' + dataBR(revisaoAntes(l.k)).slice(0, 5) + "</span>" : "";
+    var html = '<div class="mes' + (isAberto ? " aberto" : "") + '">' +
+      '<button class="mes-btn" data-mes="' + l.k + '" aria-expanded="' + isAberto + '">' +
+      '<span class="dia"><b>01</b><small>' + MES_NOME[p.mes - 1] + "</small></span>" +
+      '<span class="mes-info"><span class="l1 num">' + brl(l.valor) + rev + '</span><span class="l2 num">' + esc(l2) + "</span></span>" +
+      (st ? '<span class="chip ' + st.cls + '">' + st.txt + "</span>" : '<span class="chip">' + (l.i + 1) + "/60</span>") +
+      "</button>";
+    if (isAberto) html += renderDetalhe(l);
+    return html + "</div>";
+  }
+
+  function renderDetalhe(l) {
+    var rf = estado.cfg.rf;
+    var html = '<div class="detalhe">';
+    var rfVal = l.feito && l.reg.rf != null ? n(l.reg.rf) : Math.round(l.rfPlano * 100) / 100;
+    html += '<div><div class="grupo-h"><span class="t-rf"><i class="dot c-rf"></i>Renda fixa / reserva</span><span class="num">' + brl(l.rfPlano) + "</span></div>" +
+      '<div class="rf-linha"><div><span class="tk">' + esc(rf.onde || "Reserva") + '</span><div class="seg num">' + fmtNum.format(n(rf.pctCdi)) + "% do CDI · saldo depois " + brl(l.rfSaldo) + (l.metaAtingida ? " · meta atingida" : "") + "</div></div>" +
+      '<label class="seg">Depositei R$<input class="cell wide num" id="rf-' + l.k + '" data-rfdep="1" inputmode="decimal" type="number" min="0" step="10" value="' + esc(rfVal) + '"></label></div></div>';
+    CLASSES.forEach(function (c) {
+      var itens = l.itens.filter(function (it) { return it.a.c === c.id; });
+      if (!itens.length) return;
+      var tot = itens.reduce(function (s, it) { return s + it.alvo; }, 0);
+      if (tot <= 0.005 && itens.every(function (it) { return it.acc <= 0.005; })) return;
+      html += '<div><div class="grupo-h"><span class="t-' + c.id + '"><i class="dot c-' + c.id + '"></i>' + c.nome + '</span><span class="num">' + brl(tot) + '</span></div><div class="scroll"><table><thead><tr>' +
+        '<th>Ativo</th><th class="r">Verba</th><th class="r">Sugestão</th><th class="r">Comprei</th></tr></thead><tbody>';
+      itens.forEach(function (it) {
+        var preco = n(it.a.preco);
+        var val = l.feito && l.reg.compras && l.reg.compras[it.a.t] != null ? l.reg.compras[it.a.t] : it.sugestao;
+        html += "<tr><td><span class=\"tk\">" + esc(it.a.t) + '</span><div class="seg">' + (preco > 0 ? brl(preco) + "/cota" : "informe o preço") + "</div></td>" +
+          '<td class="r num">' + brl(it.acc) + (Math.abs(it.acc - it.alvo) > 0.005 ? '<div class="seg">mês ' + brl(it.alvo) + "</div>" : "") + "</td>" +
+          '<td class="r num">' + (preco > 0 ? it.sugestao + " cota" + (it.sugestao === 1 ? "" : "s") : "—") + "</td>" +
+          '<td class="r"><input class="cell num" id="c-' + l.k + "-" + esc(it.a.t) + '" data-comp="' + esc(it.a.t) + '" inputmode="numeric" type="number" min="0" step="1" value="' + esc(val) + '" aria-label="Cotas compradas de ' + esc(it.a.t) + '"></td></tr>';
+      });
+      html += "</tbody></table></div></div>";
+    });
+    html += '<div class="campos"><label class="campo">Aporte extra neste mês (R$)<input id="extra-' + l.k + '" type="number" inputmode="decimal" min="0" step="50" value="' + esc(n(l.reg.extra) || "") + '" placeholder="0"></label></div>';
+    html += '<div class="linha-acoes">' +
+      (l.feito
+        ? '<button class="btn" data-desfazer="' + l.k + '">Desmarcar</button><button class="btn pri" data-feito="' + l.k + '">Atualizar cotas</button>'
+        : '<button class="btn pri" data-feito="' + l.k + '">Marcar aporte como feito</button>') +
+      '</div><p class="nota">"Verba" já soma o que sobrou do mês anterior no mesmo ativo (a linha "mês" mostra só a parte deste aporte). Ajuste "Comprei" para o número real de cotas da nota da corretora.</p>';
+    return html + "</div>";
+  }
+
+  /* ---------- Render: carteira ---------- */
+  function renderCarteira(plano) {
+    var cfg = estado.cfg;
+    var pn = pesosNormalizados();
+    var somaPct = plano.somaPct;
+    var rf = cfg.rf;
+    var html = renderTroca() +
+      '<div class="bloco"><h2>Perfil da carteira</h2><p class="sub">Escolha como a parte de renda variável é dividida. Mudar os percentuais à mão vira "personalizado".</p>' + blocoPerfis() + "</div>" +
+      '<div class="bloco"><h2>Renda fixa / reserva</h2><p class="sub">A reserva de emergência. O saldo que já existe entra no patrimônio, e parte de cada aporte vai para ela até chegar na meta (deixe a meta em 0 para depositar sempre).</p><div class="campos">' +
+      campo("Saldo atual (R$)", "rf-saldo", rf.saldo, "50") +
+      '<label class="campo">Onde está<input id="rf-onde" value="' + esc(rf.onde) + '" autocomplete="off"></label>' +
+      campo("% do CDI", "rf-pctcdi", rf.pctCdi, "1") +
+      campo("CDI hoje (% a.a.)", "rf-cdi", rf.cdi, "0.05") +
+      campo("% de cada aporte", "rf-pct", rf.pct, "1") +
+      campo("Meta da reserva (R$)", "rf-meta", rf.meta || "", "500") +
+      "</div>" +
+      '<div class="legenda"><span><i class="dot c-rf"></i>Em set/2031 (estim.): ' + brl0(plano.rfSaldo) + "</span><span>Depósitos no plano: " + brl0(plano.rfAportado) + "</span></div>" +
+      '<p class="nota">Rendimento bruto, antes do IR (22,5% a 15% conforme o prazo, descontado no resgate). Confira o CDI atual no app do banco.</p></div>' +
+      '<div class="bloco"><h2>Regras do plano</h2>' +
+      '<div class="campos">' +
+      campo("Aporte mensal (R$)", "cfg-aporte", cfg.aporte, "50") +
+      campo("FII (%)", "cfg-fii", cfg.pct.fii, "1") +
+      campo("Ações (%)", "cfg-acoes", cfg.pct.acoes, "1") +
+      campo("ETF (%)", "cfg-etf", cfg.pct.etf, "1") +
+      campo("Yield líquido (% a.a.)", "cfg-yield", cfg.yieldLiq, "0.01") +
+      "</div>" +
+      '<div class="soma ' + (Math.abs(somaPct - 100) < 0.01 ? "ok" : "bad") + '">Soma de FII + Ações + ETF: ' + fmtNum.format(somaPct) + "%" + (Math.abs(somaPct - 100) < 0.01 ? " ✓" : " — ajuste para 100%") + "</div>" +
+      (n(cfg.aporte) < APORTE_MIN ? '<div class="aviso">O aporte está abaixo do mínimo combinado de ' + brl0(APORTE_MIN) + ".</div>" : "") +
+      mixBar(cfg.pct) + "</div>";
+
+    html += '<div class="bloco"><h2>Reinvestimento das vendas</h2><p class="sub">Quando concluir as vendas, lance aqui o valor. Ele entra no mês escolhido e é dividido pelos mesmos percentuais.</p><div class="campos">' +
+      campo("Valor das vendas (R$)", "cfg-vendas", cfg.vendas.valor || "", "100") +
+      '<label class="campo">Aplicar no aporte de<select id="cfg-vendas-mes">';
+    for (var i = 0; i < MESES; i++) { var k = chaveMes(i); html += '<option value="' + k + '"' + (cfg.vendas.mes === k ? " selected" : "") + ">" + rotuloMes(k) + "</option>"; }
+    html += "</select></label></div></div>";
+
+    html += '<div class="bloco"><h2>Ativos, pesos e cotas</h2><p class="sub">"Cotas iniciais" começa em zero porque o plano não traz o que já está guardado. Ajuste quando quiser, por exemplo as cotas de GARE11 que você vai manter.</p>' +
+      '<label class="campo" style="max-width:220px">Preços atualizados em<input id="cfg-precosem" type="date" value="' + esc(cfg.precosEm) + '"></label>';
+    CLASSES.forEach(function (c) {
+      var ativos = cfg.ativos.filter(function (a) { return a.c === c.id; });
+      var soma = pn.soma[c.id] || 0;
+      html += '<div><div class="grupo-h"><span class="t-' + c.id + '"><i class="dot c-' + c.id + '"></i>' + c.nome + " — " + fmtNum.format(n(cfg.pct[c.id])) + '% do aporte</span><span class="soma ' + (Math.abs(soma - 100) < 0.01 ? "ok" : "bad") + '">pesos: ' + fmtNum.format(soma) + "%</span></div>" +
+        '<div class="scroll"><table><thead><tr><th>Ativo</th><th>Segmento</th><th class="r">Peso %</th><th class="r">Preço R$</th><th class="r">Cotas iniciais</th><th class="r">Total em 5 anos</th><th></th></tr></thead><tbody>';
+      ativos.forEach(function (a) {
+        var idx = cfg.ativos.indexOf(a);
+        html += "<tr>" +
+          '<td><input class="cell tick" id="a' + idx + '-t" data-at="' + idx + '" data-f="t" value="' + esc(a.t) + '" aria-label="Ticker"></td>' +
+          '<td><input class="cell seg-in" id="a' + idx + '-seg" data-at="' + idx + '" data-f="seg" value="' + esc(a.seg) + '" aria-label="Segmento"></td>' +
+          '<td class="r"><input class="cell num" id="a' + idx + '-peso" data-at="' + idx + '" data-f="peso" type="number" inputmode="decimal" min="0" step="1" value="' + esc(a.peso) + '" aria-label="Peso"></td>' +
+          '<td class="r"><input class="cell wide num" id="a' + idx + '-preco" data-at="' + idx + '" data-f="preco" type="number" inputmode="decimal" min="0" step="0.01" value="' + esc(a.preco || "") + '" placeholder="0,00" aria-label="Preço"></td>' +
+          '<td class="r"><input class="cell num" id="a' + idx + '-cotas0" data-at="' + idx + '" data-f="cotas0" type="number" inputmode="numeric" min="0" step="1" value="' + esc(a.cotas0 || "") + '" placeholder="0" aria-label="Cotas iniciais"></td>' +
+          '<td class="r num">' + fmtNum.format(plano.cotas[a.t] || 0) + "</td>" +
+          '<td><button class="btn link" data-rm="' + idx + '" aria-label="Remover ' + esc(a.t) + '">remover</button></td></tr>';
+      });
+      html += '</tbody></table></div><button class="btn mini" data-add="' + c.id + '">+ adicionar ' + (c.id === "etf" ? "ETF" : c.id === "fii" ? "FII" : "ação") + "</button></div>";
+    });
+    html += '<p class="nota">"Total em 5 anos" = cotas iniciais + compras marcadas + compras sugeridas até set/2031, com os preços de hoje. Preços pré-preenchidos são aproximados: atualize antes de comprar.</p></div>';
+
+    html += renderProjecao(plano);
+    document.getElementById("aba-carteira").innerHTML = html;
+  }
+  function renderTroca() {
+    var cfg = estado.cfg;
+    var html = '<div class="bloco" id="troca"><h2>⇄ Trocar ativo</h2><p class="sub">Para substituir um FII, uma ação ou um ETF por outro. O novo entra na mesma classe e com o mesmo peso do que sai.</p><div class="campos">' +
+      '<label class="campo">Sai<select id="tr-de">';
+    CLASSES.forEach(function (c) {
+      var lista = cfg.ativos.filter(function (a) { return a.c === c.id && n(a.peso) > 0; });
+      if (!lista.length) return;
+      html += '<optgroup label="' + c.nome + '">';
+      lista.forEach(function (a) { html += '<option value="' + cfg.ativos.indexOf(a) + '">' + esc(a.t) + " · " + fmtNum.format(n(a.peso)) + "%</option>"; });
+      html += "</optgroup>";
+    });
+    html += "</select></label>" +
+      '<label class="campo">Entra (código)<input id="tr-para" autocapitalize="characters" autocomplete="off" placeholder="Ex.: HGLG11"></label>' +
+      '<label class="campo">Segmento<input id="tr-seg" autocomplete="off" placeholder="Ex.: logística"></label>' +
+      '<label class="campo">Preço R$<input id="tr-preco" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0,00"></label>' +
+      '</div><div class="opcoes">' +
+      '<label><input type="radio" name="tr-modo" id="tr-modo-novo" value="novo" checked><span>É outro ativo<small>O antigo fica na lista com peso 0, guardando as cotas e os meses já feitos. O novo começa do zero.</small></span></label>' +
+      '<label><input type="radio" name="tr-modo" id="tr-modo-cod" value="codigo"><span>Só mudou o código (mesmo ativo)<small>Leva junto peso, cotas e todo o histórico. Use para corrigir um ticker digitado errado.</small></span></label>' +
+      '</div><div class="linha-acoes"><button class="btn pri" data-trocar="1">Trocar ativo</button>' +
+      (msgTroca ? '<span class="' + (msgTroca.ok ? "msg-ok" : "msg-bad") + '">' + esc(msgTroca.txt) + "</span>" : "") +
+      "</div></div>";
+    return html;
+  }
+
+  function trocarAtivo() {
+    var cfg = estado.cfg;
+    var de = cfg.ativos[+document.getElementById("tr-de").value];
+    var para = document.getElementById("tr-para").value.trim().toUpperCase().replace(/\s+/g, "");
+    var seg = document.getElementById("tr-seg").value.trim();
+    var preco = n(document.getElementById("tr-preco").value);
+    var modo = document.getElementById("tr-modo-cod").checked ? "codigo" : "novo";
+    if (!de) { msgTroca = { ok: false, txt: "Escolha o ativo que sai." }; return render(); }
+    if (!para) { msgTroca = { ok: false, txt: "Digite o código do ativo que entra." }; return render(); }
+    if (!/^[A-Z0-9.\-]{2,15}$/.test(para)) { msgTroca = { ok: false, txt: "Use só letras, números e hífen no código." }; return render(); }
+    if (cfg.ativos.some(function (a) { return a !== de && a.t === para; })) { msgTroca = { ok: false, txt: para + " já está na carteira. Ajuste o peso dele na tabela." }; return render(); }
+    if (modo === "codigo") {
+      var velho = de.t;
+      renomearTicker(velho, para);
+      de.t = para;
+      if (seg) de.seg = seg;
+      if (preco > 0) de.preco = preco;
+      msgTroca = { ok: true, txt: velho + " virou " + para + ", com cotas e histórico." };
+    } else {
+      var idx = cfg.ativos.indexOf(de);
+      var novo = { t: para, c: de.c, seg: seg || de.seg, peso: n(de.peso), preco: preco, cotas0: 0 };
+      de.peso = 0;
+      de.seg = "substituído por " + para;
+      cfg.ativos.splice(idx + 1, 0, novo);
+      msgTroca = { ok: true, txt: para + " entrou no lugar de " + de.t + " com " + fmtNum.format(novo.peso) + "% da classe." };
+    }
+    salvarCfg();
+    render();
+  }
+
+  function campo(rot, id, val, step) {
+    return '<label class="campo">' + esc(rot) + '<input id="' + id + '" type="number" inputmode="decimal" min="0" step="' + step + '" value="' + esc(val) + '"></label>';
+  }
+
+  function renderProjecao(plano) {
+    var anos = [];
+    for (var a = 1; a <= 5; a++) { var l = plano.linhas[a * 12 - 1]; anos.push({ ano: a, aportado: l.aportado + plano.patrimonioInicial, total: l.patrimonio }); }
+    var max = Math.max.apply(null, anos.map(function (x) { return x.total; })) || 1;
+    var W = 340, H = 190, top = 26, base = 160, bw = 40, gap = (W - 20 - bw * 5) / 4;
+    var svg = '<svg viewBox="0 0 ' + W + " " + H + '" role="img" aria-label="Patrimônio estimado ao fim de cada ano">';
+    svg += '<line x1="10" x2="' + (W - 10) + '" y1="' + base + '" y2="' + base + '" stroke="var(--line)" />';
+    anos.forEach(function (x, i) {
+      var xpos = 10 + i * (bw + gap);
+      var hT = (x.total / max) * (base - top), hA = (x.aportado / max) * (base - top);
+      svg += '<rect x="' + xpos + '" y="' + (base - hT) + '" width="' + bw + '" height="' + hT + '" rx="3" fill="var(--fii)" opacity=".85" />';
+      svg += '<rect x="' + xpos + '" y="' + (base - hA) + '" width="' + bw + '" height="' + hA + '" rx="3" fill="var(--accent)" />';
+      svg += '<text class="val" x="' + (xpos + bw / 2) + '" y="' + (base - hT - 7) + '" text-anchor="middle">' + (x.total >= 1000 ? fmtNum.format(Math.round(x.total / 100) / 10) + " mil" : fmtNum.format(Math.round(x.total))) + "</text>";
+      svg += '<text x="' + (xpos + bw / 2) + '" y="' + (base + 16) + '" text-anchor="middle">Ano ' + x.ano + "</text>";
+    });
+    svg += "</svg>";
+    var ult = anos[4];
+    return '<div class="bloco grafico"><h2>Projeção em 5 anos</h2><p class="sub">Renda reinvestida a ' + fmtNum.format(n(estado.cfg.yieldLiq)) + '% a.a. líquido, sem contar valorização das cotas. É uma estimativa, não uma promessa.</p>' + svg +
+      '<div class="legenda"><span><i class="dot" style="background:var(--accent)"></i>Aportado ' + brl0(ult.aportado) + '</span><span><i class="dot" style="background:var(--fii)"></i>Com renda reinvestida ' + brl0(ult.total) + "</span></div></div>";
+  }
+
+  /* ---------- Render: revisão ---------- */
+  function renderRevisao() {
+    var alvo = revisaoPendente() || proximaRevisao();
+    var html = "";
+    if (alvo) {
+      var reg = estado.revisoes[alvo] || { itens: [] };
+      var feitos = (reg.itens || []).filter(Boolean).length;
+      html += '<div class="bloco"><h2>Revisão de ' + dataBR(revisaoAntes(alvo)) + '</h2><p class="sub">Antes do aporte de ' + MES_LONGO[partes(alvo).mes - 1] + " de " + partes(alvo).ano + ". " + feitos + " de " + CHECKLIST.length + " pontos conferidos.</p>" +
+        '<div class="check">';
+      CHECKLIST.forEach(function (it, i) {
+        html += '<label><input type="checkbox" id="rv-' + alvo + "-" + i + '" data-rv="' + alvo + '" data-i="' + i + '"' + (reg.itens && reg.itens[i] ? " checked" : "") + "><span>" + esc(it[0]) + "<small>" + esc(it[1]) + "</small></span></label>";
+      });
+      html += '</div><div class="linha-acoes"><button class="btn pri" data-concluir="' + alvo + '">Concluir revisão</button><span class="nota">A próxima aparece sozinha e o aviso some.</span></div></div>';
+    } else {
+      html += '<div class="bloco"><h2>Todas as revisões concluídas</h2><p class="sub">Os 5 anos do plano foram revisados.</p></div>';
+    }
+    var hist = listaRevisoes().filter(function (k) { return estado.revisoes[k] && estado.revisoes[k].feitaEm; });
+    html += '<div class="bloco"><h2>Agenda de revisões</h2><p class="sub">Todo dia 28 de dezembro, março, junho e setembro, antes do aporte do trimestre. São 20 no total.</p><div class="hist num">';
+    listaRevisoes().forEach(function (k) {
+      var r = estado.revisoes[k];
+      html += "<div>" + dataBR(revisaoAntes(k)) + " — " + (r && r.feitaEm ? '<span class="t-acoes">feita em ' + esc(r.feitaEm) + "</span>" : "a fazer") + "</div>";
+    });
+    html += "</div>" + (hist.length ? "" : "") + "</div>";
+    document.getElementById("aba-revisao").innerHTML = html;
+  }
+
+  /* ---------- Render: lembretes ---------- */
+  function gcalLink(titulo, inicio, fim, rrule, detalhes) {
+    return "https://calendar.google.com/calendar/render?action=TEMPLATE" +
+      "&text=" + encodeURIComponent(titulo) +
+      "&dates=" + inicio + "/" + fim +
+      "&ctz=America/Sao_Paulo" +
+      "&recur=" + encodeURIComponent("RRULE:" + rrule) +
+      "&details=" + encodeURIComponent(detalhes);
+  }
+  function renderLembretes() {
+    var pontos = CHECKLIST.map(function (c, i) { return (i + 1) + ". " + c[0]; }).join("\n");
+    var linkRev = gcalLink("Revisão trimestral da carteira", "20261228T090000", "20261228T100000",
+      "FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=28;COUNT=20",
+      "Abra o app Calendário de Aportes, aba Revisão.\n\nPontos importantes:\n" + pontos);
+    var linkAporte = gcalLink("Aporte do mês (mínimo R$ 1.000)", "20261001T090000", "20261001T093000",
+      "FREQ=MONTHLY;BYMONTHDAY=1;COUNT=60",
+      "Abra o app Calendário de Aportes, veja as cotas sugeridas do mês e marque como feito.\nFII · Ações · ETF · GARE11 mantido.");
+    var html = '<div class="bloco"><h2>Alarmes no celular</h2><p class="sub">Toque para criar o evento repetido no Google Agenda. Ele já vem com a lista dos pontos da revisão.</p>' +
+      '<div class="lembrete"><b>Revisão trimestral</b><span class="nota">Dia 28 de dez, mar, jun e set às 9h · 20 vezes (até set/2031)</span><a class="btn pri" href="' + esc(linkRev) + '" target="_blank" rel="noopener">Criar alarme trimestral</a></div>' +
+      '<div class="lembrete"><b>Aporte mensal</b><span class="nota">Todo dia 1º às 9h · 60 vezes (out/2026 a set/2031)</span><a class="btn" href="' + esc(linkAporte) + '" target="_blank" rel="noopener">Criar lembrete mensal</a></div>' +
+      '<p class="nota">No Google Agenda, antes de salvar, toque em "Adicionar notificação" e escolha "1 dia antes" e "no horário" para virar alarme. Dentro do app, um aviso amarelo aparece no topo quando uma revisão vence e ainda não foi concluída.</p></div>';
+    html += '<div class="bloco"><h2>Instalar como aplicativo</h2><ol class="passos">' +
+      "<li><b>Android (Chrome):</b> abra este link, toque em ⋮ e depois em “Adicionar à tela inicial”.</li>" +
+      "<li><b>iPhone (Safari):</b> toque em Compartilhar e depois em “Adicionar à Tela de Início”.</li>" +
+      "<li>O ícone abre direto no calendário. Os dados ficam salvos na sua conta e aparecem iguais no computador.</li>" +
+      "</ol></div>";
+    html += '<div class="bloco"><h2>Pontos da revisão</h2><ol class="passos">' + CHECKLIST.map(function (c) { return "<li>" + esc(c[0]) + "</li>"; }).join("") + "</ol></div>";
+    document.getElementById("aba-lembretes").innerHTML = html;
+  }
+
+  /* ---------- Render geral ---------- */
+  function render() {
+    var plano = calcularPlano();
+    renderResumo(plano);
+    renderAlarme();
+    if (abaAtual === "calendario") renderCalendario(plano);
+    if (abaAtual === "carteira") renderCarteira(plano);
+    if (abaAtual === "revisao") renderRevisao();
+    if (abaAtual === "lembretes") renderLembretes();
+  }
+
+  function mostrarAba(aba) {
+    abaAtual = aba;
+    msgTroca = null;
+    try { localStorage.setItem("calendario-aportes-aba", aba); } catch (e) {}
+    ["calendario", "carteira", "revisao", "lembretes"].forEach(function (a) {
+      document.getElementById("aba-" + a).hidden = a !== aba;
+    });
+    document.querySelectorAll("nav.abas button").forEach(function (b) { b.setAttribute("aria-selected", String(b.dataset.aba === aba)); });
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  /* ---------- Eventos ---------- */
+  document.addEventListener("click", function (ev) {
+    var t = ev.target.closest("button");
+    if (!t) return;
+    if (t.dataset.aba) return mostrarAba(t.dataset.aba);
+    if (t.dataset.ir) return mostrarAba(t.dataset.ir);
+    if (t.dataset.irTroca) {
+      mostrarAba("carteira");
+      var bl = document.getElementById("troca");
+      if (bl) { bl.scrollIntoView({ block: "start" }); var f = document.getElementById("tr-para"); if (f) f.focus({ preventScroll: true }); }
+      return;
+    }
+    if (t.dataset.mes) {
+      aberto = aberto === t.dataset.mes ? null : t.dataset.mes;
+      render();
+      return;
+    }
+    if (t.dataset.feito) {
+      var k = t.dataset.feito;
+      var compras = {}, precos = {};
+      document.querySelectorAll("[data-comp]").forEach(function (inp) {
+        compras[inp.dataset.comp] = Math.max(0, Math.round(n(inp.value)));
+      });
+      estado.cfg.ativos.forEach(function (a) { precos[a.t] = n(a.preco); });
+      var ex = document.getElementById("extra-" + k);
+      var rfDep = document.querySelector("[data-rfdep]");
+      var reg = { feito: true, compras: compras, precos: precos, rf: rfDep ? Math.max(0, n(rfDep.value)) : 0, extra: ex ? n(ex.value) : 0, em: new Date().toISOString().slice(0, 10) };
+      estado.aportes[k] = reg;
+      salvarDoc("aportes", k, reg);
+      render();
+      return;
+    }
+    if (t.dataset.desfazer) {
+      var kd = t.dataset.desfazer;
+      var prev = estado.aportes[kd] || {};
+      if (n(prev.extra) > 0) { estado.aportes[kd] = { feito: false, extra: n(prev.extra) }; salvarDoc("aportes", kd, estado.aportes[kd]); }
+      else { delete estado.aportes[kd]; salvarDoc("aportes", kd, null); }
+      render();
+      return;
+    }
+    if (t.dataset.trocar) return trocarAtivo();
+    if (t.dataset.perfil) {
+      var pf = PERFIS.filter(function (x) { return x.id === t.dataset.perfil; })[0];
+      if (pf) { estado.cfg.pct = { fii: pf.pct.fii, acoes: pf.pct.acoes, etf: pf.pct.etf }; salvarCfg(); render(); }
+      return;
+    }
+    if (t.dataset.add) {
+      var c = t.dataset.add, num = estado.cfg.ativos.filter(function (a) { return a.c === c; }).length + 1;
+      estado.cfg.ativos.push({ t: "NOVO" + num, c: c, seg: "", peso: 0, preco: 0, cotas0: 0 });
+      salvarCfg(); render();
+      return;
+    }
+    if (t.dataset.rm) {
+      estado.cfg.ativos.splice(+t.dataset.rm, 1);
+      salvarCfg(); render();
+      return;
+    }
+    if (t.dataset.concluir) {
+      var kr = t.dataset.concluir;
+      var r = estado.revisoes[kr] || { itens: [] };
+      r = { itens: (r.itens || []).slice(), feitaEm: dataBR(new Date()) };
+      estado.revisoes[kr] = r;
+      salvarDoc("revisoes", kr, r);
+      render();
+      return;
+    }
+  });
+
+  document.addEventListener("change", function (ev) {
+    var t = ev.target;
+    if (t.dataset && t.dataset.rv) {
+      var k = t.dataset.rv, i = +t.dataset.i;
+      var r = estado.revisoes[k] || { itens: [] };
+      var itens = (r.itens || []).slice();
+      itens[i] = t.checked;
+      estado.revisoes[k] = { itens: itens, feitaEm: r.feitaEm || "" };
+      salvarDoc("revisoes", k, estado.revisoes[k]);
+      renderRevisao();
+      return;
+    }
+    if (t.id && t.id.indexOf("extra-") === 0) {
+      var km = t.id.slice(6);
+      var reg = Object.assign({}, estado.aportes[km] || { feito: false });
+      reg.extra = n(t.value);
+      estado.aportes[km] = reg;
+      salvarDoc("aportes", km, reg);
+      render();
+      return;
+    }
+    var cfg = estado.cfg;
+    var mudou = true;
+    switch (t.id) {
+      case "cfg-aporte": cfg.aporte = n(t.value); break;
+      case "cfg-fii": cfg.pct.fii = n(t.value); break;
+      case "cfg-acoes": cfg.pct.acoes = n(t.value); break;
+      case "cfg-etf": cfg.pct.etf = n(t.value); break;
+      case "cfg-yield": cfg.yieldLiq = n(t.value); break;
+      case "cfg-vendas": cfg.vendas.valor = n(t.value); break;
+      case "cfg-vendas-mes": cfg.vendas.mes = t.value; break;
+      case "cfg-precosem": cfg.precosEm = t.value; break;
+      case "rf-saldo": cfg.rf.saldo = n(t.value); break;
+      case "rf-onde": cfg.rf.onde = t.value.trim(); break;
+      case "rf-pctcdi": cfg.rf.pctCdi = n(t.value); break;
+      case "rf-cdi": cfg.rf.cdi = n(t.value); break;
+      case "rf-pct": cfg.rf.pct = Math.min(100, Math.max(0, n(t.value))); break;
+      case "rf-meta": cfg.rf.meta = n(t.value); break;
+      default: mudou = false;
+    }
+    if (!mudou && t.dataset && t.dataset.at != null) {
+      var a = cfg.ativos[+t.dataset.at], f = t.dataset.f;
+      if (a) {
+        if (f === "t") {
+          var novo = t.value.trim().toUpperCase() || a.t;
+          if (novo !== a.t) renomearTicker(a.t, novo);
+          a.t = novo;
+        } else if (f === "seg") a.seg = t.value;
+        else a[f] = n(t.value);
+        mudou = true;
+      }
+    }
+    if (mudou) { salvarCfg(); render(); }
+  });
+
+  function renomearTicker(velho, novo) {
+    Object.keys(estado.aportes).forEach(function (k) {
+      var r = estado.aportes[k];
+      var tocou = false;
+      ["compras", "precos"].forEach(function (campo) {
+        if (r[campo] && r[campo][velho] != null) { r[campo][novo] = r[campo][velho]; delete r[campo][velho]; tocou = true; }
+      });
+      if (tocou) salvarDoc("aportes", k, r);
+    });
+  }
+
+  /* ---------- Início ---------- */
+  lerLocal();
+  if (["calendario", "carteira", "revisao", "lembretes"].indexOf(abaAtual) < 0) abaAtual = "calendario";
+  aberto = (function () {
+    var hoje = hojeChave();
+    for (var i = 0; i < MESES; i++) { var k = chaveMes(i); if (!(estado.aportes[k] && estado.aportes[k].feito) && k >= hoje) return k; }
+    return null;
+  })();
+  mostrarAba(abaAtual);
+  syncMsg("Salvo neste aparelho");
+
+  (async function conectar() {
+    try { db = window.claude && window.claude.use ? await window.claude.use("db") : null; } catch (e) { db = null; }
+    if (!db) { syncMsg("Salvo neste aparelho"); return; }
+    try {
+      var results = await Promise.all([db.doc("config/main").get(), db.collection("aportes").get(), db.collection("revisoes").get()]);
+      var cfgSnap = results[0];
+      if (cfgSnap.exists) {
+        estado.cfg = completarCfg(cfgSnap.data());
+      } else {
+        await db.doc("config/main").set(JSON.parse(JSON.stringify(estado.cfg)));
+      }
+      var ap = {}, rv = {};
+      results[1].docs.forEach(function (d) { ap[d.id] = JSON.parse(JSON.stringify(d.data())); });
+      results[2].docs.forEach(function (d) { rv[d.id] = JSON.parse(JSON.stringify(d.data())); });
+      if (results[1].empty && Object.keys(estado.aportes).length) {
+        for (var k in estado.aportes) await db.doc("aportes/" + k).set(estado.aportes[k]);
+      } else estado.aportes = ap;
+      if (results[2].empty && Object.keys(estado.revisoes).length) {
+        for (var r in estado.revisoes) await db.doc("revisoes/" + r).set(estado.revisoes[r]);
+      } else estado.revisoes = rv;
+      gravarLocal();
+      syncMsg("Salvo na nuvem · abre igual em qualquer aparelho");
+      render();
+    } catch (e) {
+      syncMsg("Salvo neste aparelho (nuvem indisponível agora)");
+    }
+  })();
+})();
+</script>
+
+</body>
+</html>
