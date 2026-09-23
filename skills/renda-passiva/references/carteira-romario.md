@@ -141,13 +141,49 @@ operação própria (Rede Bolha, livros na Hotmart) para agir sobre ela.
 
 ## Decisões e diagnósticos anteriores
 
-- **set/2026** — Revisão do plano de aportes (`investimentos/revisao-plano-aportes.md`):
-  dosagem alterada de 600 crescimento / 400 FII para 400 ações / 250 SPXI11 /
-  200 FII / 150 caixa, para corrigir sobrepeso em FII e abrir linha de reserva.
-- **set/2026** — Mantida a regra da posição mais atrasada; recusada a sugestão
-  de substituí-la por escolha discricionária mensal.
-- **set/2026** — GGRC11 sob observação: troca de gestora (virou Zagros Renda
-  Imobiliária), P/VP ~0,84, peso grande de contratos atípicos.
-- **set/2026** — Meta de alocação usada: 25% ações / 25% FII / 25% exterior /
-  25% caixa. No Investidor10 ele configurou alvo semelhante, mas com Tesouro
-  em 25% e renda fixa em 0% — vale alinhar as duas definições.
+A tese consolidada vive em `investimentos/TESE.md` no repositório dele. Leia-a
+antes de propor mudança estrutural — ela já resolveu o que segue abaixo.
+
+**Tese:** renda passiva + crescimento, dois motores. Alocação dos ativos de
+risco: **FII 40% · Ações 30% · ETF 30%**, com a reserva de emergência fora
+dessa conta, medida em meses de despesa. Isso substituiu o 25/25/25/25 da
+ferramenta antiga, que tratava a reserva como classe.
+
+**Os onze ativos**
+
+| FII (40%) | Peso | Ações (30%) | Peso |
+|---|---:|---|---:|
+| MXRF11 — papel | 25% | TAEE11 — transmissão | 25% |
+| BTLG11 — logística | 25% | BBSE3 — seguros | 25% |
+| XPML11 — shopping | 20% | ITUB4 — banco | 20% |
+| TRXF11 — renda urbana | 15% | VIVT3 — telecom | 15% |
+| KNRI11 — lajes | 15% | ABEV3 — consumo | 15% |
+
+ETF (30%): SPXI11, sozinho.
+
+**Histórico**
+
+- **set/2026** — Dosagem do aporte revista de 600 crescimento / 400 FII para
+  400 ações / 250 SPXI11 / 200 FII / 150 caixa, corrigindo o sobrepeso em FII
+  e abrindo linha de reserva.
+- **set/2026** — Mantida a regra da posição mais atrasada; recusada a
+  sugestão de substituí-la por escolha discricionária mensal.
+- **set/2026** — Consórcio identificado como os 65% que faltavam. Duas TIRs
+  reais: −5,6% a.a. no plano inteiro, +17,9% a.a. olhando só para a frente.
+  **Decisão: terminar.** Desistir destrói valor.
+- **set/2026** — FIIs consolidados de 8 para 5, um por segmento. Saíram
+  GGRC11, CPTS11, HGBS11 e GARE11. A concentração real não era de segmento e
+  sim de tipo de contrato: três fundos rodavam em atípicos.
+- **set/2026** — MXRF11 mantido e CPTS11 cortado, revertendo comparação
+  anterior por P/VP: não são substitutos, porque CPTS11 é fundo de fundos.
+- **set/2026** — **BRSR6 vendido.** Payout de 177% com lucro caindo 8,2% no
+  1T26. P/VP de 0,51 é barato, mas é aposta em virada, não vaca leiteira.
+  ITUB4 fica com a vaga de banco — e não BBAS3, por sobreposição com BBSE3.
+- **set/2026** — Venda dos quatro FIIs no mesmo mês: prejuízo líquido de
+  R$ 61,24, imposto zero, crédito registrado para abater ganho futuro.
+
+**Pendências que não mudaram desde o começo**
+
+1. Custo de vida mensal — define reserva e alvo de renda.
+2. Destino do crédito do consórcio — decide entre cenário A e B.
+
