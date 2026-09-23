@@ -1,193 +1,224 @@
-# A tese: renda passiva + crescimento
+# A tese: renda passiva isenta
 
-Documento-mãe. Os outros arquivos desta pasta detalham pedaços; este diz o que
-estamos fazendo e por quê. Quando houver conflito, vale este.
-
-Versão de 23/09/2026. Análise, não recomendação de compra.
+Documento-mãe, versão 2 — 23/09/2026. Substitui a versão anterior.
+Análise, não recomendação de compra.
 
 ---
 
 ## A tese em uma frase
 
-**Construir uma carteira que pague todo mês, protegida da inflação e do risco
-Brasil, financiada por aporte constante — e não mexer nela sem motivo.**
+**Montar uma máquina de renda mensal que o Leão quase não toca — FII e ações
+vacas leiteiras — alimentada por aporte constante mais tudo que sobrar de
+extra, e nunca vendida sem motivo de tese.**
 
-Dois motores, não um:
+O crescimento não é objetivo separado: vem do dividendo que sobe com o lucro
+da empresa e do aluguel que sobe com o IPCA. Quem reinveste provento isento
+cresce e recebe ao mesmo tempo.
 
-| Motor | Quem faz | Para quê |
+---
+
+## O que mudou nesta versão
+
+| | Antes | Agora |
 |---|---|---|
-| **Renda** | 5 FIIs + 5 ações pagadoras | caixa mensal, isento ou quase |
-| **Crescimento** | SPXI11 + a valorização das próprias pagadoras | proteger o poder de compra e a moeda |
+| **Consórcio** | contado na trajetória | **fora da tese** — não gera renda mensal |
+| **ETF (SPXI11)** | 30% do alvo | **fora do alvo** — não paga nada e é tributado na venda |
+| **Alocação** | FII 40 / Ações 30 / ETF 30 | **FII 55 / Ações 45** |
+| **Meta** | genérica | **R$ 3.500/mês em 5 anos · R$ 7–12 mil em 10** |
+| **Aporte** | R$ 1.000 fixo | **R$ 1.000 de piso + FGTS, férias, livro, extras** |
 
-Não são objetivos concorrentes. A renda sem crescimento encolhe com a inflação;
-o crescimento sem renda não paga conta nenhuma. A carteira precisa dos dois, e
-é por isso que o ETF tem peso igual ao das ações mesmo não pagando quase nada.
+### Por que o consórcio sai da tese
+
+Ele rende 0% e não paga nada até 2030. Contá-lo como patrimônio inflava a
+carteira em 65% e escondia que o motor de renda é só R$ 6.776.
+
+**Mas continua sendo pago.** A decisão já foi tomada e segue válida: olhando só
+para a frente, pagar 43 parcelas para receber R$ 28.725 dá TIR real de +17,9%
+ao ano, porque o dinheiro afundado volta junto. Desistir destrói valor. Ele é
+poupança forçada com bom retorno prospectivo — só não é renda. Em 2030 o
+crédito entra e aí sim vira capital.
+
+### Por que o ETF sai do alvo
+
+Com o objetivo de renda isenta, o SPXI11 é o pior veículo possível: **não paga
+provento** e, quando vendido, é tributado **sem** a isenção de R$ 20 mil que
+as ações têm. Ele entrega crescimento, não renda, e cobra imposto na saída.
+
+**Não vender.** Vender realiza ganho tributável sem isenção. Os R$ 598 ficam
+como posição legada, sem aporte novo — preservam um fio de proteção cambial e
+não geram fato gerador. Se um dia sobrar folga, ele volta como bloco separado
+de crescimento, fora da conta de renda.
 
 ---
 
 ## A alocação
 
-**Ativos de risco: FII 40% · Ações 30% · ETF 30%**
+**FII 55% · Ações 45%.** Reserva de emergência fora da conta, em meses de
+despesa.
 
-**Reserva de emergência: fora dessa conta**, medida em **meses de despesa** —
-nunca em percentual da carteira. Quanto melhor a carteira vai, menor fica o
-percentual da reserva sem que um centavo tenha saído dela. Percentual é a
-métrica errada.
+Por que 55/45 e não mais FII: o FII é 100% isento e paga todo mês, então puxa
+o peso. Mas o rendimento de FII cresce devagar (IPCA e vacância), enquanto o
+dividendo de uma boa pagadora cresce com o lucro. Num horizonte de 10 a 15
+anos, 45% em dividendo crescente é o que impede a renda de estagnar.
 
-> Isso substitui o antigo 25/25/25/25 da ferramenta de rebalanceamento, que
-> tratava a reserva como uma classe entre outras. Mesma ideia, medida melhor.
+### Os dez ativos
 
-### Os onze ativos
+| FII — 55% | Segmento | Peso | Ações — 45% | Segmento | Peso |
+|---|---|---:|---|---|---:|
+| MXRF11 | papel / CRI | 25% | TAEE11 | transmissão | 25% |
+| BTLG11 | logística | 25% | BBSE3 | seguros | 25% |
+| XPML11 | shopping | 20% | ITUB4 | banco | 20% |
+| TRXF11 | renda urbana | 15% | VIVT3 | telecom | 15% |
+| KNRI11 | lajes | 15% | ABEV3 | consumo | 15% |
 
-**FII — 40%** (renda mensal isenta)
-
-| Fundo | Segmento | Peso no bloco |
-|---|---|---:|
-| MXRF11 | papel / CRI | 25% |
-| BTLG11 | logística | 25% |
-| XPML11 | shopping | 20% |
-| TRXF11 | renda urbana | 15% |
-| KNRI11 | lajes corporativas | 15% |
-
-**Ações — 30%** (vacas leiteiras, dividendos)
-
-| Ação | Segmento | Peso no bloco |
-|---|---|---:|
-| TAEE11 | transmissão de energia | 25% |
-| BBSE3 | seguros | 25% |
-| ITUB4 | banco | 20% |
-| VIVT3 | telecom | 15% |
-| ABEV3 | consumo | 15% |
-
-**ETF — 30%**: SPXI11, sozinho.
-
-Um por segmento, dos dois lados. O critério nunca foi o maior yield — foi
-**de onde vem o caixa**. Onze ativos com onze motivos diferentes de pagar.
+**Yield bruto: 10,06% a.a. · Yield líquido: 9,79% a.a.**
 
 ---
 
-## O que a carteira entrega
+## A parte fiscal: o que é isento e onde vaza
 
-Yield em caixa no alvo: **7,48% ao ano**.
+**O que não paga nada:**
 
-| Carteira de risco | Renda mensal |
-|---:|---:|
-| R$ 5.258 (hoje) | R$ 33 |
-| R$ 25.000 | R$ 156 |
-| R$ 50.000 | R$ 312 |
-| R$ 100.000 | R$ 623 |
-| R$ 250.000 | R$ 1.558 |
+- **Rendimento de FII** — isento, todo mês, sem teto prático. É o melhor
+  veículo de renda isenta que existe para pessoa física no Brasil.
+- **Dividendo de ação** — isento até R$ 50 mil por mês **por empresa**. Mesmo
+  na meta de R$ 12 mil/mês repartida entre cinco empresas, fica longe do teto.
+- **Não vender** — quem nunca vende nunca gera ganho de capital. A estratégia
+  de comprar e segurar é, por construção, a mais eficiente fiscalmente.
 
-**Duas contas diferentes, e confundir as duas é o erro mais caro do
-planejamento de renda:**
+**Onde vaza, e quase ninguém vê: o JCP.**
 
-- **Quanto pinga:** R$ 160 mil já geram R$ 1.000/mês de proventos.
-- **Quanto dá para gastar sem encolher:** R$ 240 mil, a uma retirada de 5%
-  real ao ano.
+Juros sobre capital próprio não é dividendo. Tem **17,5% retido na fonte**
+(subiu de 15% em 1º/01/2026) e chega líquido. Bancos e seguradoras usam JCP
+pesado — justamente duas das nossas cinco.
 
-A diferença é a inflação. Consumir todo o rendimento nominal faz o principal
-perder poder de compra no mesmo ritmo — em quinze anos, a mesma renda compra
-perto da metade. Planeje pela segunda conta; a primeira é só o limite
-superior.
+| Ação | DY bruto | Perfil de JCP | DY líquido estimado |
+|---|---:|---:|---:|
+| BBSE3 | 11,40% | alto | ~10,40% |
+| TAEE11 | 7,80% | baixo | ~7,39% |
+| ITUB4 | 7,48% | alto | ~6,69% |
+| VIVT3 | 7,00% | médio | ~6,51% |
+| ABEV3 | 6,30% | muito baixo | ~6,19% |
 
-### A trajetória
+No bloco de ações isso custa cerca de **7% do provento**; na carteira toda,
+0,27 ponto percentual. **Não é motivo para trocar ativo** — o BBSE3 líquido
+ainda é o melhor pagador da lista. É motivo para não confundir o DY anunciado
+(bruto) com o que cai na conta.
 
-Retorno real de 7,2% a.a., aporte de R$ 1.000/mês até abril de 2030 e
-R$ 1.493,42 depois (quando a parcela do consórcio é liberada e o crédito de
-R$ 28.725 entra):
+**Fica no radar, não entra agora:** FIAGRO, CRI e CRA diretos e debêntures
+incentivadas também são isentos e têm risco diferente de imóvel. Se um dia
+entrar, **substitui** um dos dez — não soma.
 
-| | Patrimônio | Renda em caixa |
-|---|---:|---:|
-| 1 ano | R$ 19.655 | R$ 123/mês |
-| 3 anos | R$ 48.261 | R$ 301/mês |
-| 5 anos | R$ 121.624 | R$ 758/mês |
-| 10 anos | R$ 279.027 | R$ 1.739/mês |
-| 15 anos | R$ 501.863 | R$ 3.128/mês |
+---
 
-Viver de renda em 5 anos não fecha — a conta honesta está em
-`revisao-plano-aportes.md` e em `onde-aportar.md`. O horizonte real é de 12 a
-15 anos no ritmo atual, e a alavanca é o **aporte**, não o yield.
+## As metas e a conta honesta
+
+**Fase 1 — R$ 3.500/mês. Fase 2 — R$ 7 a 12 mil/mês.**
+
+### Quanto precisa ter
+
+| Renda | Consumindo o yield (9,8%) | Sustentável (5% real) |
+|---:|---:|---:|
+| R$ 3.500/mês | R$ 417 mil | R$ 840 mil |
+| R$ 7.000/mês | R$ 835 mil | R$ 1,68 mi |
+| R$ 12.000/mês | R$ 1,43 mi | R$ 2,88 mi |
+
+A coluna da esquerda é a renda que **pinga hoje**. A da direita é a que você
+pode gastar **sem a carteira encolher** — consumir todo o yield de 9,8% com
+inflação de 4,5% corrói o principal nesse ritmo.
+
+Na prática, o caminho do meio: consumir cerca de 5% e **reinvestir o resto**.
+A carteira continua crescendo, e a renda sobe junto com a inflação em vez de
+derreter.
+
+### Mantendo R$ 1.000/mês fixo, quanto os extras precisam somar
+
+FGTS, férias, livro e rendas extras entrando uma vez por ano:
+
+| Meta | Prazo | Extra por ano | Viável? |
+|---|---:|---:|---|
+| R$ 3.500/mês | 5 anos | **R$ 58.000** | improvável |
+| R$ 3.500/mês | 8 anos | **R$ 27.000** | apertado, possível |
+| R$ 3.500/mês | 10 anos | **R$ 16.600** | **realista** |
+| R$ 7.000/mês | 10 anos | **R$ 46.500** | improvável |
+| R$ 7.000/mês | 15 anos | **R$ 19.600** | **realista** |
+| R$ 12.000/mês | 15 anos | **R$ 43.000** | só com salto de renda |
+
+### A leitura
+
+**Os R$ 3.500 em 5 anos não fecham** — exigiriam R$ 58 mil por ano de extras,
+cinco vezes o aporte-piso. Mas **fecham em 8 a 10 anos** com extras de R$ 17 a
+27 mil por ano, o que é outra conversa: é FGTS + férias + livro num ano bom.
+
+**Os R$ 7 mil fecham em 15 anos** com cerca de R$ 20 mil por ano de extras.
+
+**Os R$ 12 mil exigem outro patamar de renda** — não de investimento. A
+alavanca ali é a Rede Bolha e os livros, não a carteira.
+
+O ajuste honesto: **mover fase 1 de 5 para 8–10 anos e fase 2 de 10 para 15.**
+Nada aqui é perda — é a mesma meta com prazo que fecha.
+
+### Onde cada nível de aporte chega
+
+| Aporte | Em 5 anos | Em 10 anos |
+|---|---|---|
+| R$ 1.000/mês, sem extras | R$ 81 mil → R$ 680/mês | R$ 186 mil → R$ 1.563/mês |
+| R$ 1.000 + R$ 12 mil/ano | R$ 150 mil → R$ 1.261/mês | R$ 354 mil → R$ 2.966/mês |
+| R$ 1.500 + R$ 12 mil/ano | R$ 186 mil → R$ 1.561/mês | R$ 440 mil → R$ 3.690/mês |
+| R$ 2.000 + R$ 18 mil/ano | R$ 257 mil → R$ 2.151/mês | R$ 610 mil → R$ 5.116/mês |
+| R$ 3.000 + R$ 24 mil/ano | R$ 363 mil → R$ 3.041/mês | R$ 867 mil → R$ 7.267/mês |
+
+---
+
+## Sobre o FGTS
+
+Usar FGTS como aporte é matematicamente bom: ele rende **3% + TR**, bem abaixo
+da inflação — dinheiro perdendo poder de compra parado.
+
+**Mas o saque-aniversário tem preço:** ao aderir, você libera uma parcela por
+ano e **perde o direito ao saque-rescisão** se for demitido. Fica só com a
+multa de 40%.
+
+Como o consórcio é débito em folha, o vínculo já sustenta um compromisso fixo.
+Adicionar a perda do saque-rescisão concentra risco no mesmo emprego.
+
+**Regra:** só aderir ao saque-aniversário depois que a reserva de emergência
+cobrir 6 meses de despesa. Antes disso, o FGTS **é** parte da sua proteção.
 
 ---
 
 ## As oito regras
 
-**1. O aporte de R$ 1.000 é inegociável.** É a variável que mais importa e a
-única sob controle total. Hoje ele vale 179% do patrimônio por ano — errar 15
-pontos de retorno custa o mesmo que pular um depósito. A seleção de ativo só
-começa a pesar de verdade depois dos R$ 50 mil.
-
-**2. Compra sempre a posição mais atrasada**, nunca a que parece barata no
-mês. A regra rebalanceia sem vender, não paga imposto nem corretagem, e tira
-de você a decisão mensal — que é onde a maioria dos planos morre.
-
-**3. A reserva vem antes do risco.** Enquanto não cobrir 6 meses de despesa,
-ela tem prioridade sobre qualquer aporte em ativo. O que quebra plano de 15
-anos não é o mercado cair — é precisar de R$ 3 mil num mês ruim e vender cota
-na baixa.
-
-**4. Onze ativos é o teto.** Ideia nova **substitui** uma das onze, não soma.
-Cada ativo a mais dilui o aporte e some do acompanhamento.
-
-**5. Revisão trimestral, não mensal.** Quatro datas no ano. Decisão a mais é o
-inimigo — olhar cotação toda semana produz decisão.
-
-**6. A tese decide a venda. Nunca o preço, nunca o preço médio.** O teste:
-*"se eu não tivesse esse ativo hoje, compraria por esse preço?"* Se sim,
-segura. Se não, vende — no verde ou no vermelho. O mercado não sabe quanto
-você pagou.
-
-**7. Proventos são reinvestidos.** Quando o caixa passar de 6 meses de
-despesa, o excedente volta para os aportes. Provento parado em conta corrente
-é o vazamento mais comum.
-
-**8. Aumento de renda vira aporte antes de virar padrão de vida.** É o único
-jeito de os R$ 1.000 virarem R$ 2.000 sem apertar nada.
+1. **R$ 1.000/mês é piso, não teto.** Todo extra — FGTS, férias, 13º, venda de
+   livro — vira aporte antes de virar padrão de vida.
+2. **Compra sempre a posição mais atrasada.**
+3. **A reserva vem antes do risco** — 6 meses de despesa.
+4. **Dez ativos é o teto.** Ideia nova substitui, não soma.
+5. **Revisão trimestral**, não mensal.
+6. **A tese decide a venda. Nunca o preço, nunca o preço médio.**
+7. **Proventos reinvestidos até a fase 1.** Depois, consome ~5% e reinveste o
+   resto — é o que impede a renda de derreter com a inflação.
+8. **Nunca vender sem motivo de tese** — é também a melhor decisão fiscal.
 
 ---
 
 ## Gatilhos de saída
 
-Critérios de tese, nunca de preço.
-
 | Ativo | Sai quando |
 |---|---|
-| **Qualquer ação** | payout acima de 100% por dois trimestres seguidos |
-| **Qualquer FII** | corta rendimento sem explicação, ou troca de gestora sem política clara |
-| **TTEN3** *(fora da carteira)* | volta ao radar só se a margem EBITDA ajustada reagir do patamar de 1,7% |
-| **TRXF11** | se repetir o anúncio-e-desistência de aquisições — troca por GARE11 |
-| **GGRC11** *(saiu)* | volta se a Zagros publicar política e completar um ciclo de distribuição sem corte |
-| **Qualquer classe** | passar de 10 pontos acima do alvo → para de receber aporte |
+| Qualquer ação | payout acima de 100% por dois trimestres |
+| Qualquer FII | corta rendimento sem explicação, ou troca de gestora sem política |
+| TRXF11 | se repetir anúncio-e-desistência de aquisições |
+| Qualquer classe | 10 pontos acima do alvo → para de receber aporte |
 
 ---
 
-## Tributação, em uma linha
+## O que falta decidir
 
-**O imposto aparece na venda, não na renda.** Rendimento de FII é isento;
-dividendo de ação é isento nos seus patamares. Quem monta carteira para
-receber, e não para girar, encosta pouco nessas alíquotas.
-
-Quadro completo e datado: `skills/renda-passiva/references/tributacao-br.md`.
-
----
-
-## O que ainda falta decidir
-
-1. **Custo de vida mensal** — define o tamanho da reserva e o alvo de renda.
-   É a pergunta mais importante em aberto desde o início.
-2. **Para que é o crédito do consórcio** — se virar imóvel ou carro de uso, a
-   trajetória acima muda para o cenário B (R$ 28.725 a menos no ponto de
-   partida de 2030).
-
----
-
-## Os documentos
-
-| Arquivo | O que tem |
-|---|---|
-| `TESE.md` | este — a tese, a alocação, as regras |
-| `revisao-plano-aportes.md` | por que a dosagem mudou; a conta do objetivo |
-| `onde-aportar.md` | calendário operacional, marcos, quantidades |
-| `rebalanceamento-hoje.md` | o diagnóstico que gerou o alvo 40/30/30 |
-| `cinco-fiis.md` | a escolha dos 5 FIIs e o que sai |
-| `cinco-acoes.md` | a escolha das 5 ações e o veredito ITUB4 × BRSR6 |
+1. **Custo de vida mensal** — define a reserva e o quanto os R$ 3.500 e os
+   R$ 7–12 mil realmente representam.
+2. **Quanto os extras somam por ano** — FGTS disponível, férias, receita do
+   livro. É o número que decide entre 8 e 15 anos.
+3. **A aposentadoria de R$ 7–12 mil é do INSS ou é a meta da carteira?** Se
+   for renda de INSS que virá *além* da carteira, toda a conta acima fica
+   folgada e a fase 2 pode ser bem menor.
