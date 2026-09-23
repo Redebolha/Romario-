@@ -1,0 +1,58 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Romario Cruz//Calendario de Aportes//PT
+CALSCALE:GREGORIAN
+BEGIN:VTIMEZONE
+TZID:America/Sao_Paulo
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:-0300
+TZOFFSETTO:-0300
+TZNAME:-03
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:revisao-trimestral@calendario-aportes
+DTSTAMP:20260923T120000Z
+DTSTART;TZID=America/Sao_Paulo:20261228T090000
+DTEND;TZID=America/Sao_Paulo:20261228T100000
+RRULE:FREQ=MONTHLY;INTERVAL=3;BYMONTHDAY=28;COUNT=20
+SUMMARY:Revisão trimestral da carteira
+DESCRIPTION:Abra o app Calendário de Aportes > aba Revisão.\n\n1. Atual
+ izar preços e conferir cotas compradas no trimestre\n2. Conferir o % de 
+ cada classe (FII · Ações · ETF) - desvio > 5 p.p. direciona os próxi
+ mos aportes\n3. Proventos do trimestre: algum corte de dividendos?\n4. FI
+ Is: relatório gerencial, vacância, inadimplência e P/VP (atenção MXR
+ F11 e GARE11)\n5. Ações: resultado trimestral, lucro, endividamento e p
+ ayout\n6. ETFs: dólar, taxa de administração e desvio do índice (SPXI
+ 11, JIPQ, internacionais)\n7. GARE11: a tese de manter continua de pé?\n
+ 8. Vendas antigas concluídas e valor reinvestido na lista\n9. Imposto: D
+ ARF de vendas com lucro e notas guardadas\n10. Dá para subir o aporte ac
+ ima de R$ 1.000?\n11. Comparar com a renda fixa (Selic/IPCA)
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Revisão trimestral da carteira
+TRIGGER:-P1D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Revisão trimestral da carteira
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:aporte-mensal@calendario-aportes
+DTSTAMP:20260923T120000Z
+DTSTART;TZID=America/Sao_Paulo:20261001T090000
+DTEND;TZID=America/Sao_Paulo:20261001T093000
+RRULE:FREQ=MONTHLY;BYMONTHDAY=1;COUNT=60
+SUMMARY:Aporte do mês (mínimo R$ 1.000)
+DESCRIPTION:Abra o app Calendário de Aportes\, veja as cotas sugeridas d
+ o mês e marque como feito.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Aporte do mês (mínimo R$ 1.000)
+TRIGGER:PT0M
+END:VALARM
+END:VEVENT
+END:VCALENDAR
