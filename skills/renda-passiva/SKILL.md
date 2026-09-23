@@ -178,6 +178,11 @@ contamina o plano inteiro.
 líquida**, e diga ao usuário a data da informação. Quando não der para
 confirmar, calcule em termos brutos e marque explicitamente que é bruto.
 
+`references/tributacao-br.md` tem o quadro por tipo de ativo com a data da
+última checagem. Use-o como ponto de partida e reconfirme o que for usar —
+se a data estiver com mais de três meses, refaça a busca antes de citar
+qualquer alíquota.
+
 ---
 
 ## Formato da resposta
@@ -214,4 +219,5 @@ quem executa é o usuário, e ele precisa saber o que está assumindo.
 | `scripts/renda.py` | sempre que houver conta — não refaça na mão |
 | `references/diagnostico.md` | ao receber print/planilha; formato do `carteira.json` |
 | `references/ativos-renda.md` | ao escolher ou revisar ativos por classe |
+| `references/tributacao-br.md` | antes de qualquer cálculo de renda líquida |
 | `references/carteira-romario.md` | contexto do Romário: posição, histórico, decisões tomadas |
