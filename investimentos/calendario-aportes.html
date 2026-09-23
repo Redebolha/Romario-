@@ -311,7 +311,7 @@
   <header class="top">
     <span class="eyebrow">Plano de 5 anos · out/2026 → set/2031</span>
     <h1>Calendário de Aportes</h1>
-    <span class="sync" id="sync">Carregando…</span>
+    <span class="sync"><span id="sync">Carregando…</span> · versão 3</span>
   </header>
 
   <div class="resumo" id="resumo"></div>
@@ -593,7 +593,9 @@
     var somaPct = plano.somaPct;
     var html = '<div class="bloco"><h2>Distribuição de cada aporte</h2>' +
       '<p class="sub">Mínimo de ' + brl0(APORTE_MIN) + ' todo dia 1º. O que não fecha uma cota inteira fica guardado para o mês seguinte, no mesmo ativo.</p>' +
-      mixBar(cfg.pct) + "</div>";
+      mixBar(cfg.pct) +
+      '<div class="linha-acoes"><button class="btn mini" data-ir-troca="1">⇄ Trocar ativo (FII, ação ou ETF)</button></div>' +
+      "</div>";
 
     for (var ano = 0; ano < 5; ano++) {
       var ini = plano.linhas[ano * 12], fim = plano.linhas[ano * 12 + 11];
@@ -671,7 +673,7 @@
     var cfg = estado.cfg;
     var pn = pesosNormalizados();
     var somaPct = plano.somaPct;
-    var html = '<div class="bloco"><h2>Regras do plano</h2>' +
+    var html = renderTroca() + '<div class="bloco"><h2>Regras do plano</h2>' +
       '<div class="campos">' +
       campo("Aporte mensal (R$)", "cfg-aporte", cfg.aporte, "50") +
       campo("FII (%)", "cfg-fii", cfg.pct.fii, "1") +
@@ -689,7 +691,6 @@
     for (var i = 0; i < MESES; i++) { var k = chaveMes(i); html += '<option value="' + k + '"' + (cfg.vendas.mes === k ? " selected" : "") + ">" + rotuloMes(k) + "</option>"; }
     html += "</select></label></div></div>";
 
-    html += renderTroca();
     html += '<div class="bloco"><h2>Ativos, pesos e cotas</h2><p class="sub">"Cotas iniciais" começa em zero porque o plano não traz o que já está guardado. Ajuste quando quiser, por exemplo as cotas de GARE11 que você vai manter.</p>' +
       '<label class="campo" style="max-width:220px">Preços atualizados em<input id="cfg-precosem" type="date" value="' + esc(cfg.precosEm) + '"></label>';
     CLASSES.forEach(function (c) {
@@ -717,7 +718,7 @@
   }
   function renderTroca() {
     var cfg = estado.cfg;
-    var html = '<div class="bloco" id="troca"><h2>Trocar ativo</h2><p class="sub">Para substituir um FII, uma ação ou um ETF por outro. O novo entra na mesma classe e com o mesmo peso do que sai.</p><div class="campos">' +
+    var html = '<div class="bloco" id="troca"><h2>⇄ Trocar ativo</h2><p class="sub">Para substituir um FII, uma ação ou um ETF por outro. O novo entra na mesma classe e com o mesmo peso do que sai.</p><div class="campos">' +
       '<label class="campo">Sai<select id="tr-de">';
     CLASSES.forEach(function (c) {
       var lista = cfg.ativos.filter(function (a) { return a.c === c.id && n(a.peso) > 0; });
@@ -879,6 +880,12 @@
     if (!t) return;
     if (t.dataset.aba) return mostrarAba(t.dataset.aba);
     if (t.dataset.ir) return mostrarAba(t.dataset.ir);
+    if (t.dataset.irTroca) {
+      mostrarAba("carteira");
+      var bl = document.getElementById("troca");
+      if (bl) { bl.scrollIntoView({ block: "start" }); var f = document.getElementById("tr-para"); if (f) f.focus({ preventScroll: true }); }
+      return;
+    }
     if (t.dataset.mes) {
       aberto = aberto === t.dataset.mes ? null : t.dataset.mes;
       render();
