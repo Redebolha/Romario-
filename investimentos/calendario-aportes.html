@@ -255,6 +255,12 @@
     background: var(--ground); font-weight: 500; font-size: 15px; width: 100%;
   }
   .soma { font-size: 13px; font-weight: 600; }
+  .opcoes { display: grid; gap: 6px; }
+  .opcoes label { display: grid; grid-template-columns: 22px 1fr; gap: 6px; align-items: start; font-size: 14px; }
+  .opcoes input { width: 17px; height: 17px; margin-top: 2px; accent-color: var(--accent); }
+  .opcoes small { display: block; color: var(--muted); font-size: 12.5px; }
+  .msg-ok { color: var(--ok); font-weight: 600; font-size: 13.5px; }
+  .msg-bad { color: var(--bad); font-weight: 600; font-size: 13.5px; }
   .soma.ok { color: var(--ok); } .soma.bad { color: var(--bad); }
 
   /* Gráfico */
@@ -365,7 +371,7 @@
         { t: "VIVT3", c: "acoes", seg: "telecom", peso: 15, preco: 30, cotas0: 0 },
         { t: "ABEV3", c: "acoes", seg: "consumo", peso: 15, preco: 13, cotas0: 0 },
         { t: "SPXI11", c: "etf", seg: "S&P 500", peso: 35, preco: 0, cotas0: 0 },
-        { t: "JIPQ", c: "etf", seg: "Nasdaq renda", peso: 25, preco: 0, cotas0: 0 },
+        { t: "JEPQ", c: "etf", seg: "Nasdaq renda", peso: 25, preco: 0, cotas0: 0 },
         { t: "ETF-INT-1", c: "etf", seg: "internacional (definir)", peso: 20, preco: 0, cotas0: 0 },
         { t: "ETF-INT-2", c: "etf", seg: "internacional (definir)", peso: 20, preco: 0, cotas0: 0 }
       ]
@@ -378,7 +384,7 @@
     ["Proventos do trimestre: algum corte de dividendos?", "Compare o rendimento de cada ativo com o trimestre anterior."],
     ["FIIs: relatório gerencial, vacância, inadimplência e P/VP", "Atenção especial a MXRF11 e GARE11 (crédito/CRI e contratos atípicos)."],
     ["Ações: resultado trimestral, lucro, endividamento e payout", "TAEE11, BBSE3, ITUB4, VIVT3, ABEV3."],
-    ["ETFs: variação do dólar, taxa de administração e desvio do índice", "SPXI11, JIPQ e os dois internacionais."],
+    ["ETFs: variação do dólar, taxa de administração e desvio do índice", "SPXI11, JEPQ e os dois internacionais."],
     ["GARE11: a tese de manter continua de pé?", "Você decidiu não vender. Revise se nada mudou nos fundamentos."],
     ["Vendas antigas concluídas e valor reinvestido na lista", "Registre o valor em Carteira → Reinvestimento das vendas."],
     ["Imposto: DARF de vendas com lucro e notas guardadas", "Vendas de FII e ETF com ganho pagam IR; ações têm isenção só até R$ 20 mil vendidos no mês. Confirme com seu contador."],
@@ -430,6 +436,7 @@
   var estado = { cfg: cfgPadrao(), aportes: {}, revisoes: {} };
   var aberto = null;
   var abaAtual = "calendario";
+  var msgTroca = null;
   var db = null;
 
   function lerLocal() {
@@ -682,6 +689,7 @@
     for (var i = 0; i < MESES; i++) { var k = chaveMes(i); html += '<option value="' + k + '"' + (cfg.vendas.mes === k ? " selected" : "") + ">" + rotuloMes(k) + "</option>"; }
     html += "</select></label></div></div>";
 
+    html += renderTroca();
     html += '<div class="bloco"><h2>Ativos, pesos e cotas</h2><p class="sub">"Cotas iniciais" começa em zero porque o plano não traz o que já está guardado. Ajuste quando quiser, por exemplo as cotas de GARE11 que você vai manter.</p>' +
       '<label class="campo" style="max-width:220px">Preços atualizados em<input id="cfg-precosem" type="date" value="' + esc(cfg.precosEm) + '"></label>';
     CLASSES.forEach(function (c) {
@@ -707,6 +715,60 @@
     html += renderProjecao(plano);
     document.getElementById("aba-carteira").innerHTML = html;
   }
+  function renderTroca() {
+    var cfg = estado.cfg;
+    var html = '<div class="bloco" id="troca"><h2>Trocar ativo</h2><p class="sub">Para substituir um FII, uma ação ou um ETF por outro. O novo entra na mesma classe e com o mesmo peso do que sai.</p><div class="campos">' +
+      '<label class="campo">Sai<select id="tr-de">';
+    CLASSES.forEach(function (c) {
+      var lista = cfg.ativos.filter(function (a) { return a.c === c.id && n(a.peso) > 0; });
+      if (!lista.length) return;
+      html += '<optgroup label="' + c.nome + '">';
+      lista.forEach(function (a) { html += '<option value="' + cfg.ativos.indexOf(a) + '">' + esc(a.t) + " · " + fmtNum.format(n(a.peso)) + "%</option>"; });
+      html += "</optgroup>";
+    });
+    html += "</select></label>" +
+      '<label class="campo">Entra (código)<input id="tr-para" autocapitalize="characters" autocomplete="off" placeholder="Ex.: HGLG11"></label>' +
+      '<label class="campo">Segmento<input id="tr-seg" autocomplete="off" placeholder="Ex.: logística"></label>' +
+      '<label class="campo">Preço R$<input id="tr-preco" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0,00"></label>' +
+      '</div><div class="opcoes">' +
+      '<label><input type="radio" name="tr-modo" id="tr-modo-novo" value="novo" checked><span>É outro ativo<small>O antigo fica na lista com peso 0, guardando as cotas e os meses já feitos. O novo começa do zero.</small></span></label>' +
+      '<label><input type="radio" name="tr-modo" id="tr-modo-cod" value="codigo"><span>Só mudou o código (mesmo ativo)<small>Leva junto peso, cotas e todo o histórico. Use para corrigir um ticker digitado errado.</small></span></label>' +
+      '</div><div class="linha-acoes"><button class="btn pri" data-trocar="1">Trocar ativo</button>' +
+      (msgTroca ? '<span class="' + (msgTroca.ok ? "msg-ok" : "msg-bad") + '">' + esc(msgTroca.txt) + "</span>" : "") +
+      "</div></div>";
+    return html;
+  }
+
+  function trocarAtivo() {
+    var cfg = estado.cfg;
+    var de = cfg.ativos[+document.getElementById("tr-de").value];
+    var para = document.getElementById("tr-para").value.trim().toUpperCase().replace(/\s+/g, "");
+    var seg = document.getElementById("tr-seg").value.trim();
+    var preco = n(document.getElementById("tr-preco").value);
+    var modo = document.getElementById("tr-modo-cod").checked ? "codigo" : "novo";
+    if (!de) { msgTroca = { ok: false, txt: "Escolha o ativo que sai." }; return render(); }
+    if (!para) { msgTroca = { ok: false, txt: "Digite o código do ativo que entra." }; return render(); }
+    if (!/^[A-Z0-9.\-]{2,15}$/.test(para)) { msgTroca = { ok: false, txt: "Use só letras, números e hífen no código." }; return render(); }
+    if (cfg.ativos.some(function (a) { return a !== de && a.t === para; })) { msgTroca = { ok: false, txt: para + " já está na carteira. Ajuste o peso dele na tabela." }; return render(); }
+    if (modo === "codigo") {
+      var velho = de.t;
+      renomearTicker(velho, para);
+      de.t = para;
+      if (seg) de.seg = seg;
+      if (preco > 0) de.preco = preco;
+      msgTroca = { ok: true, txt: velho + " virou " + para + ", com cotas e histórico." };
+    } else {
+      var idx = cfg.ativos.indexOf(de);
+      var novo = { t: para, c: de.c, seg: seg || de.seg, peso: n(de.peso), preco: preco, cotas0: 0 };
+      de.peso = 0;
+      de.seg = "substituído por " + para;
+      cfg.ativos.splice(idx + 1, 0, novo);
+      msgTroca = { ok: true, txt: para + " entrou no lugar de " + de.t + " com " + fmtNum.format(novo.peso) + "% da classe." };
+    }
+    salvarCfg();
+    render();
+  }
+
   function campo(rot, id, val, step) {
     return '<label class="campo">' + esc(rot) + '<input id="' + id + '" type="number" inputmode="decimal" min="0" step="' + step + '" value="' + esc(val) + '"></label>';
   }
@@ -801,6 +863,7 @@
 
   function mostrarAba(aba) {
     abaAtual = aba;
+    msgTroca = null;
     try { localStorage.setItem("calendario-aportes-aba", aba); } catch (e) {}
     ["calendario", "carteira", "revisao", "lembretes"].forEach(function (a) {
       document.getElementById("aba-" + a).hidden = a !== aba;
@@ -843,6 +906,7 @@
       render();
       return;
     }
+    if (t.dataset.trocar) return trocarAtivo();
     if (t.dataset.add) {
       var c = t.dataset.add, num = estado.cfg.ativos.filter(function (a) { return a.c === c; }).length + 1;
       estado.cfg.ativos.push({ t: "NOVO" + num, c: c, seg: "", peso: 0, preco: 0, cotas0: 0 });
